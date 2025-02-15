@@ -1,24 +1,28 @@
-import logo from './logo.svg';
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import './App.css';
+import AdminDashboard from "./Components/Panel/Admin/Dashboard/Dashboard";
+import AdminAsset from "./Components/Panel/Admin/Asset/Asset";
+import InvestorDashboard from "./Components/Panel/Investor/Dashboard/Dashboard";
+import InvestorAsset from "./Components/Panel/Investor/Asset/Asset";
+import PartnerDashboard from "./Components/Panel/Partner/Dashboard/Dashboard";
+import PartnerAsset from "./Components/Panel/Partner/Asset/Asset";
+
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+      // <AuthProvider>
+      <Router>
+          <Routes>
+              <Route path="/a-dashboard" element={<AdminDashboard />} />
+              <Route path="/a-asset" element={<AdminAsset />} />
+              <Route path="/i-dashboard" element={<InvestorDashboard />} />
+              <Route path="/i-asset" element={<InvestorAsset />} />
+              <Route path="/p-dashboard" element={<PartnerDashboard />} />
+              <Route path="/i-asset" element={<PartnerAsset />} />
+          </Routes>
+      </Router>
+      // </AuthProvider>
   );
 }
 
