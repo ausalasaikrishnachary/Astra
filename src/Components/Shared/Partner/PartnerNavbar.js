@@ -37,7 +37,7 @@ export default function PartnerHeader() {
                 { label: 'Sell Shares', path: '/sell-shares' },
             ],
         },
-       
+        { label: 'Report', path: '/p-report' },
     ];
 
     // Responsive helper.
