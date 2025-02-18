@@ -7,12 +7,15 @@ import InvestorDashboard from "./Components/Panel/Investor/Dashboard/Dashboard";
 import InvestorAsset from "./Components/Panel/Investor/Asset/Asset";
 import PartnerDashboard from "./Components/Panel/Partner/Dashboard/Dashboard";
 import PartnerAsset from "./Components/Panel/Partner/Asset/Asset";
+import Navbar from "./Components/Shared/Navbar/Navbar";
 
 
 function App() {
   return (
       // <AuthProvider>
       <Router>
+        <Navbar/>
+        <div style={{marginTop:"100px"}}>
           <Routes>
               <Route path="/a-dashboard" element={<AdminDashboard />} />
               <Route path="/a-asset" element={<AdminAsset />} />
@@ -21,6 +24,7 @@ function App() {
               <Route path="/p-dashboard" element={<PartnerDashboard />} />
               <Route path="/i-asset" element={<PartnerAsset />} />
           </Routes>
+          </div>
       </Router>
       // </AuthProvider>
   );
