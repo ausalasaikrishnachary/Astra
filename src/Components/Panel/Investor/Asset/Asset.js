@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   Typography,
@@ -12,7 +12,6 @@ import {
   CardMedia,
   CardContent,
   ButtonGroup,
-  Pagination,
   Grid,
 } from '@mui/material';
 import TrendingUpIcon from "@mui/icons-material/TrendingUp";
@@ -25,26 +24,32 @@ import image3 from '../images/pic3.jpeg';
 import AssetDetailModal from './AssetDetailModal';  // Import the modal component
 import InvestorHeader from '../../../Shared/Investor/InvestorNavbar';
 
-
 const AssetsPage = () => {
   const [sortBy, setSortBy] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const cardsPerPage = 3;
 
-
   const [openModal, setOpenModal] = useState(false);  // State to control modal visibility
   const [selectedAsset, setSelectedAsset] = useState(null);  // Store selected asset details
+
   const handleSortChange = (event) => {
     setSortBy(event.target.value);
+    setCurrentPage(1); // reset to first page when sorting changes
   };
+
+  const handleSearchChange = (event) => {
+    setSearchQuery(event.target.value);
+    setCurrentPage(1); // reset to first page when search changes
+  };
+
   const handlePrevPage = () => {
-    setCurrentPage(currentPage - 1);
+    if (currentPage > 1) setCurrentPage(currentPage - 1);
   };
 
-  const handleNextPage = () => {
-    setCurrentPage(currentPage + 1);
+  const handleNextPage = (totalPages) => {
+    if (currentPage < totalPages) setCurrentPage(currentPage + 1);
   };
-
 
   const handleViewDetails = (asset) => {
     setSelectedAsset(asset);  // Set the selected asset
@@ -55,34 +60,62 @@ const AssetsPage = () => {
     setOpenModal(false);  // Close the modal
   };
 
+  // Added a dummy "date" property for demonstration of sorting by date.
   const cards = [
     {
       id: 1,
       image: image1,
       leftText: 'Pune Industrial-oppurtunity',
       rightText: '100% Funded',
+      date: '2025-01-01',
     },
     {
       id: 2,
       image: image2,
       leftText: 'Goa Industrial-oppurtunity',
       rightText: '100% Funded',
+      date: '2025-02-01',
     },
     {
       id: 3,
       image: image3,
       leftText: 'Hyd Industrial-oppurtunity',
       rightText: '100% Funded',
+      date: '2025-03-01',
     },
   ];
 
-  const totalPages = Math.ceil(cards.length / cardsPerPage);
-  const displayedCards = cards.slice((currentPage - 1) * cardsPerPage, currentPage * cardsPerPage);
+  // Filter cards based on search query
+  const filteredCards = cards.filter((card) =>
+    card.leftText.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
+  // Sort the filtered cards based on the sortBy state
+  if (sortBy === 'name') {
+    filteredCards.sort((a, b) => a.leftText.localeCompare(b.leftText));
+  } else if (sortBy === 'date') {
+    filteredCards.sort((a, b) => new Date(a.date) - new Date(b.date));
+  } else if (sortBy === 'status') {
+    filteredCards.sort((a, b) => a.rightText.localeCompare(b.rightText));
+  }
+
+  // Calculate pagination values based on filteredCards
+  const totalPages = Math.ceil(filteredCards.length / cardsPerPage);
+  const displayedCards = filteredCards.slice(
+    (currentPage - 1) * cardsPerPage,
+    currentPage * cardsPerPage
+  );
+
+  // If the current page becomes invalid due to filtering, reset it.
+  useEffect(() => {
+    if (currentPage > totalPages) {
+      setCurrentPage(1);
+    }
+  }, [currentPage, totalPages]);
 
   return (
     <>
-    <InvestorHeader/>
+      <InvestorHeader />
       <Box p={2}>
         {/* Heading */}
         <Typography variant="h4" sx={{ marginLeft: '10px' }}>
@@ -90,21 +123,21 @@ const AssetsPage = () => {
         </Typography>
 
         {/* Row containing search, sort by, and filter button */}
-        {/* This container takes up 60% of the row */}
         <Box sx={{ backgroundColor: '#f0f0f0', padding: '10px' }}>
-
           <Grid container spacing={2} sx={{ width: '60%' }}>
-            {/* Search bar covers 30% of the row (6 out of 12 columns in the 60% container) */}
+            {/* Search bar */}
             <Grid item xs={6}>
               <TextField
                 label="Search Assets"
                 variant="outlined"
                 size="small"
                 fullWidth
+                value={searchQuery}
+                onChange={handleSearchChange}
               />
             </Grid>
 
-            {/* Sort by dropdown covers 20% of the row (4 out of 12 columns) */}
+            {/* Sort by dropdown */}
             <Grid item xs={4}>
               <FormControl variant="outlined" size="small" fullWidth>
                 <InputLabel id="sort-by-label">Sort By</InputLabel>
@@ -122,7 +155,7 @@ const AssetsPage = () => {
               </FormControl>
             </Grid>
 
-            {/* Filter button covers 10% of the row (2 out of 12 columns) */}
+            {/* Filter button */}
             <Grid item xs={2}>
               <Button variant="outlined" color="primary" fullWidth>
                 Filter
@@ -130,90 +163,100 @@ const AssetsPage = () => {
             </Grid>
           </Grid>
         </Box>
-
       </Box>
-      <Box mt={1} p={3}>  {/* Added padding here */}
 
-
-        {/* Added padding for the Grid container */}
+      <Box mt={1} p={3}>
         <Box p={2}>
           <Grid container spacing={2}>
             {displayedCards.map((card) => (
               <Grid item xs={12} sm={4} key={card.id}>
-                <Card sx={{
-                  borderRadius: "12px",  // Rounded corners 
-                  boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.2)"  // Soft shadow effect
-                }}>
+                <Card
+                  sx={{
+                    borderRadius: '12px',
+                    boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.2)',
+                  }}
+                >
                   <Box p={2}>
                     <CardMedia
                       component="img"
                       height="200"
                       image={card.image}
                       alt={`Card image ${card.id}`}
-                      sx={{ borderRadius: "8px" }} // Rounded corners
+                      sx={{ borderRadius: '8px' }}
                     />
-                  </Box>          <CardContent>
+                  </Box>
+                  <CardContent>
                     <Box display="flex" justifyContent="space-between">
                       <Typography variant="body1">{card.leftText}</Typography>
                       <Typography variant="body2">{card.rightText}</Typography>
                     </Box>
-                    {/* New IRR and Gross Entry Yield Section */}
+                    {/* IRR and Gross Entry Yield Section */}
                     <Box display="flex" justifyContent="space-between" mt={2}>
                       {/* Target IRR */}
                       <Box display="flex" alignItems="center">
-                        <TrendingUpIcon color="primary" sx={{ marginRight: 1 }} /> {/* Move icon to the left */}
+                        <TrendingUpIcon color="primary" sx={{ marginRight: 1 }} />
                         <Box display="flex" flexDirection="column" alignItems="flex-start">
                           <Typography variant="body2">Target IRR</Typography>
-                          <Typography variant="h6" fontWeight="bold">13%</Typography>
+                          <Typography variant="h6" fontWeight="bold">
+                            13%
+                          </Typography>
                         </Box>
                       </Box>
 
                       {/* Gross Entry Yield */}
                       <Box display="flex" alignItems="center">
-                        <BarChartIcon color="secondary" sx={{ marginRight: 1 }} /> {/* Move icon to the left */}
+                        <BarChartIcon color="secondary" sx={{ marginRight: 1 }} />
                         <Box display="flex" flexDirection="column" alignItems="flex-start">
                           <Typography variant="body2">Gross Entry Yield</Typography>
-                          <Typography variant="h6" fontWeight="bold">8.1%</Typography>
+                          <Typography variant="h6" fontWeight="bold">
+                            8.1%
+                          </Typography>
                         </Box>
                       </Box>
                     </Box>
-
 
                     {/* Asset Value & Type Section */}
                     <Box display="flex" justifyContent="space-between" mt={2}>
                       {/* Asset Value */}
                       <Box display="flex" alignItems="center">
-                        <AttachMoneyIcon color="success" sx={{ marginRight: 1 }} /> {/* Move icon to the left */}
+                        <AttachMoneyIcon color="success" sx={{ marginRight: 1 }} />
                         <Box display="flex" flexDirection="column" alignItems="flex-start">
                           <Typography variant="body2">Asset Value</Typography>
-                          <Typography variant="h6" fontWeight="bold">30 Cr</Typography>
+                          <Typography variant="h6" fontWeight="bold">
+                            30 Cr
+                          </Typography>
                         </Box>
                       </Box>
 
                       {/* Asset Type */}
                       <Box display="flex" alignItems="center">
-                        <BarChartIcon color="secondary" sx={{ marginRight: 1 }} /> {/* Move icon to the left */}
+                        <BarChartIcon color="secondary" sx={{ marginRight: 1 }} />
                         <Box display="flex" flexDirection="column" alignItems="flex-start">
                           <Typography variant="body2">Asset Type</Typography>
-                          <Typography variant="h6" fontWeight="bold">Industrial</Typography>
+                          <Typography variant="h6" fontWeight="bold">
+                            Industrial
+                          </Typography>
                         </Box>
                       </Box>
                     </Box>
-
 
                     {/* Three Buttons - Column Wise */}
                     <Box display="flex" flexDirection="column" alignItems="center" mt={2} gap={1}>
                       <Button variant="contained" color="primary" fullWidth>
                         Join Waitlist
                       </Button>
-                      <Button variant="contained" color="success" fullWidth onClick={() => handleViewDetails(card)}>
+                      <Button
+                        variant="contained"
+                        color="success"
+                        fullWidth
+                        onClick={() => handleViewDetails(card)}
+                      >
                         View Details
                       </Button>
                       <Button variant="outlined" color="secondary" fullWidth>
                         Invest Now
                       </Button>
                     </Box>
-
                   </CardContent>
                 </Card>
               </Grid>
@@ -226,18 +269,18 @@ const AssetsPage = () => {
         <ButtonGroup sx={{ gap: 0 }}>
           <Button
             variant="contained"
-            disabled={currentPage === 0}
+            disabled={currentPage === 1}
             onClick={handlePrevPage}
             sx={{
-              backgroundColor: '#8FD14F',  // Background color
-              color: 'white',  // Text color
+              backgroundColor: '#8FD14F',
+              color: 'white',
               '&:hover': {
-                backgroundColor: '#8FD14F',  // Keep the same color on hover
+                backgroundColor: '#8FD14F',
               },
               '&:disabled': {
-                backgroundColor: '#C8E6A4',  // Lighter shade when disabled
-                color: 'white',  // Text color when disabled
-              }
+                backgroundColor: '#C8E6A4',
+                color: 'white',
+              },
             }}
           >
             Previous
@@ -246,8 +289,8 @@ const AssetsPage = () => {
             variant="body1"
             sx={{
               border: '1px solid #ddd',
-              padding: '4px 12px', // Optional padding for better appearance
-              borderRadius: '4px', // Optional rounded corners for the border
+              padding: '4px 12px',
+              borderRadius: '4px',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -257,26 +300,24 @@ const AssetsPage = () => {
           </Typography>
           <Button
             variant="contained"
-            disabled={currentPage === totalPages - 1}
-            onClick={handleNextPage}
+            disabled={currentPage === totalPages || totalPages === 0}
+            onClick={() => handleNextPage(totalPages)}
             sx={{
-              backgroundColor: '#8FD14F',  // Background color
-              color: 'white',  // Text color
+              backgroundColor: '#8FD14F',
+              color: 'white',
               '&:hover': {
-                backgroundColor: '#8FD14F',  // Keep the same color on hover
+                backgroundColor: '#8FD14F',
               },
               '&:disabled': {
-                backgroundColor: '#C8E6A4',  // Lighter shade when disabled
-                color: 'white',  // Text color when disabled
-              }
+                backgroundColor: '#C8E6A4',
+                color: 'white',
+              },
             }}
           >
             Next
           </Button>
-
         </ButtonGroup>
       </Box>
-
 
       {/* Modal for showing asset details */}
       {selectedAsset && (
@@ -286,10 +327,6 @@ const AssetsPage = () => {
           assetDetails={selectedAsset}
         />
       )}
-
-
-
-
     </>
   );
 };
