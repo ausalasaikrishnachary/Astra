@@ -130,9 +130,9 @@ const BuyShares = () => {
               <Button
                 variant="contained"
                 fullWidth
-                sx={{ width: '200px', marginLeft: '270px', color: 'white', backgroundColor: '#8FD14F' }}
+                sx={{ width: '200px', marginLeft: '270px', color: 'white', backgroundColor: '#000' }}
               >
-                + Buy Shares
+                Sell Shares
               </Button>
             </Grid>
           </Grid>
@@ -144,25 +144,25 @@ const BuyShares = () => {
         <Table sx={{ border: '1px solid black', width: '100%' }}>
           <TableHead>
             <TableRow>
-              <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid blue' }}>Asset ID</TableCell>
-              <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid blue' }}>Date</TableCell>
-              <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid blue' }}>Asset Name</TableCell>
-              <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid blue' }}>Description</TableCell>
-              <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid blue' }}>Nominee Name</TableCell>
-              <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid blue' }}>Transaction ID</TableCell>
-              <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid blue' }}>Amount</TableCell>
+              <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>Asset ID</TableCell>
+              <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>Date</TableCell>
+              <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>Asset Name</TableCell>
+              <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>Description</TableCell>
+              <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>Nominee Name</TableCell>
+              <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>Transaction ID</TableCell>
+              <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>Amount</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {paginatedRows.map((row) => (
               <TableRow key={row.id}>
-                <TableCell sx={{ textAlign: 'center', border: '1px solid blue' }}>{row.assetId}</TableCell>
-                <TableCell sx={{ textAlign: 'center', border: '1px solid blue' }}>{row.date}</TableCell>
-                <TableCell sx={{ textAlign: 'center', border: '1px solid blue' }}>{row.assetName}</TableCell>
-                <TableCell sx={{ textAlign: 'center', border: '1px solid blue' }}>{row.description}</TableCell>
-                <TableCell sx={{ textAlign: 'center', border: '1px solid blue' }}>{row.nomineeName}</TableCell>
-                <TableCell sx={{ textAlign: 'center', border: '1px solid blue' }}>{row.transactionId}</TableCell>
-                <TableCell sx={{ textAlign: 'center', border: '1px solid blue' }}>{row.amount}</TableCell>
+                <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>{row.assetId}</TableCell>
+                <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>{row.date}</TableCell>
+                <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>{row.assetName}</TableCell>
+                <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>{row.description}</TableCell>
+                <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>{row.nomineeName}</TableCell>
+                <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>{row.transactionId}</TableCell>
+                <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>{row.amount}</TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -175,13 +175,13 @@ const BuyShares = () => {
               disabled={currentPage === 0}
               onClick={handlePrevPage}
               sx={{
-                backgroundColor: '#8FD14F',
+                backgroundColor: '#000',
                 color: 'white',
                 '&:hover': {
-                  backgroundColor: '#8FD14F',
+                  backgroundColor: '#000',
                 },
                 '&:disabled': {
-                  backgroundColor: '#C8E6A4',
+                  backgroundColor: '#000',
                   color: 'white',
                 },
               }}
@@ -206,13 +206,13 @@ const BuyShares = () => {
               disabled={currentPage >= totalPages - 1}
               onClick={handleNextPage}
               sx={{
-                backgroundColor: '#8FD14F',
+                backgroundColor: '#000',
                 color: 'white',
                 '&:hover': {
-                  backgroundColor: '#8FD14F',
+                  backgroundColor: '#000',
                 },
                 '&:disabled': {
-                  backgroundColor: '#C8E6A4',
+                  backgroundColor: '#000',
                   color: 'white',
                 },
               }}

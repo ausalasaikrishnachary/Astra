@@ -18,6 +18,7 @@ import {
   ButtonGroup,
 } from '@mui/material';
 import InvestorHeader from '../../../Shared/Investor/InvestorNavbar';
+import { useNavigate } from 'react-router-dom';
 
 const rows = [
   { id: 1, assetId: 'A123', date: '2025-02-18', assetName: 'Asset A', description: 'Asset Description A', nomineeName: 'Nominee A', transactionId: 'TX12345', amount: 1000 },
@@ -31,6 +32,12 @@ const BuyShares = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(0); // Page index starts from 0
   const rowsPerPage = 3; // Number of rows per page
+
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    navigate('/i-asset');
+  };
 
   const handleSortChange = (event) => {
     setSortBy(event.target.value);
@@ -127,13 +134,19 @@ const BuyShares = () => {
             </Grid>
             {/* Right section: Buy Shares button with fixed width of 200px */}
             <Grid item xs={12} sm={4}>
-              <Button
-                variant="contained"
-                fullWidth
-                sx={{ width: '200px', marginLeft: '270px', color: 'white', backgroundColor: '#8FD14F' }}
-              >
-                + Buy Shares
-              </Button>
+            <Button
+      variant="contained"
+      fullWidth
+      sx={{
+        width: '200px',
+        marginLeft: '270px',
+        color: 'white',
+        backgroundColor: '#000',
+      }}
+      onClick={handleClick}
+    >
+      + Buy Shares
+    </Button>
             </Grid>
           </Grid>
         </Box>
@@ -144,25 +157,25 @@ const BuyShares = () => {
         <Table sx={{ border: '1px solid black', width: '100%' }}>
           <TableHead>
             <TableRow>
-              <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid blue' }}>Asset ID</TableCell>
-              <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid blue' }}>Date</TableCell>
-              <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid blue' }}>Asset Name</TableCell>
-              <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid blue' }}>Description</TableCell>
-              <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid blue' }}>Nominee Name</TableCell>
-              <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid blue' }}>Transaction ID</TableCell>
-              <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid blue' }}>Amount</TableCell>
+              <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>Asset ID</TableCell>
+              <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>Date</TableCell>
+              <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>Asset Name</TableCell>
+              <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>Description</TableCell>
+              <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>Nominee Name</TableCell>
+              <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>Transaction ID</TableCell>
+              <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>Amount</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {paginatedRows.map((row) => (
               <TableRow key={row.id}>
-                <TableCell sx={{ textAlign: 'center', border: '1px solid blue' }}>{row.assetId}</TableCell>
-                <TableCell sx={{ textAlign: 'center', border: '1px solid blue' }}>{row.date}</TableCell>
-                <TableCell sx={{ textAlign: 'center', border: '1px solid blue' }}>{row.assetName}</TableCell>
-                <TableCell sx={{ textAlign: 'center', border: '1px solid blue' }}>{row.description}</TableCell>
-                <TableCell sx={{ textAlign: 'center', border: '1px solid blue' }}>{row.nomineeName}</TableCell>
-                <TableCell sx={{ textAlign: 'center', border: '1px solid blue' }}>{row.transactionId}</TableCell>
-                <TableCell sx={{ textAlign: 'center', border: '1px solid blue' }}>{row.amount}</TableCell>
+                <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>{row.assetId}</TableCell>
+                <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>{row.date}</TableCell>
+                <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>{row.assetName}</TableCell>
+                <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>{row.description}</TableCell>
+                <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>{row.nomineeName}</TableCell>
+                <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>{row.transactionId}</TableCell>
+                <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>{row.amount}</TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -175,13 +188,13 @@ const BuyShares = () => {
               disabled={currentPage === 0}
               onClick={handlePrevPage}
               sx={{
-                backgroundColor: '#8FD14F',
+                backgroundColor: '#000',
                 color: 'white',
                 '&:hover': {
-                  backgroundColor: '#8FD14F',
+                  backgroundColor: '#000',
                 },
                 '&:disabled': {
-                  backgroundColor: '#C8E6A4',
+                  backgroundColor: '#000',
                   color: 'white',
                 },
               }}
@@ -206,13 +219,13 @@ const BuyShares = () => {
               disabled={currentPage >= totalPages - 1}
               onClick={handleNextPage}
               sx={{
-                backgroundColor: '#8FD14F',
+                backgroundColor: '#000',
                 color: 'white',
                 '&:hover': {
-                  backgroundColor: '#8FD14F',
+                  backgroundColor: '#000',
                 },
                 '&:disabled': {
-                  backgroundColor: '#C8E6A4',
+                  backgroundColor: '#000',
                   color: 'white',
                 },
               }}
