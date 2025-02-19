@@ -63,13 +63,13 @@ const AssetDetailModal = ({ open, handleClose, assetDetails }) => {
             <strong>Exit Strategy:</strong>Open market resale or REIT lising
           </Typography>
           <Typography variant="body2" paragraph>
-            <strong>Tax Benefits:</strong>Depreciations claims & capital gains exemption 
+            <strong>Tax Benefits:</strong>Depreciations claims & capital gains exemption
           </Typography>
           <Typography variant="body2" paragraph>
-            <strong>Management Fees:</strong>1.5% annually 
+            <strong>Management Fees:</strong>1.5% annually
           </Typography>
           {/* Add more static lines if needed */}
-          
+
           {/* <Button variant="contained" color="primary" onClick={handleClose}>
             Close
           </Button >
@@ -77,31 +77,33 @@ const AssetDetailModal = ({ open, handleClose, assetDetails }) => {
 
 </Button> */}
 
-  {/* Buttons Row */}
-  <Box sx={{
-        display: 'flex',
-        // justifyContent: 'space-between',
-        padding: 2,
-        backgroundColor: 'white',
-        borderTop: '1px solid #ddd',
-        gap:'10px'
-      }}>
-        <Button variant="contained" color="primary" onClick={handleClose} sx={{
-        backgroundColor: '#8FD14F',   color:'white'}}>
-          Close
-        </Button>
-        <Button variant="contained"  sx={{
-        backgroundColor: '#185519',  color:'white'}}>
-          Invest Now
-        </Button>
-      </Box>
+          {/* Buttons Row */}
+          <Box sx={{
+            display: 'flex',
+            // justifyContent: 'space-between',
+            padding: 2,
+            backgroundColor: 'white',
+            borderTop: '1px solid #ddd',
+            gap: '10px'
+          }}>
+            <Button variant="contained" color="primary" onClick={handleClose} sx={{
+              backgroundColor: '#8FD14F', color: 'white'
+            }}>
+              Close
+            </Button>
+            <Button variant="contained" sx={{
+              backgroundColor: '#185519', color: 'white'
+            }}>
+              Invest Now
+            </Button>
+          </Box>
 
 
         </Box>
 
 
 
-       
+
       </Box>
     </Modal>
   );

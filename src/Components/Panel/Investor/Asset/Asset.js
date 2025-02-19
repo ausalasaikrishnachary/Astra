@@ -23,13 +23,14 @@ import image2 from '../images/pic2.jpeg';
 import image3 from '../images/pic3.jpeg';
 import AssetDetailModal from './AssetDetailModal';  // Import the modal component
 import InvestorHeader from '../../../Shared/Investor/InvestorNavbar';
+import { useNavigate } from "react-router-dom";
 
 const AssetsPage = () => {
   const [sortBy, setSortBy] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const cardsPerPage = 3;
-
+  const navigate = useNavigate();
   const [openModal, setOpenModal] = useState(false);  // State to control modal visibility
   const [selectedAsset, setSelectedAsset] = useState(null);  // Store selected asset details
 
@@ -253,7 +254,12 @@ const AssetsPage = () => {
                       >
                         View Details
                       </Button>
-                      <Button variant="outlined" color="secondary" fullWidth>
+                      <Button
+                        variant="outlined"
+                        color="secondary"
+                        fullWidth
+                        onClick={() => navigate("/investment-page")}
+                      >
                         Invest Now
                       </Button>
                     </Box>

@@ -17,6 +17,10 @@ import AssetForm from "./Components/Panel/Partner/Asset/AssetForm";
 import Tmanagement from "./Components/Panel/Admin/Investors/Investormanagement";
 import Tmoniter from "./Components/Panel/Admin/Transactions/TransactionMoniter";
 import Login from "./Components/Login/Login";
+import Transaction from "./Components/Panel/Partner/Transactions/Transactions";
+import InvestmentPage from "./Components/Panel/Investor/Asset/InvestmentPage";
+import PartnersDashboard from "./Components/Panel/Admin/Partners/Partners";
+import AssetDashboard from "./Components/Panel/Partner/Asset/Asset";
 
 
 
@@ -33,6 +37,8 @@ function App() {
               <Route path="/a-asset" element={<AdminAsset />} />
               <Route path="/a-investormanagement" element={<Tmanagement />} />
               <Route path="/a-transactionmoniter" element={<Tmoniter />} />
+              <Route path="/investment-page" element={<InvestmentPage />} />
+              <Route path="/a-partners" element={<PartnersDashboard />} />
 
 
               <Route path="/i-dashboard" element={<InvestorDashboard />} />
@@ -46,7 +52,8 @@ function App() {
               <Route path="/p-dashboard" element={<PartnerDashboard />} />
               <Route path="/p-report" element={<Report />} />
               <Route path="/p-addasset" element={<AssetForm />} />
-
+              <Route path="/p-transactions" element={<Transaction />} />
+              <Route path="/p-myassets" element={<AssetDashboard />} />
               <Route path="/" element={<Login />} />
               
           </Routes>
