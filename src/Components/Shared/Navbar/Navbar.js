@@ -305,7 +305,7 @@ export default function Header() {
                 <MenuItem
                     onClick={() => {
                         handleProfileMenuClose();
-                        navigate('/logout');
+                        navigate('/');
                     }}
                 >
                     Logout

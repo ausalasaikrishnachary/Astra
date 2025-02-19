@@ -305,7 +305,7 @@ export default function InvestorHeader() {
                 <MenuItem
                     onClick={() => {
                         handleProfileMenuClose();
-                        navigate('/logout');
+                        navigate('/');
                     }}
                 >
                     Logout

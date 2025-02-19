@@ -16,6 +16,8 @@ import Report from "./Components/Panel/Partner/Report/Report";
 import AssetForm from "./Components/Panel/Partner/Asset/AssetForm";
 import Tmanagement from "./Components/Panel/Admin/Investors/Investormanagement";
 import Tmoniter from "./Components/Panel/Admin/Transactions/TransactionMoniter";
+import Login from "./Components/Login/Login";
+
 
 
 function App() {
@@ -45,7 +47,7 @@ function App() {
               <Route path="/p-report" element={<Report />} />
               <Route path="/p-addasset" element={<AssetForm />} />
 
-
+              <Route path="/" element={<Login />} />
               
           </Routes>
           </div>

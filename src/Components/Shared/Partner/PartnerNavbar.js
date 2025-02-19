@@ -247,7 +247,7 @@ export default function PartnerHeader() {
                 <MenuItem
                     onClick={() => {
                         handleProfileMenuClose();
-                        navigate('/logout');
+                        navigate('/');
                     }}
                 >
                     Logout
