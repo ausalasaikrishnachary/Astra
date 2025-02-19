@@ -14,7 +14,7 @@ const Login = () => {
             navigate('/a-dashboard');
         } else if (email === 'partner@gmail.com' && password === 'partner@123') {
             navigate('/p-dashboard');
-        } else if (email === 'investor@gmail.com' && password === 'invest0r@123') {
+        } else if (email === 'investor@gmail.com' && password === 'investor@123') {
             navigate('/i-dashboard');
         } else {
             alert('Invalid credentials');
