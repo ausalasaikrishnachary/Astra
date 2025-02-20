@@ -96,7 +96,7 @@ function Dashboard() {
           {/* Page Title */}
           <Typography
             variant="h4"
-            sx={{ color: '#100f0f', fontSize: '28px', fontWeight: 700, mb: 4, pl: 2 }}
+            sx={{ color: '#100f0f', fontSize: '28px', fontWeight: 700, mb: 4, pl: 2,textAlign:"center" }}
           >
             Investor Dashboard
           </Typography>

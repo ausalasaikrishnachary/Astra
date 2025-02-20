@@ -1,11 +1,12 @@
 import React from "react";
 import { Box, Card, Typography, Divider, Button } from "@mui/material";
 import InvestorHeader from "../../../Shared/Investor/InvestorNavbar";
+import Header from "../../../Shared/Navbar/Navbar";
 
 const AdminProfile = () => {
   return (
     <>
-    <InvestorHeader/>
+    <Header/>
     <Box
       sx={{
         display: "flex",

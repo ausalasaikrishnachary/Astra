@@ -116,7 +116,7 @@ function Dashboard() {
         }}
       >
         <Container>
-          <Typography variant="h4" sx={{ color: '#100f0f', fontWeight: 700, mb: 4, pl: 2 }}>
+          <Typography variant="h4" sx={{ color: '#100f0f', fontWeight: 700, mb: 4, pl: 2,textAlign:"center" }}>
             Partner Dashboard
           </Typography>
           <Grid container spacing={3}>
@@ -124,7 +124,7 @@ function Dashboard() {
 
             <Grid item xs={12} md={8}>
               <Grid container spacing={3}>
-                <Grid item xs={11}>
+                <Grid item xs={12}>
                   <Card sx={{ borderRadius: '15px', boxShadow: 3 }}>
                     <CardContent>
                       <Typography variant="h6" sx={{ color: '#333', fontWeight: 600, mb: 2 }}>
@@ -136,7 +136,7 @@ function Dashboard() {
                     </CardContent>
                   </Card>
                 </Grid>
-                <Grid item xs={11}>
+                <Grid item xs={12}>
                   <Card sx={{ borderRadius: '15px', boxShadow: 3 }}>
                     <CardContent>
                       <Typography variant="h6" sx={{ color: '#333', fontWeight: 600, mb: 2 }}>

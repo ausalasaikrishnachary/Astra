@@ -1,11 +1,11 @@
 import React from "react";
 import { Box, Card, Typography, Divider, Button } from "@mui/material";
-import InvestorHeader from "../../../Shared/Investor/InvestorNavbar";
+import PartnerHeader from "../../../Shared/Partner/PartnerNavbar";
 
 const PartnerProfile = () => {
   return (
     <>
-    <InvestorHeader/>
+    <PartnerHeader/>
     <Box
       sx={{
         display: "flex",

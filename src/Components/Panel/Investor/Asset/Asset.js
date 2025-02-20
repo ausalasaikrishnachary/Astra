@@ -119,7 +119,7 @@ const AssetsPage = () => {
       <InvestorHeader />
       <Box p={2}>
         {/* Heading */}
-        <Typography variant="h4" sx={{ marginLeft: '10px' }}>
+        <Typography variant="h4" sx={{ marginLeft: '10px',textAlign:"center" }}>
           Assets
         </Typography>
 

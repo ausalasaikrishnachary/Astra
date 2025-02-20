@@ -13,12 +13,12 @@ import {
   Divider,
   Typography,
 } from "@mui/material";
-import InvestorHeader from "../../../Shared/Investor/InvestorNavbar";
+import PartnerHeader from "../../../Shared/Partner/PartnerNavbar";
 
 const PartnerKyc = () => {
   return (
     <>
-    <InvestorHeader/>
+    <PartnerHeader/>
     <Box
       sx={{
         display: "flex",

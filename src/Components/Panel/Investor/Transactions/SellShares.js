@@ -81,8 +81,8 @@ const BuyShares = () => {
       <InvestorHeader />
       <Box p={5}>
         {/* Heading */}
-        <Typography variant="h4" gutterBottom>
-          BuyShares
+        <Typography variant="h4" gutterBottom style={{textAlign:"center"}}>
+          Sell Shares
         </Typography>
         <Box sx={{ backgroundColor: '#f0f0f0', padding: '10px' }}>
           {/* Row containing search, sort by, filter, and buy shares button */}
