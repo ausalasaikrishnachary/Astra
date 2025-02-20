@@ -31,7 +31,7 @@ export default function Header() {
     { label: 'Transactions', path: '/a-transactionmoniter' },
     { label: 'Investors', path: '/a-investormanagement' },
     { label: 'Partners', path: '/a-partners' },
-    { label: 'KYC', path: '/kyc' },
+    { label: 'KYC', path: '/a-profiledetails' },
   ];
 
   const theme = useTheme();

@@ -81,7 +81,7 @@ const Tmanagement = () => {
       <Header />
       <Container sx={{ maxWidth: "900px", pt: 3 }}>
         {/* Header */}
-        <Typography variant="h4" component="h2" gutterBottom>
+        <Typography variant="h4" component="h2" gutterBottom style={{textAlign:"center"}}>
           Investor Management
         </Typography>
 

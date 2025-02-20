@@ -38,6 +38,9 @@ const AssetDashboard = () => {
         }}
         maxWidth="lg"
       >
+        <Typography variant="h4" sx={{ marginLeft: '10px', textAlign: "center" }}>
+          My Assets
+        </Typography>
         {/* Profile Section */}
         <Paper
           elevation={1}

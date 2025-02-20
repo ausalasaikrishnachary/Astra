@@ -43,7 +43,7 @@ function App() {
               <Route path="/a-asset" element={<AdminAsset />} />
               <Route path="/a-investormanagement" element={<Tmanagement />} />
               <Route path="/a-transactionmoniter" element={<Tmoniter />} />
-              <Route path="/investment-page" element={<InvestmentPage />} />
+              <Route path="/a-investment-page" element={<InvestmentPage />} />
               <Route path="/a-partners" element={<PartnersDashboard />} />
               <Route path="/a-profile" element={<AdminProfile />} />
               <Route path="/a-profiledetails" element={<AdminKyc />} />
@@ -53,7 +53,7 @@ function App() {
               <Route path="/i-asset" element={<InvestorAsset />} />
               <Route path="/i-buyshares" element={<BuyShares />} />
               <Route path="/i-sellshares" element={<SellShares />} />
-              <Route path="/i-asset" element={<PartnerAsset />} />
+              {/* <Route path="/i-asset" element={<PartnerAsset />} /> */}
               <Route path="/i-profile" element={<InvestorProfile />} />
               <Route path="/i-profiledetails" element={<Kyc />} />
 

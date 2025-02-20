@@ -25,8 +25,8 @@ const AdminKyc = () => {
         justifyContent: "center",
         alignItems: "flex-start",
         height: "100vh",
-        backgroundColor: "#f8f9fa",
-        paddingTop: "40px",
+        // backgroundColor: "#f8f9fa",
+        // paddingTop: "40px",
       }}
     >
       <Card
@@ -35,7 +35,7 @@ const AdminKyc = () => {
           padding: "20px",
           borderRadius: "12px",
           boxShadow: "0px 6px 12px rgba(0, 0, 0, 0.2)",
-          marginTop: "40px",
+          marginTop: "10px",
         }}
       >
         {/* Header */}

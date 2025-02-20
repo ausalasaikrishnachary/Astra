@@ -13,8 +13,8 @@ const AdminProfile = () => {
         justifyContent: "center",
         alignItems: "flex-start",
         height: "100vh",
-        backgroundColor: "#f8f9fa",
-        pt: "40px",
+        // backgroundColor: "#f8f9fa",
+        // pt: "40px",
       }}
     >
       <Card

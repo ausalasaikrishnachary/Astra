@@ -22,7 +22,10 @@ const Transaction = () => {
     return (
         <>
             <PartnerHeader />
-            <Box sx={{ p: 4,  minHeight: '100vh', width: "80%", margin: "0 auto"  }}>
+            <Box sx={{ p: 4, minHeight: '100vh', width: "80%", margin: "0 auto" }}>
+                <Typography variant="h4" sx={{ marginLeft: '10px', textAlign: "center" }}>
+                    Transactions
+                </Typography>
                 {/* Profile Section */}
                 <Box sx={{ display: 'flex', alignItems: 'center', mb: 4 }}>
                     <Avatar

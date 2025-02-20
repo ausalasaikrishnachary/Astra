@@ -13,7 +13,7 @@ const PartnerProfile = () => {
         alignItems: "flex-start",
         height: "100vh",
         backgroundColor: "#f8f9fa",
-        pt: "40px",
+        // pt: "40px",
       }}
     >
       <Card

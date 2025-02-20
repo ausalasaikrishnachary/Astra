@@ -46,7 +46,7 @@ const Report = () => {
 
   return (
     <>
-    <PartnerHeader/>
+      <PartnerHeader />
       {/* AppBar for header */}
       {/* <AppBar position="static">
         <Toolbar>
@@ -55,6 +55,7 @@ const Report = () => {
       </AppBar> */}
 
       <Container maxWidth="lg" >
+        
         <Box mt={4}>
           <Grid container spacing={3}>
             {/* Financial Returns Chart */}

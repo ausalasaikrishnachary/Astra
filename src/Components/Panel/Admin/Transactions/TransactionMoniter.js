@@ -147,7 +147,7 @@ const Tmoniter = () => {
       <Header />
       <Container sx={{ pt: 3 }}>
         {/* Page Title */}
-        <Typography variant="h4" component="h2" sx={{ mb: 3 }}>
+        <Typography variant="h4" component="h2" sx={{ mb: 3, textAlign:"center" }}>
           Transaction Monitor
         </Typography>
 
