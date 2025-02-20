@@ -21,6 +21,12 @@ import Transaction from "./Components/Panel/Partner/Transactions/Transactions";
 import InvestmentPage from "./Components/Panel/Investor/Asset/InvestmentPage";
 import PartnersDashboard from "./Components/Panel/Admin/Partners/Partners";
 import AssetDashboard from "./Components/Panel/Partner/Asset/Asset";
+import InvestorProfile from "./Components/Panel/Investor/Profile/Profile";
+import Kyc from "./Components/Panel/Investor/Profile/Kyc";
+import PartnerProfile from "./Components/Panel/Partner/Profile/Profile";
+import PartnerKyc from "./Components/Panel/Partner/Profile/Kyc";
+import AdminProfile from "./Components/Panel/Admin/Profile/Profile";
+import AdminKyc from "./Components/Panel/Admin/Profile/Kyc";
 
 
 
@@ -31,7 +37,7 @@ function App() {
         {/* <Navbar/> */}
         {/* <InvestorHeader/> */}
         {/* <PartnerHeader/> */}
-        <div style={{marginTop:"100px"}}>
+        <div style={{marginTop:"85px"}}>
           <Routes>
               <Route path="/a-dashboard" element={<AdminDashboard />} />
               <Route path="/a-asset" element={<AdminAsset />} />
@@ -39,6 +45,8 @@ function App() {
               <Route path="/a-transactionmoniter" element={<Tmoniter />} />
               <Route path="/investment-page" element={<InvestmentPage />} />
               <Route path="/a-partners" element={<PartnersDashboard />} />
+              <Route path="/a-profile" element={<AdminProfile />} />
+              <Route path="/a-profiledetails" element={<AdminKyc />} />
 
 
               <Route path="/i-dashboard" element={<InvestorDashboard />} />
@@ -46,6 +54,8 @@ function App() {
               <Route path="/i-buyshares" element={<BuyShares />} />
               <Route path="/i-sellshares" element={<SellShares />} />
               <Route path="/i-asset" element={<PartnerAsset />} />
+              <Route path="/i-profile" element={<InvestorProfile />} />
+              <Route path="/i-profiledetails" element={<Kyc />} />
 
 
 
@@ -54,6 +64,10 @@ function App() {
               <Route path="/p-addasset" element={<AssetForm />} />
               <Route path="/p-transactions" element={<Transaction />} />
               <Route path="/p-myassets" element={<AssetDashboard />} />
+              <Route path="/p-profile" element={<PartnerProfile />} />
+              <Route path="/p-profiledetails" element={<PartnerKyc/>} />
+
+
               <Route path="/" element={<Login />} />
               
           </Routes>

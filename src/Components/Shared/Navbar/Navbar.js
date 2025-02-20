@@ -94,7 +94,7 @@ export default function Header() {
         sx={{
           backgroundColor: 'white',
           color: '#000',
-          boxShadow: 'none',
+          boxShadow:"-moz-initial"
         }}
       >
         <Toolbar>
@@ -214,7 +214,7 @@ export default function Header() {
         <MenuItem
           onClick={() => {
             handleProfileMenuClose();
-            navigate('/profile');
+            navigate('/a-profile');
           }}
         >
           Profile
@@ -222,7 +222,7 @@ export default function Header() {
         <MenuItem
           onClick={() => {
             handleProfileMenuClose();
-            navigate('/kyc');
+            navigate('/a-profiledetails');
           }}
         >
           KYC

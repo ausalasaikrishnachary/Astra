@@ -1,70 +1,77 @@
-import React from "react";
+import React from 'react';
 import {
-    Card, CardContent, Typography, Grid, Avatar, Box, TableContainer,
+    Box,
+    Grid,
+    Card,
+    CardContent,
+    Typography,
+    Avatar,
+    Chip,
     Table,
-    TableHead,
     TableBody,
-    TableRow,
     TableCell,
-    Paper
-} from "@mui/material";
+    TableContainer,
+    TableHead,
+    TableRow,
+    Paper,
+} from '@mui/material';
+import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import PartnerHeader from "../../../Shared/Partner/PartnerNavbar";
 
 const Transaction = () => {
-
-    const transactions = [
-        { date: "2025-02-01", type: "Deposit", asset: "Property A", amount: "10,000/-" },
-        { date: "2025-02-05", type: "Withdrawal", asset: "Property B", amount: "5,000/-" },
-        { date: "2025-02-08", type: "Deposit", asset: "Property C", amount: "8,000/-" },
-        { date: "2025-02-12", type: "Deposit", asset: "Property A", amount: "7,000/-" },
-        { date: "2025-02-15", type: "Withdrawal", asset: "Property B", amount: "3,000/-" }
-    ];
-
     return (
         <>
             <PartnerHeader />
-            <Box p={3}>
+            <Box sx={{ p: 4,  minHeight: '100vh', width: "80%", margin: "0 auto"  }}>
                 {/* Profile Section */}
-                <Box display="flex" alignItems="center" mb={3}>
+                <Box sx={{ display: 'flex', alignItems: 'center', mb: 4 }}>
                     <Avatar
-                        src="https://via.placeholder.com/100"
-                        alt="Profile Picture"
-                        sx={{ width: 80, height: 80, mr: 2 }}
+                        src="https://www.w3schools.com/w3images/team2.jpg"
+                        sx={{ width: 50, height: 50, mr: 2 }}
                     />
                     <Box>
-                        <Typography variant="h6" fontWeight="bold">
-                            John Doe
-                        </Typography>
-                        <Typography variant="body2" color="textSecondary">
-                            Partner since 2004
+                        <Typography variant="h6">ABC</Typography>
+                        <Typography variant="body2" color="text.secondary">
+                            Partner since 2024
                         </Typography>
                     </Box>
                 </Box>
 
-                {/* Cards Section */}
-                <Grid container spacing={3}>
+                {/* Stat Cards */}
+                <Grid container spacing={4} sx={{ mb: 4 }}>
                     {[
-                        { label: "Revenue", amount: "12,000/-", change: "+12%" },
-                        { label: "Expenses", amount: "5,000/-", change: "-8%" },
-                        { label: "Profit", amount: "7,000/-", change: "+15%" }
-                    ].map((item, index) => (
-                        <Grid item xs={12} sm={4} key={index}>
-                            <Card sx={{ textAlign: "left", p: 2, border: '1px solid #000' }}>
+                        {
+                            title: 'Total Portfolio Value',
+                            value: '₹750,000/-',
+                            change: '+12.5%',
+                        },
+                        {
+                            title: 'Monthly Returns',
+                            value: '₹8,50,000/-',
+                            change: '+5.2%',
+                        },
+                        {
+                            title: 'Active Investments',
+                            value: '3',
+                            change: '+1',
+                        },
+                    ].map((stat, index) => (
+                        <Grid item xs={12} md={4} key={index}>
+                            <Card
+                                sx={{
+                                    borderRadius: '15px',
+                                    boxShadow: 3,
+                                    background: 'linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%)',
+                                }}
+                            >
                                 <CardContent>
-                                    <Typography variant="body1" >
-                                        {item.label}
+                                    <Typography variant="subtitle2" color="text.secondary" gutterBottom>
+                                        {stat.title}
                                     </Typography>
-                                    <Typography variant="h5" fontWeight="bold" mt={1}>
-                                        {item.amount}
+                                    <Typography variant="h5" component="div" gutterBottom>
+                                        {stat.value}
                                     </Typography>
-                                    <Typography
-                                        variant="body2"
-                                        color={item.change.includes("+") ? "green" : "red"}
-                                        fontWeight="bold"
-                                        mt={1}
-                                    >
-                                        {item.change}
-                                    </Typography>
+                                    <Chip label={stat.change} color="success" size="small" />
                                 </CardContent>
                             </Card>
                         </Grid>
@@ -72,64 +79,114 @@ const Transaction = () => {
                 </Grid>
 
                 {/* Assets Section */}
-                <Box mb={3}>
-                    <Typography variant="h6" fontWeight="bold" mb={2}>
-                        Your Assets
-                    </Typography>
-                    <Grid container spacing={3}>
-                        {[
-                            { property: "Property A", share: "40%", amount: "100,000/-" },
-                            { property: "Property B", share: "35%", amount: "80,000/-" },
-                            { property: "Property C", share: "25%", amount: "60,000/-" }
-                        ].map((item, index) => (
-                            <Grid item xs={12} sm={4} key={index}>
-                                <Card sx={{ textAlign: "left", p: 2, border: '1px solid #000' }}>
-                                    <CardContent>
-                                        <Typography variant="body1" fontWeight="bold">
-                                            {item.property}
-                                        </Typography>
-                                        <Typography variant="body2" color="textSecondary" mt={1}>
-                                            Share: {item.share}
-                                        </Typography>
-                                        <Typography variant="h6" fontWeight="bold" mt={1}>
-                                            {item.amount}
-                                        </Typography>
-                                    </CardContent>
-                                </Card>
-                            </Grid>
-                        ))}
-                    </Grid>
-                </Box>
+                <Typography variant="h6" sx={{ mb: 3 }}>
+                    Your Assets
+                </Typography>
+                <Grid container spacing={4} sx={{ mb: 4 }}>
+                    {[
+                        { name: 'Property A', value: '₹250,000/-', share: 'Share: 25%' },
+                        { name: 'Property B', value: '₹180,000/-', share: 'Share: 15%' },
+                        { name: 'Property C', value: '₹320,000/-', share: 'Share: 30%' },
+                    ].map((asset, index) => (
+                        <Grid item xs={12} md={4} key={index}>
+                            <Card
+                                sx={{
+                                    borderRadius: '15px',
+                                    boxShadow: 3,
+                                    transition: 'transform 0.2s',
+                                    '&:hover': { transform: 'translateY(-5px)' },
+                                }}
+                            >
+                                <CardContent>
+                                    <Box
+                                        sx={{
+                                            display: 'flex',
+                                            justifyContent: 'space-between',
+                                            alignItems: 'center',
+                                            mb: 2,
+                                        }}
+                                    >
+                                        <Typography variant="subtitle1">{asset.name}</Typography>
+                                        <InsertDriveFileIcon color="action" />
+                                    </Box>
+                                    <Typography variant="h5" component="div" gutterBottom>
+                                        {asset.value}
+                                    </Typography>
+                                    <Typography variant="body2" color="text.secondary">
+                                        {asset.share}
+                                    </Typography>
+                                </CardContent>
+                            </Card>
+                        </Grid>
+                    ))}
+                </Grid>
 
-                {/* Recent Transactions Section */}
-                <Box mt={5}>
-                    <Typography variant="h6" fontWeight="bold" mb={2}>
-                        Recent Transactions
-                    </Typography>
-                    <TableContainer component={Paper} elevation={3}>
-                        <Table>
-                            <TableHead>
-                                <TableRow>
-                                    <TableCell sx={{ border: '1px solid #000' }}>Date</TableCell>
-                                    <TableCell sx={{ border: '1px solid #000' }}>Type</TableCell>
-                                    <TableCell sx={{ border: '1px solid #000' }}>Asset</TableCell>
-                                    <TableCell sx={{ border: '1px solid #000' }}>Credit/Debit Amount</TableCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {transactions.map((tx, index) => (
-                                    <TableRow key={index}>
-                                        <TableCell sx={{ border: '1px solid #000' }}>{tx.date}</TableCell>
-                                        <TableCell sx={{ border: '1px solid #000' }}>{tx.type}</TableCell>
-                                        <TableCell sx={{ border: '1px solid #000' }}>{tx.asset}</TableCell>
-                                        <TableCell sx={{ border: '1px solid #000' }}>{tx.amount}</TableCell>
+                {/* Recent Transactions */}
+                <Typography variant="h6" sx={{ mb: 3 }}>
+                    Recent Transactions
+                </Typography>
+                <Card sx={{ borderRadius: '15px', boxShadow: 3 }}>
+                    <CardContent>
+                        <TableContainer
+                            component={Paper}
+                            sx={{ maxHeight: 300, overflow: 'auto' }}
+                        >
+                            <Table stickyHeader>
+                                <TableHead>
+                                    <TableRow>
+                                        {['Date', 'Type', 'Asset', 'Credit/Debit Amount'].map((head, index) => (
+                                            <TableCell
+                                                key={index}
+                                                align="center"
+                                                sx={{
+                                                    backgroundColor: '#3a575b',
+                                                    color: '#fff',
+                                                    fontWeight: '500',
+                                                    position: 'sticky',
+                                                    top: 0,
+                                                    zIndex: 1,
+                                                }}
+                                            >
+                                                {head}
+                                            </TableCell>
+                                        ))}
                                     </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
-                </Box>
-
+                                </TableHead>
+                                <TableBody>
+                                    {[
+                                        {
+                                            date: '2024-03-15',
+                                            type: 'Dividend',
+                                            asset: 'Property A',
+                                            amount: '+₹20000/-',
+                                        },
+                                        {
+                                            date: '2024-03-10',
+                                            type: 'Dividend',
+                                            asset: 'Property B',
+                                            amount: '+₹50000/-',
+                                        },
+                                        {
+                                            date: '2024-03-05',
+                                            type: 'Dividend',
+                                            asset: 'Property C',
+                                            amount: '+₹80000/-',
+                                        },
+                                    ].map((row, index) => (
+                                        <TableRow key={index}>
+                                            <TableCell align="center">{row.date}</TableCell>
+                                            <TableCell align="center">{row.type}</TableCell>
+                                            <TableCell align="center">{row.asset}</TableCell>
+                                            <TableCell align="center" sx={{ color: 'green' }}>
+                                                {row.amount}
+                                            </TableCell>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
+                    </CardContent>
+                </Card>
             </Box>
         </>
     );

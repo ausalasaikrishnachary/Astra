@@ -242,7 +242,7 @@ export default function PartnerHeader() {
         <MenuItem
           onClick={() => {
             handleProfileMenuClose();
-            navigate('/profile');
+            navigate('/p-profile');
           }}
           sx={{ fontWeight: 'bold' }}
         >
@@ -251,7 +251,7 @@ export default function PartnerHeader() {
         <MenuItem
           onClick={() => {
             handleProfileMenuClose();
-            navigate('/kyc');
+            navigate('/p-profiledetails');
           }}
           sx={{ fontWeight: 'bold' }}
         >

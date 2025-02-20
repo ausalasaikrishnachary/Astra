@@ -302,7 +302,7 @@ export default function InvestorHeader() {
         <MenuItem
           onClick={() => {
             handleProfileMenuClose();
-            navigate('/profile');
+            navigate('/i-profile');
           }}
           sx={{ fontWeight: 'bold' }}
         >
@@ -311,7 +311,7 @@ export default function InvestorHeader() {
         <MenuItem
           onClick={() => {
             handleProfileMenuClose();
-            navigate('/kyc');
+            navigate('/i-profiledetails');
           }}
           sx={{ fontWeight: 'bold' }}
         >

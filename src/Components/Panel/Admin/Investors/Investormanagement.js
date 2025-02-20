@@ -79,7 +79,7 @@ const Tmanagement = () => {
   return (
     <>
       <Header />
-      <Container sx={{ maxWidth: "900px", mt: 4 }}>
+      <Container sx={{ maxWidth: "900px", pt: 3 }}>
         {/* Header */}
         <Typography variant="h4" component="h2" gutterBottom>
           Investor Management

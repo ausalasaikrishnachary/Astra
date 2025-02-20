@@ -145,7 +145,7 @@ const Tmoniter = () => {
   return (
     <>
       <Header />
-      <Container sx={{ mt: 3 }}>
+      <Container sx={{ pt: 3 }}>
         {/* Page Title */}
         <Typography variant="h4" component="h2" sx={{ mb: 3 }}>
           Transaction Monitor
