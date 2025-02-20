@@ -135,7 +135,7 @@ export default function PartnerHeader() {
 
               {/* Center: Logo */}
               <Box display="flex" justifyContent="center" flexGrow={1}>
-                <Link to="/" style={{ textDecoration: 'none', color: '#333333' }}>
+                <Link to="/p-dashboard" style={{ textDecoration: 'none', color: '#333333' }}>
                   <img
                     src={Logo}
                     alt="logo"

@@ -103,6 +103,7 @@ export default function InvestorHeader() {
                           ? 'blue'
                           : 'inherit',
                         fontWeight: 'bold',
+                        fontSize: '16px',
                       }}
                     />
                     {mobileSubmenuOpen[item.label] ? <ExpandLess /> : <ExpandMore />}
@@ -122,6 +123,7 @@ export default function InvestorHeader() {
                           primaryTypographyProps={{
                             color: location.pathname === subitem.path ? 'blue' : 'inherit',
                             fontWeight: 'bold',
+                            fontSize: '16px',
                           }}
                         />
                       </ListItemButton>
@@ -141,6 +143,7 @@ export default function InvestorHeader() {
                     primaryTypographyProps={{
                       color: location.pathname === item.path ? 'blue' : 'inherit',
                       fontWeight: 'bold',
+                      fontSize: '16px',
                     }}
                   />
                 </ListItemButton>
@@ -179,7 +182,7 @@ export default function InvestorHeader() {
 
               {/* Center: Logo */}
               <Box display="flex" justifyContent="center" flexGrow={1}>
-                <Link to="/" style={{ textDecoration: 'none', color: '#333333' }}>
+                <Link to="/i-dashboard" style={{ textDecoration: 'none', color: '#333333' }}>
                   <img
                     src={Logo}
                     alt="logo"
@@ -198,7 +201,15 @@ export default function InvestorHeader() {
                 <IconButton sx={{ color: '#000' }}>
                   <NotificationsNoneIcon />
                 </IconButton>
-                <Typography sx={{ ml: 2, mr: 2, color: '#000', fontWeight: 'bold' }}>
+                <Typography
+                  sx={{
+                    ml: 2,
+                    mr: 2,
+                    color: '#000',
+                    fontWeight: 'bold',
+                    fontSize: '16px',
+                  }}
+                >
                   Investor
                 </Typography>
                 <Avatar
@@ -242,6 +253,7 @@ export default function InvestorHeader() {
                           : '#000',
                         fontWeight: 'bold',
                         textTransform: 'none',
+                        fontSize: '16px',
                       }}
                       endIcon={<ExpandMore />}
                     >
@@ -255,6 +267,7 @@ export default function InvestorHeader() {
                         color: location.pathname === item.path ? 'blue' : '#000',
                         fontWeight: 'bold',
                         textTransform: 'none',
+                        fontSize: '16px',
                       }}
                     >
                       {item.label}
@@ -267,7 +280,15 @@ export default function InvestorHeader() {
               <IconButton sx={{ color: '#000' }}>
                 <NotificationsNoneIcon />
               </IconButton>
-              <Typography sx={{ ml: 2, mr: 2, color: '#000', fontWeight: 'bold' }}>
+              <Typography
+                sx={{
+                  ml: 2,
+                  mr: 2,
+                  color: '#000',
+                  fontWeight: 'bold',
+                  fontSize: '16px',
+                }}
+              >
                 Investor
               </Typography>
               <Avatar
@@ -304,7 +325,7 @@ export default function InvestorHeader() {
             handleProfileMenuClose();
             navigate('/i-profile');
           }}
-          sx={{ fontWeight: 'bold' }}
+          sx={{ fontWeight: 'bold', fontSize: '16px' }}
         >
           Profile
         </MenuItem>
@@ -313,7 +334,7 @@ export default function InvestorHeader() {
             handleProfileMenuClose();
             navigate('/i-profiledetails');
           }}
-          sx={{ fontWeight: 'bold' }}
+          sx={{ fontWeight: 'bold', fontSize: '16px' }}
         >
           KYC
         </MenuItem>
@@ -322,7 +343,7 @@ export default function InvestorHeader() {
             handleProfileMenuClose();
             navigate('/');
           }}
-          sx={{ fontWeight: 'bold' }}
+          sx={{ fontWeight: 'bold', fontSize: '16px' }}
         >
           Logout
         </MenuItem>
@@ -348,6 +369,7 @@ export default function InvestorHeader() {
               sx={{
                 color: location.pathname === subitem.path ? 'blue' : 'inherit',
                 fontWeight: 'bold',
+                fontSize: '16px',
               }}
             >
               {subitem.label}

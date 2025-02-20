@@ -28,7 +28,7 @@ export default function Header() {
   const navItems = [
     { label: 'Dashboard', path: '/a-dashboard' },
     { label: 'Assets', path: '/a-asset' },
-    { label: 'Transactions', path: '/a-transactionmoniter' }, // No submenu now.
+    { label: 'Transactions', path: '/a-transactionmoniter' },
     { label: 'Investors', path: '/a-investormanagement' },
     { label: 'Partners', path: '/a-partners' },
     { label: 'KYC', path: '/kyc' },
@@ -78,6 +78,7 @@ export default function Header() {
                 primaryTypographyProps={{
                   color: location.pathname === item.path ? 'blue' : 'inherit',
                   fontWeight: 'bold',
+                  fontSize: '16px',
                 }}
               />
             </ListItemButton>
@@ -94,7 +95,7 @@ export default function Header() {
         sx={{
           backgroundColor: 'white',
           color: '#000',
-          boxShadow:"-moz-initial"
+          boxShadow: '-moz-initial',
         }}
       >
         <Toolbar>
@@ -112,7 +113,7 @@ export default function Header() {
               </IconButton>
 
               <Box display="flex" justifyContent="center" flexGrow={1}>
-                <Link to="/" style={{ textDecoration: 'none', color: '#333333' }}>
+                <Link to="/a-dashboard" style={{ textDecoration: 'none', color: '#333333' }}>
                   <img
                     src={Logo}
                     alt="logo"
@@ -130,7 +131,15 @@ export default function Header() {
                 <IconButton sx={{ color: '#000' }}>
                   <NotificationsNoneIcon />
                 </IconButton>
-                <Typography sx={{ ml: 2, mr: 2, color: '#000', fontWeight: 'bold' }}>
+                <Typography
+                  sx={{
+                    ml: 2,
+                    mr: 2,
+                    color: '#000',
+                    fontWeight: 'bold',
+                    fontSize: '16px',
+                  }}
+                >
                   Admin
                 </Typography>
                 <Avatar
@@ -169,6 +178,7 @@ export default function Header() {
                       color: location.pathname === item.path ? 'blue' : '#000',
                       fontWeight: 'bold',
                       textTransform: 'none',
+                      fontSize: '16px',
                     }}
                   >
                     {item.label}
@@ -179,7 +189,15 @@ export default function Header() {
               <IconButton sx={{ color: '#000' }}>
                 <NotificationsNoneIcon />
               </IconButton>
-              <Typography sx={{ ml: 2, mr: 2, color: '#000', fontWeight: 'bold' }}>
+              <Typography
+                sx={{
+                  ml: 2,
+                  mr: 2,
+                  color: '#000',
+                  fontWeight: 'bold',
+                  fontSize: '16px',
+                }}
+              >
                 Admin
               </Typography>
               <Avatar
@@ -216,6 +234,10 @@ export default function Header() {
             handleProfileMenuClose();
             navigate('/a-profile');
           }}
+          sx={{
+            fontSize: '16px',
+            fontWeight: 'bold',
+          }}
         >
           Profile
         </MenuItem>
@@ -224,6 +246,10 @@ export default function Header() {
             handleProfileMenuClose();
             navigate('/a-profiledetails');
           }}
+          sx={{
+            fontSize: '16px',
+            fontWeight: 'bold',
+          }}
         >
           KYC
         </MenuItem>
@@ -231,6 +257,10 @@ export default function Header() {
           onClick={() => {
             handleProfileMenuClose();
             navigate('/');
+          }}
+          sx={{
+            fontSize: '16px',
+            fontWeight: 'bold',
           }}
         >
           Logout
