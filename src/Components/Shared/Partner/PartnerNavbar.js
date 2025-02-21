@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Logo from '../../Images/Logo File.png';
+import LogoutIcon from '@mui/icons-material/Logout';
 import {
   AppBar,
   Toolbar,
@@ -262,9 +263,15 @@ export default function PartnerHeader() {
             handleProfileMenuClose();
             navigate('/');
           }}
-          sx={{ fontWeight: 'bold' }}
+          sx={{
+            fontSize: '16px',
+            fontWeight: 'bold',
+            color: "red",
+            display: 'flex',
+            alignItems: 'center'
+          }}
         >
-          Logout
+          Logout <LogoutIcon sx={{ ml: 1 }} />
         </MenuItem>
       </Menu>
 
