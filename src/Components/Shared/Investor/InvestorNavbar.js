@@ -217,7 +217,7 @@ export default function InvestorHeader() {
                   onClick={handleAvatarClick}
                   sx={{ width: 40, height: 40, cursor: 'pointer' }}
                   alt="Profile Avatar"
-                  src="https://via.placeholder.com/40" // Replace with your own image.
+                  src="https://img.freepik.com/free-vector/blue-circle-with-white-user_78370-4707.jpg" // Replace with your own image.
                 />
               </Box>
             </Box>
@@ -296,7 +296,7 @@ export default function InvestorHeader() {
                 onClick={handleAvatarClick}
                 sx={{ width: 40, height: 40, cursor: 'pointer' }}
                 alt="Investor"
-                src="https://via.placeholder.com/40" // Replace with your own image.
+                src="https://img.freepik.com/free-vector/blue-circle-with-white-user_78370-4707.jpg" // Replace with your own image.
               />
             </>
           )}

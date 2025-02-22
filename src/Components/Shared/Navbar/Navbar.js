@@ -147,7 +147,7 @@ export default function Header() {
                   onClick={handleAvatarClick}
                   sx={{ width: 40, height: 40, cursor: 'pointer' }}
                   alt="Profile Avatar"
-                  src="https://via.placeholder.com/40"
+                  src="https://img.freepik.com/free-vector/blue-circle-with-white-user_78370-4707.jpg"
                 />
               </Box>
             </Box>
@@ -205,7 +205,7 @@ export default function Header() {
                 onClick={handleAvatarClick}
                 sx={{ width: 40, height: 40, cursor: 'pointer' }}
                 alt="Admin"
-                src="https://via.placeholder.com/40"
+                src="https://img.freepik.com/free-vector/blue-circle-with-white-user_78370-4707.jpg"
               />
             </>
           )}
