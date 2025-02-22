@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Container,
   Box,
@@ -13,12 +13,15 @@ import {
   Select,
   MenuItem,
   Button,
-  Chip
+  Chip,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import AddIcon from '@mui/icons-material/Add';
 import Header from '../../../Shared/Navbar/Navbar';
-
 
 const assets = [
   {
@@ -40,7 +43,7 @@ const assets = [
     status: "Pending",
     statusType: "pending",
     description:
-      "Prime retail location in the heart of business  business district",
+      "Prime retail location in the heart of business district",
     assetValue: "₹1.2cr",
     location: "Chicago, IL",
     shares: "75"
@@ -60,234 +63,295 @@ const assets = [
 ];
 
 const AssetDashboard = () => {
+  const [openDialog, setOpenDialog] = useState(false);
+  const [selectedAsset, setSelectedAsset] = useState(null);
+
+  const handleOpenDialog = (asset) => {
+    setSelectedAsset(asset);
+    setOpenDialog(true);
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+    setSelectedAsset(null);
+  };
+
   return (
     <>
-    <Header/>
-    <Container sx={{ py: 4 }}>
-      {/* Header Section */}
-      <Box
-        sx={{
-          backgroundColor: 'white',
-          p: 2.5,
-          borderRadius: 2,
-          boxShadow: '0 2px 10px rgba(0,0,0,0.05)',
-          mb: 4
-        }}
-      >
-        <Grid container spacing={2} alignItems="center">
-          {/* Search Input */}
-          <Grid item xs={12} md={6} lg={7}>
-            <TextField
-              placeholder="Search assets..."
-              fullWidth
-              variant="outlined"
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <SearchIcon sx={{ color: '#757575' }} />
-                  </InputAdornment>
-                ),
-                sx: {
-                  padding: '12px 20px 12px 45px',
-                  borderRadius: '8px',
-                  fontSize: '15px'
-                }
-              }}
-              sx={{
-                '& .MuiOutlinedInput-root': {
-                  '& fieldset': {
-                    borderColor: '#E0E0E0'
-                  },
-                  '&:hover fieldset': {
-                    borderColor: '#4A90E2'
-                  },
-                  '&.Mui-focused fieldset': {
-                    borderColor: '#4A90E2'
+      <Header />
+      <Container sx={{ py: 4 }}>
+        {/* Header Section */}
+        <Box
+          sx={{
+            backgroundColor: 'white',
+            p: 2.5,
+            borderRadius: 2,
+            boxShadow: '0 2px 10px rgba(0,0,0,0.05)',
+            mb: 4
+          }}
+        >
+          <Grid container spacing={2} alignItems="center">
+            {/* Search Input */}
+            <Grid item xs={12} md={6} lg={7}>
+              <TextField
+                placeholder="Search assets..."
+                fullWidth
+                variant="outlined"
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <SearchIcon sx={{ color: '#757575' }} />
+                    </InputAdornment>
+                  ),
+                  sx: {
+                    padding: '12px 20px 12px 45px',
+                    borderRadius: '8px',
+                    fontSize: '15px'
                   }
-                }
-              }}
-            />
-          </Grid>
-
-          {/* Filter Select */}
-          <Grid item xs={12} md={3} lg={3}>
-            <FormControl fullWidth>
-              <Select
-                defaultValue="latest"
-                sx={{
-                  padding: '12px 20px',
-                  borderRadius: '8px',
-                  fontSize: '15px',
-                  backgroundColor: 'white',
-                  border: '1px solid #E0E0E0'
                 }}
-              >
-                <MenuItem value="latest">Latest</MenuItem>
-                <MenuItem value="oldest">Oldest</MenuItem>
-                <MenuItem value="price-high">Price: High to Low</MenuItem>
-                <MenuItem value="price-low">Price: Low to High</MenuItem>
-              </Select>
-            </FormControl>
-          </Grid>
+                sx={{
+                  '& .MuiOutlinedInput-root': {
+                    '& fieldset': {
+                      borderColor: '#E0E0E0'
+                    },
+                    '&:hover fieldset': {
+                      borderColor: '#4A90E2'
+                    },
+                    '&.Mui-focused fieldset': {
+                      borderColor: '#4A90E2'
+                    }
+                  }
+                }}
+              />
+            </Grid>
 
-          {/* Add Asset Button */}
-          <Grid item xs={12} md={3} lg={2}>
-            <Button
-              variant="contained"
-              fullWidth
-              startIcon={<AddIcon />}
-              sx={{
-                padding: '12px 24px',
-                borderRadius: '8px',
-                backgroundColor: '#2ECC71',
-                textTransform: 'none',
-                fontWeight: 500,
-                '&:hover': {
-                  backgroundColor: '#27AE60',
-                  transform: 'translateY(-1px)'
-                }
-              }}
-            >
-              Add Asset
-            </Button>
-          </Grid>
-        </Grid>
-      </Box>
-
-      {/* Asset Cards */}
-      <Grid container spacing={2}>
-        {assets.map((asset, index) => (
-          <Grid item xs={12} md={6} lg={4} key={index}>
-            <Card
-              sx={{
-                borderRadius: 2,
-                boxShadow: '0 4px 15px rgba(0, 0, 0, 0.749)',
-                transition: 'all 0.3s ease',
-                position: 'relative',
-                backgroundColor: 'white',
-                overflow: 'visible',
-                '&:hover': {
-                  transform: 'translateY(-5px)',
-                  boxShadow: '0 8px 25px rgba(0,0,0,0.1)'
-                }
-              }}
-            >
-              <Box sx={{ position: 'relative' }}>
-                <CardMedia
-                  component="img"
-                  image={asset.image}
-                  alt={asset.title}
+            {/* Filter Select */}
+            <Grid item xs={12} md={3} lg={3}>
+              <FormControl fullWidth>
+                <Select
+                  defaultValue="latest"
                   sx={{
-                    height: { xs: 180, md: 220 },
-                    objectFit: 'cover',
-                    borderRadius: '12px 12px 0 0'
-                  }}
-                />
-                <Chip
-                  label={asset.status}
-                  sx={{
-                    position: 'absolute',
-                    top: 15,
-                    right: 15,
-                    padding: '8px 16px',
-                    borderRadius: '20px',
-                    fontSize: '0.85rem',
-                    fontWeight: 500,
-                    backgroundColor:
-                      asset.statusType === 'approved' ? '#2ECC71' : '#E74C3C',
-                    color: 'white'
-                  }}
-                />
-              </Box>
-              <CardContent>
-                <Typography variant="h6" fontWeight="bold" mb={1}>
-                  {asset.title}
-                </Typography>
-                <Typography variant="body2" color="text.secondary" mb={2}>
-                  {asset.description}
-                </Typography>
-
-                <Box
-                  sx={{
-                    backgroundColor: '#F8F9FA',
-                    borderRadius: 1,
-                    p: 1.5,
-                    mb: 2
+                    padding: '12px 20px',
+                    borderRadius: '8px',
+                    fontSize: '15px',
+                    backgroundColor: 'white',
+                    border: '1px solid #E0E0E0'
                   }}
                 >
-                  <Grid container>
-                    <Grid item xs={6}>
-                      <Typography variant="body2" color="text.secondary">
-                        Asset Value
-                      </Typography>
+                  <MenuItem value="latest">Latest</MenuItem>
+                  <MenuItem value="oldest">Oldest</MenuItem>
+                  <MenuItem value="price-high">Price: High to Low</MenuItem>
+                  <MenuItem value="price-low">Price: Low to High</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+
+            {/* Add Asset Button */}
+            <Grid item xs={12} md={3} lg={2}>
+              <Button
+                variant="contained"
+                fullWidth
+                startIcon={<AddIcon />}
+                sx={{
+                  padding: '12px 24px',
+                  borderRadius: '8px',
+                  backgroundColor: '#2ECC71',
+                  textTransform: 'none',
+                  fontWeight: 500,
+                  '&:hover': {
+                    backgroundColor: '#27AE60',
+                    transform: 'translateY(-1px)'
+                  }
+                }}
+              >
+                Add Asset
+              </Button>
+            </Grid>
+          </Grid>
+        </Box>
+
+        {/* Asset Cards */}
+        <Grid container spacing={2}>
+          {assets.map((asset, index) => (
+            <Grid item xs={12} md={6} lg={4} key={index} sx={{ display: 'flex' }}>
+              <Card
+                sx={{
+                  flex: 1,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  borderRadius: 2,
+                  boxShadow: '0 4px 15px rgba(0, 0, 0, 0.749)',
+                  transition: 'all 0.3s ease',
+                  position: 'relative',
+                  backgroundColor: 'white',
+                  overflow: 'visible',
+                  '&:hover': {
+                    transform: 'translateY(-5px)',
+                    boxShadow: '0 8px 25px rgba(0,0,0,0.1)'
+                  }
+                }}
+              >
+                <Box sx={{ position: 'relative' }}>
+                  <CardMedia
+                    component="img"
+                    image={asset.image}
+                    alt={asset.title}
+                    sx={{
+                      height: { xs: 180, md: 220 },
+                      objectFit: 'cover',
+                      borderRadius: '12px 12px 0 0'
+                    }}
+                  />
+                  <Chip
+                    label={asset.status}
+                    sx={{
+                      position: 'absolute',
+                      top: 15,
+                      right: 15,
+                      padding: '8px 16px',
+                      borderRadius: '20px',
+                      fontSize: '0.85rem',
+                      fontWeight: 500,
+                      backgroundColor:
+                        asset.statusType === 'approved' ? '#2ECC71' : '#E74C3C',
+                      color: 'white'
+                    }}
+                  />
+                </Box>
+                <CardContent sx={{ flexGrow: 1 }}>
+                  <Typography variant="h6" fontWeight="bold" mb={1}>
+                    {asset.title}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary" mb={2}>
+                    {asset.description}
+                  </Typography>
+
+                  <Box
+                    sx={{
+                      backgroundColor: '#F8F9FA',
+                      borderRadius: 1,
+                      p: 1.5,
+                      mb: 2
+                    }}
+                  >
+                    <Grid container>
+                      <Grid item xs={6}>
+                        <Typography variant="body2" color="text.secondary">
+                          Asset Value
+                        </Typography>
+                      </Grid>
+                      <Grid item xs={6}>
+                        <Typography
+                          variant="body2"
+                          fontWeight="bold"
+                          color="#4A90E2"
+                          align="right"
+                        >
+                          {asset.assetValue}
+                        </Typography>
+                      </Grid>
+                      <Grid item xs={6}>
+                        <Typography variant="body2" color="text.secondary">
+                          Location
+                        </Typography>
+                      </Grid>
+                      <Grid item xs={6}>
+                        <Typography
+                          variant="body2"
+                          fontWeight="bold"
+                          color="text.secondary"
+                          align="right"
+                        >
+                          {asset.location}
+                        </Typography>
+                      </Grid>
                     </Grid>
-                    <Grid item xs={6}>
-                      <Typography
-                        variant="body2"
-                        fontWeight="bold"
-                        color="#4A90E2"
-                        align="right"
+                  </Box>
+                </CardContent>
+                <Box sx={{ p: 2 }}>
+                  <Grid container alignItems="center" justifyContent="space-between">
+                    <Grid item>
+                      <Box>
+                        <Typography variant="body2" color="text.secondary">
+                          Available Shares
+                        </Typography>
+                        <Typography
+                          variant="body2"
+                          fontWeight="bold"
+                          color="#2ECC71"
+                        >
+                          {asset.shares}
+                        </Typography>
+                      </Box>
+                    </Grid>
+                    <Grid item>
+                      <Button
+                        variant="contained"
+                        sx={{
+                          padding: '8px 20px',
+                          borderRadius: '6px',
+                          backgroundColor: '#4A90E2',
+                          textTransform: 'none',
+                          '&:hover': {
+                            backgroundColor: '#357ABD',
+                            transform: 'translateY(-1px)'
+                          }
+                        }}
+                        onClick={() => handleOpenDialog(asset)}
                       >
-                        {asset.assetValue}
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={6}>
-                      <Typography variant="body2" color="text.secondary">
-                        Location
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={6}>
-                      <Typography
-                        variant="body2"
-                        fontWeight="bold"
-                        color="text.secondary"
-                        align="right"
-                      >
-                        {asset.location}
-                      </Typography>
+                        View Details
+                      </Button>
                     </Grid>
                   </Grid>
                 </Box>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
 
-                <Grid container alignItems="center" justifyContent="space-between">
-                  <Grid item>
-                    <Box>
-                      <Typography variant="body2" color="text.secondary">
-                        Available Shares
-                      </Typography>
-                      <Typography
-                        variant="body2"
-                        fontWeight="bold"
-                        color="#2ECC71"
-                      >
-                        {asset.shares}
-                      </Typography>
-                    </Box>
+        {/* Dialog for Asset Details */}
+        <Dialog open={openDialog} onClose={handleCloseDialog} fullWidth maxWidth="md">
+          {selectedAsset && (
+            <>
+              <DialogTitle>{selectedAsset.title}</DialogTitle>
+              <DialogContent dividers>
+                <Grid container spacing={2}>
+                  <Grid item xs={12} md={6}>
+                    <CardMedia
+                      component="img"
+                      image={selectedAsset.image}
+                      alt={selectedAsset.title}
+                      sx={{ borderRadius: 2, maxHeight: 300, objectFit: 'cover' }}
+                    />
                   </Grid>
-                  <Grid item>
-                    <Button
-                      variant="contained"
-                      sx={{
-                        padding: '8px 20px',
-                        borderRadius: '6px',
-                        backgroundColor: '#4A90E2',
-                        textTransform: 'none',
-                        '&:hover': {
-                          backgroundColor: '#357ABD',
-                          transform: 'translateY(-1px)'
-                        }
-                      }}
-                    >
-                      View Details
-                    </Button>
+                  <Grid item xs={12} md={6}>
+                    <Typography variant="body1" gutterBottom>
+                      {selectedAsset.description}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary" gutterBottom>
+                      Asset Value: <strong>{selectedAsset.assetValue}</strong>
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary" gutterBottom>
+                      Location: <strong>{selectedAsset.location}</strong>
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary" gutterBottom>
+                      Available Shares: <strong>{selectedAsset.shares}</strong>
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary" gutterBottom>
+                      Status: <strong>{selectedAsset.status}</strong>
+                    </Typography>
                   </Grid>
                 </Grid>
-              </CardContent>
-            </Card>
-          </Grid>
-        ))}
-      </Grid>
-    </Container>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleCloseDialog} color="primary">
+                  Close
+                </Button>
+              </DialogActions>
+            </>
+          )}
+        </Dialog>
+      </Container>
     </>
   );
 };

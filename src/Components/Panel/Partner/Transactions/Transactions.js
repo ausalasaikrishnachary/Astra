@@ -7,18 +7,52 @@ import {
     Typography,
     Avatar,
     Chip,
-    Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableHead,
-    TableRow,
     Paper,
 } from '@mui/material';
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
 import PartnerHeader from "../../../Shared/Partner/PartnerNavbar";
+import { DataGrid } from '@mui/x-data-grid';
 
 const Transaction = () => {
+    const columns = [
+        {
+            field: 'date',
+            headerName: 'Date',
+            flex: 1,
+            headerAlign: 'center',
+            align: 'center',
+        },
+        {
+            field: 'type',
+            headerName: 'Type',
+            flex: 1,
+            headerAlign: 'center',
+            align: 'center',
+        },
+        {
+            field: 'asset',
+            headerName: 'Asset',
+            flex: 1.2,
+            headerAlign: 'center',
+            align: 'center',
+        },
+        {
+            field: 'amount',
+            headerName: 'Credit/Debit Amount',
+            flex: 1.2,
+            headerAlign: 'center',
+            align: 'center',
+            cellClassName: (params) =>
+                params.value && params.value.startsWith('+') ? 'positive' : '',
+        },
+    ];
+
+    const rows = [
+        { id: 1, date: '2024-03-15', type: 'Dividend', asset: 'Property A', amount: '+₹20000/-' },
+        { id: 2, date: '2024-03-10', type: 'Dividend', asset: 'Property B', amount: '+₹50000/-' },
+        { id: 3, date: '2024-03-05', type: 'Dividend', asset: 'Property C', amount: '+₹80000/-' },
+    ];
+
     return (
         <>
             <PartnerHeader />
@@ -128,67 +162,27 @@ const Transaction = () => {
                 <Typography variant="h6" sx={{ mb: 3 }}>
                     Recent Transactions
                 </Typography>
-                <Card sx={{ borderRadius: '15px', boxShadow: 3 }}>
-                    <CardContent>
-                        <TableContainer
-                            component={Paper}
-                            sx={{ maxHeight: 300, overflow: 'auto' }}
-                        >
-                            <Table stickyHeader>
-                                <TableHead>
-                                    <TableRow>
-                                        {['Date', 'Type', 'Asset', 'Credit/Debit Amount'].map((head, index) => (
-                                            <TableCell
-                                                key={index}
-                                                align="center"
-                                                sx={{
-                                                    backgroundColor: '#3a575b',
-                                                    color: '#fff',
-                                                    fontWeight: '500',
-                                                    position: 'sticky',
-                                                    top: 0,
-                                                    zIndex: 1,
-                                                }}
-                                            >
-                                                {head}
-                                            </TableCell>
-                                        ))}
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                    {[
-                                        {
-                                            date: '2024-03-15',
-                                            type: 'Dividend',
-                                            asset: 'Property A',
-                                            amount: '+₹20000/-',
-                                        },
-                                        {
-                                            date: '2024-03-10',
-                                            type: 'Dividend',
-                                            asset: 'Property B',
-                                            amount: '+₹50000/-',
-                                        },
-                                        {
-                                            date: '2024-03-05',
-                                            type: 'Dividend',
-                                            asset: 'Property C',
-                                            amount: '+₹80000/-',
-                                        },
-                                    ].map((row, index) => (
-                                        <TableRow key={index}>
-                                            <TableCell align="center">{row.date}</TableCell>
-                                            <TableCell align="center">{row.type}</TableCell>
-                                            <TableCell align="center">{row.asset}</TableCell>
-                                            <TableCell align="center" sx={{ color: 'green' }}>
-                                                {row.amount}
-                                            </TableCell>
-                                        </TableRow>
-                                    ))}
-                                </TableBody>
-                            </Table>
-                        </TableContainer>
-                    </CardContent>
+                <Card sx={{  boxShadow: 3 }}>
+                    
+                        <Paper sx={{ height: 300, width: '100%' }}>
+                            <DataGrid
+                                rows={rows}
+                                columns={columns}
+                                autoHeight
+                                disableSelectionOnClick
+                                hideFooter
+                                sx={{
+                                    '& .MuiDataGrid-columnHeaders': {
+                                        backgroundColor: '#f5f5f5',
+                                        fontWeight: 'bold',
+                                    },
+                                    '& .MuiDataGrid-cell': {
+                                        borderBottom: 'none',
+                                    },
+                                }}
+                            />
+                        </Paper>
+                    
                 </Card>
             </Box>
         </>
