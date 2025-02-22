@@ -104,7 +104,7 @@ const AssetDashboard = () => {
                     </InputAdornment>
                   ),
                   sx: {
-                    padding: '12px 20px 12px 45px',
+                    // padding: '12px 20px 12px 45px',
                     borderRadius: '8px',
                     fontSize: '15px'
                   }
@@ -131,7 +131,7 @@ const AssetDashboard = () => {
                 <Select
                   defaultValue="latest"
                   sx={{
-                    padding: '12px 20px',
+                    // padding: '12px 20px',
                     borderRadius: '8px',
                     fontSize: '15px',
                     backgroundColor: 'white',

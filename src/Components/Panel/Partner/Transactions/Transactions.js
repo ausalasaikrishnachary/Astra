@@ -95,11 +95,13 @@ const Transaction = () => {
                     ].map((stat, index) => (
                         <Grid item xs={12} md={4} key={index}>
                             <Card
-                                sx={{
-                                    borderRadius: '15px',
-                                    boxShadow: 3,
-                                    background: 'linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%)',
-                                }}
+                                 sx={{
+                                    backgroundColor: "#f8f9fa",
+                                    // textAlign: "center",
+                                    p: 2,
+                                    borderRadius: 2,
+                                    boxShadow: "2px 2px 10px rgba(0, 0, 0, 0.1)",
+                                  }}
                             >
                                 <CardContent>
                                     <Typography variant="subtitle2" color="text.secondary" gutterBottom>
@@ -127,12 +129,12 @@ const Transaction = () => {
                     ].map((asset, index) => (
                         <Grid item xs={12} md={4} key={index}>
                             <Card
-                                sx={{
-                                    borderRadius: '15px',
-                                    boxShadow: 3,
-                                    transition: 'transform 0.2s',
-                                    '&:hover': { transform: 'translateY(-5px)' },
-                                }}
+                               sx={{
+                                backgroundColor: "#f8f9fa",
+                                p: 2,
+                                borderRadius: 2,
+                                boxShadow: "2px 2px 10px rgba(0, 0, 0, 0.1)",
+                              }}
                             >
                                 <CardContent>
                                     <Box

@@ -414,7 +414,7 @@ const AssetsUI = () => {
                   onChange={handleSortChange}
                   displayEmpty
                   sx={{
-                    padding: '12px 20px',
+                    // padding: '12px 20px',
                     borderRadius: '8px',
                     fontSize: '15px'
                   }}

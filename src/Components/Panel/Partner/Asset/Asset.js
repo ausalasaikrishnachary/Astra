@@ -25,6 +25,24 @@ const AssetDashboard = () => {
     navigate('/p-addasset');
   };
 
+  const summaryCardsData = [
+    {
+      title: "Total Assets",
+      value: "12",
+      // subtext: "Last 7 Days",
+    },
+    {
+      title: "Total Value",
+      value: "8.5cr",
+      // subtext: "+2.3% from last week",
+    },
+    {
+      title: "Active Shares",
+      value: "450",
+      // subtext: "+12% increase",
+    },
+  ];
+
   return (
     <>
       <PartnerHeader />
@@ -113,7 +131,7 @@ const AssetDashboard = () => {
         </Paper>
 
         {/* Stats Grid */}
-        <Grid container spacing={2} sx={{ mb: 4 }}>
+        {/* <Grid container spacing={2} sx={{ mb: 4 }}>
           {[
             { label: 'Total Assets', value: '12' },
             { label: 'Total Value', value: '8.5cr' },
@@ -158,7 +176,34 @@ const AssetDashboard = () => {
               </Paper>
             </Grid>
           ))}
-        </Grid>
+        </Grid> */}
+
+        {/* Stats Cards */}
+                  <Grid container spacing={2} sx={{ mb: 4 }}>
+                    {summaryCardsData.map((card, index) => (
+                      <Grid item xs={12} md={4} key={index}>
+                        <Card
+                          sx={{
+                            backgroundColor: "#f8f9fa",
+                            textAlign: "center",
+                            p: 2,
+                            borderRadius: 2,
+                            boxShadow: "2px 2px 10px rgba(0, 0, 0, 0.1)",
+                          }}
+                        >
+                          <CardContent>
+                            <Typography variant="h6" gutterBottom>
+                              {card.title}
+                            </Typography>
+                            <Typography variant="h4" sx={{ color: "rgb(30,10,80)" }}>
+                              {card.value}
+                            </Typography>
+                            <Typography variant="body2">{card.subtext}</Typography>
+                          </CardContent>
+                        </Card>
+                      </Grid>
+                    ))}
+                  </Grid>
 
         {/* Assets Header */}
         <Box

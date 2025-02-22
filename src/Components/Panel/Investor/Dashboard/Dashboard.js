@@ -76,6 +76,36 @@ function Dashboard() {
     },
   };
 
+  const summaryCardsData = [
+    {
+      title: "Total Portfolio Value",
+      value: "4.5 Cr",
+      // subtext: "Last 7 Days",
+    },
+    {
+      title: "Total Performance",
+      value: "22.30%",
+      // subtext: "+2.3% from last week",
+    },
+    {
+      title: "Total amount Invested",
+      value: "10.5L",
+      // subtext: "+12% increase",
+    },
+    ,
+    {
+      title: "Number of Assets",
+      value: "2",
+      // subtext: "+12% increase",
+    },
+    ,
+    {
+      title: "Total Interest",
+      value: "10%",
+      // subtext: "+12% increase",
+    },
+  ];
+
   return (
     <>
       <InvestorHeader />
@@ -96,115 +126,42 @@ function Dashboard() {
           {/* Page Title */}
           <Typography
             variant="h4"
-            sx={{ color: '#100f0f', fontSize: '28px', fontWeight: 700, mb: 4, pl: 2,textAlign:"center" }}
+            sx={{ color: '#100f0f', fontSize: '28px', fontWeight: 700, mb: 4, pl: 2, textAlign: "center" }}
           >
             Investor Dashboard
           </Typography>
 
           {/* Stats Cards */}
-          <Grid container spacing={3} sx={{ mb: 4 }}>
-            <Grid item xs={12} sm={6} md={4}>
-              <Card
-                sx={{
-                  borderRadius: '10px',
-                  p: 2,
-                  boxShadow: 3,
-                  transition: 'transform 0.3s',
-                  '&:hover': { transform: 'translateY(-5px)' },
-                }}
-              >
-                <CardContent>
-                  <Typography sx={{ fontSize: '14px', color: '#666' }}>
-                    Total Portfolio Value
-                  </Typography>
-                  <Typography sx={{ fontSize: '24px', fontWeight: 'bold', color: '#ff6b6b' }}>
-                    4.5 Cr
-                  </Typography>
-                </CardContent>
-              </Card>
-            </Grid>
-            <Grid item xs={12} sm={6} md={4}>
-              <Card
-                sx={{
-                  borderRadius: '10px',
-                  p: 2,
-                  boxShadow: 3,
-                  transition: 'transform 0.3s',
-                  '&:hover': { transform: 'translateY(-5px)' },
-                }}
-              >
-                <CardContent>
-                  <Typography sx={{ fontSize: '14px', color: '#666' }}>
-                    Total Performance
-                  </Typography>
-                  <Typography sx={{ fontSize: '24px', fontWeight: 'bold', color: '#ff6b6b' }}>
-                    22.30%
-                  </Typography>
-                </CardContent>
-              </Card>
-            </Grid>
-            <Grid item xs={12} sm={6} md={4}>
-              <Card
-                sx={{
-                  borderRadius: '10px',
-                  p: 2,
-                  boxShadow: 3,
-                  transition: 'transform 0.3s',
-                  '&:hover': { transform: 'translateY(-5px)' },
-                }}
-              >
-                <CardContent>
-                  <Typography sx={{ fontSize: '14px', color: '#666' }}>No of Assets</Typography>
-                  <Typography sx={{ fontSize: '24px', fontWeight: 'bold', color: '#ff6b6b' }}>
-                    2
-                  </Typography>
-                </CardContent>
-              </Card>
-            </Grid>
-            <Grid item xs={12} sm={6} md={4}>
-              <Card
-                sx={{
-                  borderRadius: '10px',
-                  p: 2,
-                  boxShadow: 3,
-                  transition: 'transform 0.3s',
-                  '&:hover': { transform: 'translateY(-5px)' },
-                }}
-              >
-                <CardContent>
-                  <Typography sx={{ fontSize: '14px', color: '#666' }}>
-                    Total amount Invested
-                  </Typography>
-                  <Typography sx={{ fontSize: '24px', fontWeight: 'bold', color: '#ff6b6b' }}>
-                    10.5L
-                  </Typography>
-                </CardContent>
-              </Card>
-            </Grid>
-            <Grid item xs={12} sm={6} md={4}>
-              <Card
-                sx={{
-                  borderRadius: '10px',
-                  p: 2,
-                  boxShadow: 3,
-                  transition: 'transform 0.3s',
-                  '&:hover': { transform: 'translateY(-5px)' },
-                }}
-              >
-                <CardContent>
-                  <Typography sx={{ fontSize: '14px', color: '#666' }}>Total Interest</Typography>
-                  <Typography sx={{ fontSize: '24px', fontWeight: 'bold', color: '#ff6b6b' }}>
-                    10%
-                  </Typography>
-                </CardContent>
-              </Card>
-            </Grid>
+          <Grid container spacing={2}>
+            {summaryCardsData.map((card, index) => (
+              <Grid item xs={12} md={4} key={index}>
+                <Card
+                  sx={{
+                    backgroundColor: "#f8f9fa",
+                    textAlign: "center",
+                    p: 2,
+                    borderRadius: 2,
+                    boxShadow: "2px 2px 10px rgba(0, 0, 0, 0.1)",
+                  }}
+                >
+                  <CardContent>
+                    <Typography variant="h6" gutterBottom>
+                      {card.title}
+                    </Typography>
+                    <Typography variant="h4" sx={{ color: "rgb(30,10,80)" }}>
+                      {card.value}
+                    </Typography>
+                    <Typography variant="body2">{card.subtext}</Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))}
           </Grid>
 
           {/* Analytics Section */}
           <Typography
             variant="h5"
-            sx={{ color: '#100f0f', fontSize: '28px', fontWeight: 700, mb: 3, pl: 2 }}
+            sx={{ color: '#100f0f', fontSize: '28px', fontWeight: 700, mb: 3, mt:3, pl: 2,textAlign:"center" }}
           >
             Analytics
           </Typography>
