@@ -400,7 +400,7 @@ const PartnersDashboard = () => {
             {tabValue === 1 && (
               <Box>
                 {/* Search & Filter Section */}
-                <Box sx={{ display: 'flex', gap: 2, mb: 2, alignItems: 'center' }}>
+                <Box sx={{ display: 'flex', gap: 2, mb: 2, alignItems: 'center',justifyContent:"end" }}>
                   <TextField
                     variant="outlined"
                     placeholder="Search..."
@@ -418,7 +418,7 @@ const PartnersDashboard = () => {
                     <MenuItem value="rating">Rating</MenuItem>
                     <MenuItem value="name">Name</MenuItem>
                   </Select>
-                  <Button variant="outlined" color="success">
+                  <Button variant="outlined" color="secondart">
                     Filters
                   </Button>
                 </Box>

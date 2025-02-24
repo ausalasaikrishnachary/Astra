@@ -9,7 +9,9 @@ import {
   MenuItem,
   Grid,
   Card,
-  CardContent
+  CardContent,
+  FormControl,    // <-- Added
+  Select          // <-- Added
 } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import VisibilityIcon from "@mui/icons-material/Visibility";
@@ -51,14 +53,35 @@ const Tmanagement = () => {
   const getStatusColor = (status) => (status === "Active" ? "green" : "red");
 
   const columns = [
-    { field: "id", headerName: "Asset ID", width: 150 },
-    { field: "name", headerName: "Investor Name", width: 200 },
-    { field: "email", headerName: "Email", width: 250 },
-    { field: "lastActive", headerName: "Last Active", width: 180 },
+    {
+      field: "id",
+      headerName: "Asset ID",
+      flex: 1,
+      minWidth: 150,
+    },
+    {
+      field: "name",
+      headerName: "Investor Name",
+      flex: 1,
+      minWidth: 200,
+    },
+    {
+      field: "email",
+      headerName: "Email",
+      flex: 1,
+      minWidth: 250,
+    },
+    {
+      field: "lastActive",
+      headerName: "Last Active",
+      flex: 1,
+      minWidth: 180,
+    },
     {
       field: "status",
       headerName: "Status",
-      width: 150,
+      flex: 1,
+      minWidth: 150,
       renderCell: (params) => (
         <Typography sx={{ color: getStatusColor(params.value) }}>
           {params.value}
@@ -68,7 +91,8 @@ const Tmanagement = () => {
     {
       field: "actions",
       headerName: "Actions",
-      width: 150,
+      flex: 1,
+      minWidth: 150,
       sortable: false,
       renderCell: () => (
         <Box sx={{ display: "flex", gap: "5px" }}>
@@ -85,6 +109,7 @@ const Tmanagement = () => {
       ),
     },
   ];
+  
 
   return (
     <>
@@ -123,21 +148,43 @@ const Tmanagement = () => {
         </Grid>
 
         {/* Search, Sort & Filters Row */}
-        <Box sx={{ display: "flex", justifyContent:"center", alignItems: "center", mt: 2, mb: 2, gap: 2 }}>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "end",
+            alignItems: "center",
+            gap: "10px",
+            mt: 3,
+            mb: 2,
+          }}
+        >
           <TextField
             placeholder="Search..."
             variant="outlined"
             size="small"
-            
+            sx={{ width: "250px" }}
           />
-          <Button variant="outlined" onClick={handleSortClick}>
-             {sortBy}
+          <FormControl size="small" sx={{ width: "120px" }}>
+            <Select defaultValue="Latest">
+              <MenuItem value="Latest">Latest</MenuItem>
+              <MenuItem value="Oldest">Oldest</MenuItem>
+            </Select>
+          </FormControl>
+          <Button
+            variant="outlined"
+            sx={{
+              width: "120px",
+              fontSize: "14px",
+              padding: "5px",
+              backgroundColor: "white",
+              border: "1px solid #ced4da",
+              color: "black",
+              textTransform: "none",
+              "&:hover": { backgroundColor: "#f8f9fa" },
+            }}
+          >
+            Filters
           </Button>
-          <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={() => handleSortClose(null)}>
-            <MenuItem onClick={() => handleSortClose("Latest")}>Latest</MenuItem>
-            <MenuItem onClick={() => handleSortClose("Oldest")}>Oldest</MenuItem>
-          </Menu>
-          <Button variant="contained">Filters</Button>
         </Box>
 
         {/* DataGrid Table */}

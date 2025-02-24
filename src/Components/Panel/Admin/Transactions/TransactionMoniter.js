@@ -77,40 +77,44 @@ const Tmoniter = () => {
     return "inherit";
   };
 
-  // Define columns for the DataGrid
   const columns = [
     {
       field: "id",
       headerName: "Asset ID",
-      width: 150,
+      flex: 1,
+      minWidth: 150,
       headerAlign: "center",
       align: "center",
     },
     {
       field: "date",
       headerName: "Date",
-      width: 150,
+      flex: 1,
+      minWidth: 150,
       headerAlign: "center",
       align: "center",
     },
     {
       field: "desc",
       headerName: "Description",
-      width: 200,
+      flex: 1,
+      minWidth: 200,
       headerAlign: "center",
       align: "center",
     },
     {
       field: "amount",
       headerName: "Amount",
-      width: 150,
+      flex: 1,
+      minWidth: 150,
       headerAlign: "center",
       align: "center",
     },
     {
       field: "status",
       headerName: "Status",
-      width: 150,
+      flex: 1,
+      minWidth: 150,
       headerAlign: "center",
       align: "center",
       renderCell: (params) => (
@@ -122,7 +126,8 @@ const Tmoniter = () => {
     {
       field: "actions",
       headerName: "Actions",
-      width: 150,
+      flex: 1,
+      minWidth: 150,
       headerAlign: "center",
       align: "center",
       sortable: false,
@@ -141,6 +146,7 @@ const Tmoniter = () => {
       ),
     },
   ];
+  
 
   return (
     <>
@@ -182,7 +188,7 @@ const Tmoniter = () => {
         <Box
           sx={{
             display: "flex",
-            justifyContent: "center",
+            justifyContent: "end",
             alignItems: "center",
             gap: "10px",
             mt: 3,

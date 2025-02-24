@@ -340,7 +340,7 @@ const Kyc = () => {
               <Button
                 variant="contained"
                 sx={{
-                  backgroundColor: "red",
+                  backgroundColor: "green",
                   "&:hover": { backgroundColor: "darkred" },
                 }}
               >

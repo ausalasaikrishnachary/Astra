@@ -122,43 +122,47 @@ const Transaction = () => {
                     Your Assets
                 </Typography>
                 <Grid container spacing={4} sx={{ mb: 4 }}>
-                    {[
-                        { name: 'Property A', value: '₹250,000/-', share: 'Share: 25%' },
-                        { name: 'Property B', value: '₹180,000/-', share: 'Share: 15%' },
-                        { name: 'Property C', value: '₹320,000/-', share: 'Share: 30%' },
-                    ].map((asset, index) => (
-                        <Grid item xs={12} md={4} key={index}>
-                            <Card
-                               sx={{
-                                backgroundColor: "#f8f9fa",
-                                p: 2,
-                                borderRadius: 2,
-                                boxShadow: "2px 2px 10px rgba(0, 0, 0, 0.1)",
-                              }}
-                            >
-                                <CardContent>
-                                    <Box
-                                        sx={{
-                                            display: 'flex',
-                                            justifyContent: 'space-between',
-                                            alignItems: 'center',
-                                            mb: 2,
-                                        }}
-                                    >
-                                        <Typography variant="subtitle1">{asset.name}</Typography>
-                                        <InsertDriveFileIcon color="action" />
-                                    </Box>
-                                    <Typography variant="h5" component="div" gutterBottom>
-                                        {asset.value}
-                                    </Typography>
-                                    <Typography variant="body2" color="text.secondary">
-                                        {asset.share}
-                                    </Typography>
-                                </CardContent>
-                            </Card>
-                        </Grid>
-                    ))}
-                </Grid>
+  {[
+    { name: 'Property A', value: '₹250,000/-', share: 'Share: 25%', pdfUrl: 'https://www.antennahouse.com/hubfs/xsl-fo-sample/pdf/basic-link-1.pdf' },
+    { name: 'Property B', value: '₹180,000/-', share: 'Share: 15%', pdfUrl: '/path/to/propertyB.pdf' },
+    { name: 'Property C', value: '₹320,000/-', share: 'Share: 30%', pdfUrl: '/path/to/propertyC.pdf' },
+  ].map((asset, index) => (
+    <Grid item xs={12} md={4} key={index}>
+      <Card
+        sx={{
+          backgroundColor: "#f8f9fa",
+          p: 2,
+          borderRadius: 2,
+          boxShadow: "2px 2px 10px rgba(0, 0, 0, 0.1)",
+        }}
+      >
+        <CardContent>
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              mb: 2,
+            }}
+          >
+            <Typography variant="subtitle1">{asset.name}</Typography>
+            {/* Wrap the icon in an anchor tag to trigger download */}
+            <a href={asset.pdfUrl} download>
+              <InsertDriveFileIcon color="action" />
+            </a>
+          </Box>
+          <Typography variant="h5" component="div" gutterBottom>
+            {asset.value}
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            {asset.share}
+          </Typography>
+        </CardContent>
+      </Card>
+    </Grid>
+  ))}
+</Grid>
+
 
                 {/* Recent Transactions */}
                 <Typography variant="h6" sx={{ mb: 3 }}>
