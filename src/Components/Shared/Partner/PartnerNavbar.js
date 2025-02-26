@@ -31,12 +31,13 @@ export default function PartnerHeader() {
   const navItems = [
     { label: 'Dashboard', path: '/p-dashboard' },
     { label: 'My Assets', path: '/p-myassets' },
+    { label: 'My Investors', path: '/p-myinvestors' },
     {
       label: 'Transactions', path:"/p-transactions",
       path: '/p-transactions',
       submenu: [
-        { label: 'Buy Shares', path: '/buy-shares' },
-        { label: 'Sell Shares', path: '/sell-shares' },
+        { label: 'Buy Units', path: '/buy-units' },
+        { label: 'Sell Units', path: '/sell-units' },
       ],
     },
     { label: 'Report', path: '/p-report' },
@@ -261,7 +262,7 @@ export default function PartnerHeader() {
         <MenuItem
           onClick={() => {
             handleProfileMenuClose();
-            navigate('/');
+            navigate('/login');
           }}
           sx={{
             fontSize: '16px',

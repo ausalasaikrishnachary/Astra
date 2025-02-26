@@ -89,7 +89,7 @@ const BuyShares = () => {
       <Box p={5}>
         {/* Heading */}
         <Typography variant="h4" gutterBottom style={{textAlign:"center"}}>
-          Buy Shares
+          Buy Units
         </Typography>
         <Box sx={{ backgroundColor: '#f0f0f0', padding: '10px' }}>
           {/* Row containing search, sort by, filter, and buy shares button */}
@@ -145,7 +145,7 @@ const BuyShares = () => {
       }}
       onClick={handleClick}
     >
-      + Buy Shares
+      + Buy Units
     </Button>
             </Grid>
           </Grid>

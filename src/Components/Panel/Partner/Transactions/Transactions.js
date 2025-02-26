@@ -123,9 +123,9 @@ const Transaction = () => {
                 </Typography>
                 <Grid container spacing={4} sx={{ mb: 4 }}>
   {[
-    { name: 'Property A', value: '₹250,000/-', share: 'Share: 25%', pdfUrl: 'https://www.antennahouse.com/hubfs/xsl-fo-sample/pdf/basic-link-1.pdf' },
-    { name: 'Property B', value: '₹180,000/-', share: 'Share: 15%', pdfUrl: '/path/to/propertyB.pdf' },
-    { name: 'Property C', value: '₹320,000/-', share: 'Share: 30%', pdfUrl: '/path/to/propertyC.pdf' },
+    { name: 'Property A', value: '₹250,000/-', Unit: 'Unit: 25%', pdfUrl: 'https://www.antennahouse.com/hubfs/xsl-fo-sample/pdf/basic-link-1.pdf' },
+    { name: 'Property B', value: '₹180,000/-', Unit: 'Unit: 15%', pdfUrl: '/path/to/propertyB.pdf' },
+    { name: 'Property C', value: '₹320,000/-', Unit: 'Unit: 30%', pdfUrl: '/path/to/propertyC.pdf' },
   ].map((asset, index) => (
     <Grid item xs={12} md={4} key={index}>
       <Card
@@ -155,7 +155,7 @@ const Transaction = () => {
             {asset.value}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            {asset.share}
+            {asset.Unit}
           </Typography>
         </CardContent>
       </Card>

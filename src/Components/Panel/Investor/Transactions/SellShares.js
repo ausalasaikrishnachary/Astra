@@ -82,7 +82,7 @@ const BuyShares = () => {
       <Box p={5}>
         {/* Heading */}
         <Typography variant="h4" gutterBottom style={{textAlign:"center"}}>
-          Sell Shares
+          Sell Units
         </Typography>
         <Box sx={{ backgroundColor: '#f0f0f0', padding: '10px' }}>
           {/* Row containing search, sort by, filter, and buy shares button */}
@@ -132,7 +132,7 @@ const BuyShares = () => {
                 fullWidth
                 sx={{ width: '200px', marginLeft: '270px', color: 'white', backgroundColor: '#000' }}
               >
-                Sell Shares
+                Sell Units
               </Button>
             </Grid>
           </Grid>

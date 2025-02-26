@@ -34,8 +34,8 @@ export default function InvestorHeader() {
     {
       label: 'Transactions',
       submenu: [
-        { label: 'Buy Shares', path: '/i-buyshares' },
-        { label: 'Sell Shares', path: '/i-sellshares' },
+        { label: 'Buy Units', path: '/i-buyunits' },
+        { label: 'Sell Units', path: '/i-sellunits' },
       ],
     },
   ];
@@ -342,7 +342,7 @@ export default function InvestorHeader() {
         <MenuItem
           onClick={() => {
             handleProfileMenuClose();
-            navigate('/');
+            navigate('/login');
           }}
           sx={{
             fontSize: '16px',

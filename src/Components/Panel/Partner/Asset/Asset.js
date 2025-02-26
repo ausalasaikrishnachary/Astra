@@ -37,7 +37,7 @@ const AssetDashboard = () => {
       // subtext: "+2.3% from last week",
     },
     {
-      title: "Active Shares",
+      title: "Active Units",
       value: "450",
       // subtext: "+12% increase",
     },
@@ -135,7 +135,7 @@ const AssetDashboard = () => {
           {[
             { label: 'Total Assets', value: '12' },
             { label: 'Total Value', value: '8.5cr' },
-            { label: 'Active Shares', value: '450' },
+            { label: 'Active Units', value: '450' },
           ].map((stat, index) => (
             <Grid item xs={12} sm={4} key={index}>
               <Paper
@@ -334,7 +334,7 @@ const AssetDashboard = () => {
                   </Box>
                   <Box sx={{ textAlign: 'right' }}>
                     <Typography sx={{ fontSize: '0.875rem', color: '#64748B' }}>
-                      Shares
+                      Units
                     </Typography>
                     <Typography sx={{ fontWeight: 600 }}>100</Typography>
                   </Box>
@@ -432,7 +432,7 @@ const AssetDashboard = () => {
                   </Box>
                   <Box sx={{ textAlign: 'right' }}>
                     <Typography sx={{ fontSize: '0.875rem', color: '#64748B' }}>
-                      Shares
+                      Units
                     </Typography>
                     <Typography sx={{ fontWeight: 600 }}>200</Typography>
                   </Box>
@@ -529,7 +529,7 @@ const AssetDashboard = () => {
                   </Box>
                   <Box sx={{ textAlign: 'right' }}>
                     <Typography sx={{ fontSize: '0.875rem', color: '#64748B' }}>
-                      Shares
+                      Units
                     </Typography>
                     <Typography sx={{ fontWeight: 600 }}>200</Typography>
                   </Box>

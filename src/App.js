@@ -36,6 +36,7 @@ import SignUp from "./website/Pages/LoginSignup/SignUp";
 import SignIn from "./website/Pages/LoginSignup/Login";
 import Header from "./website/Shared/Navbar/Navbar";
 import Footer from "./website/Shared/Footer/Footer";
+import MyInvestors from "./Components/Panel/Partner/MyInvestors/MyInvestors";
 
 function Layout() {
   const location = useLocation();
@@ -67,8 +68,8 @@ function Layout() {
 
           <Route path="/i-dashboard" element={<InvestorDashboard />} />
           <Route path="/i-asset" element={<InvestorAsset />} />
-          <Route path="/i-buyshares" element={<BuyShares />} />
-          <Route path="/i-sellshares" element={<SellShares />} />
+          <Route path="/i-buyunits" element={<BuyShares />} />
+          <Route path="/i-sellunits" element={<SellShares />} />
           <Route path="/i-profile" element={<InvestorProfile />} />
           <Route path="/i-profiledetails" element={<Kyc />} />
 
@@ -79,6 +80,7 @@ function Layout() {
           <Route path="/p-myassets" element={<AssetDashboard />} />
           <Route path="/p-profile" element={<PartnerProfile />} />
           <Route path="/p-profiledetails" element={<PartnerKyc />} />
+          <Route path="/p-myinvestors" element={<MyInvestors />} />
 
           <Route path="/login" element={<Login />} />
         </Routes>
