@@ -24,12 +24,12 @@ const StatsSection = () => {
     { value: 55000, suffix: " Cr", prefix: "₹", label: "Assets Under Management", duration: 3 },
     { value: 18, suffix: "%", prefix: "", label: "Annualized Returns Delivered", duration: 3 },
     { value: 1200, suffix: "+", prefix: "", label: "Number of Investors", duration: 3 },
-    { value: 25, suffix: " Million", prefix: "", label: "Sq. Ft. of Commercial Space Managed", duration: 3 }
+    { value: 25, suffix: " Million", prefix: "", label: "Sq. Ft. of Commercial Space", duration: 3 }
   ];
 
   return (
-    <Box sx={{ p: 4,  borderRadius: 2,width:"90vw", marginLeft:"-150px" }}>
-      <Grid container spacing={3}>
+    <Box sx={{ px: { xs: 2, sm: 4 }, py: 4 }}>
+      <Grid container spacing={3} justifyContent="center">
         {stats.map((stat, index) => (
           <StatsCard key={index} {...stat} />
         ))}
