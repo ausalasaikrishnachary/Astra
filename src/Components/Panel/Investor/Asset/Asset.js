@@ -258,7 +258,7 @@
 //                         variant="outlined"
 //                         color="secondary"
 //                         fullWidth
-//                         onClick={() => navigate("/investment-page")}
+//                         onClick={() => navigate("/a-investment-page")}
 //                       >
 //                         Invest Now
 //                       </Button>
@@ -580,7 +580,7 @@ const AssetsUI = () => {
                         color: '#4A90E2',
                         textTransform: 'none'
                       }}
-                      onClick={() => navigate("/investment-page")}
+                      onClick={() => navigate("/a-investment-page")}
                     >
                       INVEST NOW
                     </Button>

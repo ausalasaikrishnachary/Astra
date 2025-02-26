@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 import './App.css';
 import AdminDashboard from "./Components/Panel/Admin/Dashboard/Dashboard";
 import AdminAsset from "./Components/Panel/Admin/Asset/Asset";
@@ -27,53 +27,72 @@ import PartnerProfile from "./Components/Panel/Partner/Profile/Profile";
 import PartnerKyc from "./Components/Panel/Partner/Profile/Kyc";
 import AdminProfile from "./Components/Panel/Admin/Profile/Profile";
 import AdminKyc from "./Components/Panel/Admin/Profile/Kyc";
+import Home from "./website/Pages/Home/Home";
+import Aboutus from "./website/Pages/Aboutus/Aboutus";
+import FAQAccordion from "./website/Pages/FAQs/Faqs";
+import Contact from "./website/Pages/Contactus/Contactus";
+import Properties from "./website/Pages/Properties/Properties";
+import SignUp from "./website/Pages/LoginSignup/SignUp";
+import SignIn from "./website/Pages/LoginSignup/Login";
+import Header from "./website/Shared/Navbar/Navbar";
+import Footer from "./website/Shared/Footer/Footer";
 
+function Layout() {
+  const location = useLocation();
 
+  // Define paths where Header and Footer should be visible
+  const publicPaths = ["/", "/aboutus", "/FAQ", "/contactus", "/properties", "/signup", "/signin"];
+  
+  return (
+    <>
+      {publicPaths.includes(location.pathname) && <Header />}
+      <div style={{ marginTop: "85px" }}>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/aboutus" element={<Aboutus />} />
+          <Route path="/FAQ" element={<FAQAccordion />} />
+          <Route path="/contactus" element={<Contact />} />
+          <Route path="/properties" element={<Properties />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/signin" element={<SignIn />} />
+
+          <Route path="/a-dashboard" element={<AdminDashboard />} />
+          <Route path="/a-asset" element={<AdminAsset />} />
+          <Route path="/a-investormanagement" element={<Tmanagement />} />
+          <Route path="/a-transactionmoniter" element={<Tmoniter />} />
+          <Route path="/a-investment-page" element={<InvestmentPage />} />
+          <Route path="/a-partners" element={<PartnersDashboard />} />
+          <Route path="/a-profile" element={<AdminProfile />} />
+          <Route path="/a-profiledetails" element={<AdminKyc />} />
+
+          <Route path="/i-dashboard" element={<InvestorDashboard />} />
+          <Route path="/i-asset" element={<InvestorAsset />} />
+          <Route path="/i-buyshares" element={<BuyShares />} />
+          <Route path="/i-sellshares" element={<SellShares />} />
+          <Route path="/i-profile" element={<InvestorProfile />} />
+          <Route path="/i-profiledetails" element={<Kyc />} />
+
+          <Route path="/p-dashboard" element={<PartnerDashboard />} />
+          <Route path="/p-report" element={<Report />} />
+          <Route path="/p-addasset" element={<AssetForm />} />
+          <Route path="/p-transactions" element={<Transaction />} />
+          <Route path="/p-myassets" element={<AssetDashboard />} />
+          <Route path="/p-profile" element={<PartnerProfile />} />
+          <Route path="/p-profiledetails" element={<PartnerKyc />} />
+
+          <Route path="/login" element={<Login />} />
+        </Routes>
+      </div>
+      {publicPaths.includes(location.pathname) && <Footer />}
+    </>
+  );
+}
 
 function App() {
   return (
-      // <AuthProvider>
-      <Router>
-        {/* <Navbar/> */}
-        {/* <InvestorHeader/> */}
-        {/* <PartnerHeader/> */}
-        <div style={{marginTop:"85px"}}>
-          <Routes>
-              <Route path="/a-dashboard" element={<AdminDashboard />} />
-              <Route path="/a-asset" element={<AdminAsset />} />
-              <Route path="/a-investormanagement" element={<Tmanagement />} />
-              <Route path="/a-transactionmoniter" element={<Tmoniter />} />
-              <Route path="/a-investment-page" element={<InvestmentPage />} />
-              <Route path="/a-partners" element={<PartnersDashboard />} />
-              <Route path="/a-profile" element={<AdminProfile />} />
-              <Route path="/a-profiledetails" element={<AdminKyc />} />
-
-
-              <Route path="/i-dashboard" element={<InvestorDashboard />} />
-              <Route path="/i-asset" element={<InvestorAsset />} />
-              <Route path="/i-buyshares" element={<BuyShares />} />
-              <Route path="/i-sellshares" element={<SellShares />} />
-              {/* <Route path="/i-asset" element={<PartnerAsset />} /> */}
-              <Route path="/i-profile" element={<InvestorProfile />} />
-              <Route path="/i-profiledetails" element={<Kyc />} />
-
-
-
-              <Route path="/p-dashboard" element={<PartnerDashboard />} />
-              <Route path="/p-report" element={<Report />} />
-              <Route path="/p-addasset" element={<AssetForm />} />
-              <Route path="/p-transactions" element={<Transaction />} />
-              <Route path="/p-myassets" element={<AssetDashboard />} />
-              <Route path="/p-profile" element={<PartnerProfile />} />
-              <Route path="/p-profiledetails" element={<PartnerKyc/>} />
-
-
-              <Route path="/" element={<Login />} />
-              
-          </Routes>
-          </div>
-      </Router>
-      // </AuthProvider>
+    <Router>
+      <Layout />
+    </Router>
   );
 }
 
