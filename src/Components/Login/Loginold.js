@@ -13,20 +13,31 @@ const Login = () => {
   // Change the default partner type to an empty string
   const [partnerType, setPartnerType] = useState('');
 
-  const handleLogin = () => {
-    if (email === 'admin@gmail.com' && password === 'admin@123') {
-      navigate('/a-dashboard');
-    } else if (email === 'partner@gmail.com' && password === 'partner@123') {
-      // Save the selected partner type so that the header can display it.
-      localStorage.setItem('partnerType', partnerType);
-      navigate('/p-dashboard');
-    } else if (email === 'investor@gmail.com' && password === 'investor@123') {
-      navigate('/i-dashboard');
-    } else {
-      alert('Invalid credentials');
+  const handleLogin = async () => {
+    try {
+      const response = await fetch('https://rahul30.pythonanywhere.com/auth/login/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          username: email, // or directly "harish" if you want to hardcode it
+          password: password, // or "1234"
+        }),
+      });
+  
+      if (response.ok) {
+        const data = await response.json();
+        // Optionally, save a token or user info from the response
+        // localStorage.setItem('token', data.token);
+        navigate('/a-dashboard');
+      } else {
+        alert('Invalid credentials');
+      }
+    } catch (error) {
+      console.error(error);
+      alert('An error occurred during login');
     }
   };
-
+  
   return (
     <Box
       sx={{
