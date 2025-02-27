@@ -20,6 +20,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import IconButton from "@mui/material/IconButton";
 import Header from "../../../Shared/Navbar/Navbar";
 import "./MyInvestors.css"
+import PartnerHeader from "../../../Shared/Partner/PartnerNavbar";
 
 // Define summaryCardsData for the summary cards section
 const summaryCardsData = [
@@ -114,7 +115,7 @@ const MyInvestors = () => {
 
   return (
     <>
-      <Header />
+      <PartnerHeader />
       <Container sx={{ maxWidth: "900px", pt: 3 }}>
         {/* Header */}
         <Typography variant="h4" component="h2" gutterBottom style={{ textAlign: "center" }}>

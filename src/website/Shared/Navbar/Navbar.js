@@ -238,16 +238,17 @@ function Header() {
                 Sign up
               </Button>
               <Button
-                variant="contained"
+                variant="outlined"
                 sx={{
-                  backgroundColor: '#333333',
-                  color: '#ffffff',
+                  mr: 1,
+                  borderColor: '#333333',
+                  color: '#333333',
                   fontSize: '16px',
                   fontFamily: 'Calibre, sans-serif',
                   fontWeight: 'bold',
                 }}
                 component={NavLink}
-                to="/signin"
+                to="/signup"
                 style={{ textDecoration: 'none' }}
               >
                 Sign in
@@ -437,16 +438,17 @@ function Header() {
                 Sign up
               </Button>
               <Button
-                variant="contained"
+                variant="outlined"
                 sx={{
-                  backgroundColor: '#333333',
-                  color: '#ffffff',
+                  mr: 1,
+                  borderColor: '#333333',
+                  color: '#333333',
                   fontSize: '16px',
                   fontFamily: 'Calibre, sans-serif',
                   fontWeight: 'bold',
                 }}
                 component={NavLink}
-                to="/signin"
+                to="/signup"
                 style={{ textDecoration: 'none' }}
               >
                 Sign in
