@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Logo from '../../Images/Logo File.png';
 import LogoutIcon from '@mui/icons-material/Logout';
 import {
@@ -42,6 +42,16 @@ export default function PartnerHeader() {
     },
     { label: 'Report', path: '/p-report' },
   ];
+
+  // Inside your PartnerHeader component:
+const [partnerType, setPartnerType] = useState('Partner');
+
+useEffect(() => {
+  const savedType = localStorage.getItem('partnerType');
+  if (savedType) {
+    setPartnerType(savedType);
+  }
+}, []);
 
   // Responsive helper.
   const theme = useTheme();
@@ -157,8 +167,8 @@ export default function PartnerHeader() {
                   <NotificationsNoneIcon />
                 </IconButton>
                 <Typography sx={{ ml: 2, mr: 2, color: '#000', fontWeight: 'bold' }}>
-                  Partner
-                </Typography>
+  {partnerType}
+</Typography>
                 <Avatar
                   onClick={handleAvatarClick}
                   sx={{ width: 40, height: 40, cursor: 'pointer' }}
@@ -210,8 +220,8 @@ export default function PartnerHeader() {
                 <NotificationsNoneIcon />
               </IconButton>
               <Typography sx={{ ml: 2, mr: 2, color: '#000', fontWeight: 'bold' }}>
-                Partner
-              </Typography>
+  {partnerType}
+</Typography>
               <Avatar
                 onClick={handleAvatarClick}
                 sx={{ width: 40, height: 40, cursor: 'pointer' }}
