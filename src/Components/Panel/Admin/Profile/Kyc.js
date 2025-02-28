@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { FormControl, InputLabel, Select, MenuItem } from "@mui/material";
+
 import {
   Box,
   Card,
@@ -197,6 +199,41 @@ const AdminKyc = () => {
                   size="small"
                   type="password"
                   value={formData.password}
+                  onChange={handleChange}
+                />
+              </Grid>
+              <Grid item xs={12} sm={4}>
+                <FormControl fullWidth size="small">
+                  <InputLabel>User Type</InputLabel>
+                  <Select name="role" value={formData.role} onChange={handleChange} label="User Type">
+                    <MenuItem value="Admin">Admin</MenuItem>
+                    <MenuItem value="Partner">Partner-IFC</MenuItem>
+                    <MenuItem value="Partner">Partner-REC</MenuItem>
+                    <MenuItem value="User">User</MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid item xs={12} sm={4}>
+                <TextField
+                  fullWidth
+                  name="status"
+                  placeholder="Status"
+                  variant="outlined"
+                  size="small"
+                  type="text"
+                  value={formData.status}
+                  onChange={handleChange}
+                />
+              </Grid>
+              <Grid item xs={12} sm={4}>
+                <TextField
+                  fullWidth
+                  name="added_by"
+                  placeholder="Added_by"
+                  variant="outlined"
+                  size="small"
+                  type=""
+                  value={formData.added_by}
                   onChange={handleChange}
                 />
               </Grid>
