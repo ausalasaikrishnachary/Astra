@@ -359,7 +359,8 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  Pagination
+  Pagination,
+  LinearProgress
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import InvestorHeader from '../../../Shared/Investor/InvestorNavbar';
@@ -414,7 +415,6 @@ const AssetsUI = () => {
                   onChange={handleSortChange}
                   displayEmpty
                   sx={{
-                    // padding: '12px 20px',
                     borderRadius: '8px',
                     fontSize: '15px'
                   }}
@@ -495,9 +495,17 @@ const AssetsUI = () => {
                 <Typography variant="h6" fontWeight="bold" mb={1}>
                   Pune Industrial - Opportunity
                 </Typography>
-                <Typography variant="body2" color="text.secondary" mb={2}>
-                  100% Funded
-                </Typography>
+                {/* Funding Status */}
+                <Box mb={2}>
+                  <Typography variant="body2" color="text.secondary">
+                    Funding Progress: 100%
+                  </Typography>
+                  <LinearProgress 
+                    variant="determinate" 
+                    value={100} 
+                    sx={{ height: 8, borderRadius: 4, mt: 1 }}
+                  />
+                </Box>
                 <Grid
                   container
                   spacing={2}
@@ -633,9 +641,17 @@ const AssetsUI = () => {
                 <Typography variant="h6" fontWeight="bold" mb={1}>
                   Goa Industrial - Opportunity
                 </Typography>
-                <Typography variant="body2" color="text.secondary" mb={2}>
-                  100% Funded
-                </Typography>
+                {/* Funding Status */}
+                <Box mb={2}>
+                  <Typography variant="body2" color="text.secondary">
+                    Funding Progress: 80%
+                  </Typography>
+                  <LinearProgress 
+                    variant="determinate" 
+                    value={80} 
+                    sx={{ height: 8, borderRadius: 4, mt: 1 }}
+                  />
+                </Box>
                 <Grid
                   container
                   spacing={2}
@@ -770,9 +786,17 @@ const AssetsUI = () => {
                 <Typography variant="h6" fontWeight="bold" mb={1}>
                   Hyd Industrial - Opportunity
                 </Typography>
-                <Typography variant="body2" color="text.secondary" mb={2}>
-                  100% Funded
-                </Typography>
+                {/* Funding Status */}
+                <Box mb={2}>
+                  <Typography variant="body2" color="text.secondary">
+                    Funding Progress: 60%
+                  </Typography>
+                  <LinearProgress 
+                    variant="determinate" 
+                    value={60} 
+                    sx={{ height: 8, borderRadius: 4, mt: 1 }}
+                  />
+                </Box>
                 <Grid
                   container
                   spacing={2}
@@ -1112,3 +1136,4 @@ const AssetsUI = () => {
 };
 
 export default AssetsUI;
+

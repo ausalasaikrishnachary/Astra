@@ -28,6 +28,7 @@ const Login = () => {
         const data = await response.json();
         // Optionally, save a token or user info from the response
         // localStorage.setItem('token', data.token);
+        alert('Login Successful');
         navigate('/a-dashboard');
       } else {
         alert('Invalid credentials');

@@ -37,6 +37,7 @@ import SignIn from "./website/Pages/LoginSignup/Login";
 import Header from "./website/Shared/Navbar/Navbar";
 import Footer from "./website/Shared/Footer/Footer";
 import MyInvestors from "./Components/Panel/Partner/MyInvestors/MyInvestors";
+import AdminAssetForm from "./Components/Panel/Admin/Asset/AssetForm";
 
 function Layout() {
   const location = useLocation();
@@ -59,6 +60,7 @@ function Layout() {
 
           <Route path="/a-dashboard" element={<AdminDashboard />} />
           <Route path="/a-asset" element={<AdminAsset />} />
+          <Route path="/a-addasset" element={<AdminAssetForm />} />
           <Route path="/a-investormanagement" element={<Tmanagement />} />
           <Route path="/a-transactionmoniter" element={<Tmoniter />} />
           <Route path="/a-investment-page" element={<InvestmentPage />} />

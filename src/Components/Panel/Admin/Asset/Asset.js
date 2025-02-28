@@ -17,11 +17,13 @@ import {
   Dialog,
   DialogTitle,
   DialogContent,
-  DialogActions
+  DialogActions,
+  LinearProgress
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import AddIcon from '@mui/icons-material/Add';
 import Header from '../../../Shared/Navbar/Navbar';
+import { useNavigate } from "react-router-dom";
 
 const assets = [
   {
@@ -34,7 +36,8 @@ const assets = [
       "Beautiful villa with direct beach access and stunning ocean view",
     assetValue: "₹25000000/-",
     location: "Mumbai Beach",
-    shares: "10000"
+    shares: "10000",
+    fundingProgress: 75  // Added funding progress as a percentage
   },
   {
     title: "Downtown Commercial Space",
@@ -46,7 +49,8 @@ const assets = [
       "Prime retail location in the heart of business district",
     assetValue: "₹1.2cr",
     location: "Chicago, IL",
-    shares: "75"
+    shares: "75",
+    fundingProgress: 40
   },
   {
     title: "Luxury Villa",
@@ -58,11 +62,13 @@ const assets = [
       "Beautiful villa with direct beach access and stunning ocean view",
     assetValue: "₹1.2cr",
     location: "Goa",
-    shares: "100"
+    shares: "100",
+    fundingProgress: 90
   }
 ];
 
 const AssetDashboard = () => {
+  const navigate = useNavigate();
   const [openDialog, setOpenDialog] = useState(false);
   const [selectedAsset, setSelectedAsset] = useState(null);
 
@@ -75,6 +81,28 @@ const AssetDashboard = () => {
     setOpenDialog(false);
     setSelectedAsset(null);
   };
+
+  const handleClick = () => {
+    navigate('/a-addasset');
+  };
+
+  const summaryCardsData = [
+    {
+      title: "Total Assets",
+      value: "12",
+      // subtext: "Last 7 Days",
+    },
+    {
+      title: "Total Value",
+      value: "8.5cr",
+      // subtext: "+2.3% from last week",
+    },
+    {
+      title: "Active Units",
+      value: "450",
+      // subtext: "+12% increase",
+    },
+  ];
 
   return (
     <>
@@ -104,7 +132,6 @@ const AssetDashboard = () => {
                     </InputAdornment>
                   ),
                   sx: {
-                    // padding: '12px 20px 12px 45px',
                     borderRadius: '8px',
                     fontSize: '15px'
                   }
@@ -131,7 +158,6 @@ const AssetDashboard = () => {
                 <Select
                   defaultValue="latest"
                   sx={{
-                    // padding: '12px 20px',
                     borderRadius: '8px',
                     fontSize: '15px',
                     backgroundColor: 'white',
@@ -146,9 +172,12 @@ const AssetDashboard = () => {
               </FormControl>
             </Grid>
 
+
+
             {/* Add Asset Button */}
             <Grid item xs={12} md={3} lg={2}>
               <Button
+                onClick={handleClick}
                 variant="contained"
                 fullWidth
                 startIcon={<AddIcon />}
@@ -169,7 +198,32 @@ const AssetDashboard = () => {
             </Grid>
           </Grid>
         </Box>
-
+        {/* Stats Cards */}
+        <Grid container spacing={2} sx={{ mb: 4 }}>
+          {summaryCardsData.map((card, index) => (
+            <Grid item xs={12} md={4} key={index}>
+              <Card
+                sx={{
+                  backgroundColor: "#f8f9fa",
+                  textAlign: "center",
+                  p: 2,
+                  borderRadius: 2,
+                  boxShadow: "2px 2px 10px rgba(0, 0, 0, 0.1)",
+                }}
+              >
+                <CardContent>
+                  <Typography variant="h6" gutterBottom>
+                    {card.title}
+                  </Typography>
+                  <Typography variant="h4" sx={{ color: "rgb(30,10,80)" }}>
+                    {card.value}
+                  </Typography>
+                  <Typography variant="body2">{card.subtext}</Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
         {/* Asset Cards */}
         <Grid container spacing={2}>
           {assets.map((asset, index) => (
@@ -268,6 +322,24 @@ const AssetDashboard = () => {
                     </Grid>
                   </Box>
                 </CardContent>
+
+                {/* Funding Loading Status */}
+                {asset.fundingProgress !== undefined && (
+                  <Box sx={{ px: 2, pb: 2 }}>
+                    <Typography variant="body2" color="text.secondary" mb={0.5}>
+                      Funding Progress
+                    </Typography>
+                    <LinearProgress
+                      variant="determinate"
+                      value={asset.fundingProgress}
+                      sx={{ height: 8, borderRadius: 4 }}
+                    />
+                    <Typography variant="caption" color="text.secondary" display="block" mt={0.5}>
+                      {asset.fundingProgress}% funded
+                    </Typography>
+                  </Box>
+                )}
+
                 <Box sx={{ p: 2 }}>
                   <Grid container alignItems="center" justifyContent="space-between">
                     <Grid item>
