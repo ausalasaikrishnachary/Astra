@@ -22,8 +22,8 @@ import {
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import AddIcon from '@mui/icons-material/Add';
-import Header from '../../../Shared/Navbar/Navbar';
 import { useNavigate } from "react-router-dom";
+import PartnerHeader from '../../../Shared/Partner/PartnerNavbar';
 
 const assets = [
   {
@@ -106,7 +106,7 @@ const AssetDashboard = () => {
 
   return (
     <>
-      <Header />
+      <PartnerHeader />
       <Container sx={{ py: 4 }}>
         {/* Header Section */}
         <Box

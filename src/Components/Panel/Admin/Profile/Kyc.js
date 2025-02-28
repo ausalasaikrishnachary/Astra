@@ -93,7 +93,7 @@ const AdminKyc = () => {
           }}
         >
           <CardHeader
-            title="Investor Registration"
+            title="Registration"
             sx={{
               backgroundColor: "rgb(30, 10, 80)",
               color: "white",
