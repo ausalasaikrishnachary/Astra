@@ -248,7 +248,7 @@ function Header() {
                   fontWeight: 'bold',
                 }}
                 component={NavLink}
-                to="/signup"
+                to="/signin"
                 style={{ textDecoration: 'none' }}
               >
                 Sign in
@@ -448,7 +448,7 @@ function Header() {
                   fontWeight: 'bold',
                 }}
                 component={NavLink}
-                to="/signup"
+                to="/signin"
                 style={{ textDecoration: 'none' }}
               >
                 Sign in
