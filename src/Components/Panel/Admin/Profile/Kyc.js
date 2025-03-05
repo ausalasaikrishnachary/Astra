@@ -29,6 +29,8 @@ const AdminKyc = () => {
   const [formData, setFormData] = useState({
     username: "",
     password: "",
+    first_name: "",
+    last_name: "",
     email: "",
     phone: "",
     full_name: "",
@@ -40,20 +42,33 @@ const AdminKyc = () => {
     country: "",
     postal_code: "",
     role: "",
+    status: "",
+    pan_number: "",
+    aadhaar_number: "",
+    kyc_status: "",
+    account_holder_name: "",
+    bank_name: "",
+    branch_name: "",
+    account_number: "",
+    ifsc_code: "",
+    nominee_name: " ",
+    nominee_relationship: "",
+    nominee_phone: "",
+    nominee_email: ""
+
   });
 
-  const [roles, setRoles] = useState([]); // Store fetched roles
+  const [roles, setRoles] = useState([]);
   const [open, setOpen] = useState(false);
   const [newRole, setNewRole] = useState("");
 
-  // Fetch roles from API
   useEffect(() => {
     const fetchRoles = async () => {
       try {
         const response = await fetch("http://46.37.122.105:91/roles/");
         const data = await response.json();
         if (response.ok) {
-          setRoles(data); // Assuming data is an array of roles
+          setRoles(data);
         } else {
           console.error("Failed to fetch roles:", data);
         }
@@ -65,7 +80,6 @@ const AdminKyc = () => {
     fetchRoles();
   }, []);
 
-  // Handle input changes
   const handleChange = (event) => {
     setFormData({
       ...formData,
@@ -73,14 +87,97 @@ const AdminKyc = () => {
     });
   };
 
-  // Handle form submission
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log("Form Submitted:", formData);
-    // Add API call for form submission if required
+
+    const [first_name, ...lastNameParts] = formData.full_name.split(" ");
+    const last_name = lastNameParts.join(" ") || "";
+
+    const payload = {
+      roles: formData.role ? [formData.role] : [], // Ensure it's an array of IDs
+      username: formData.username,
+      password: formData.password,
+      first_name: first_name,
+      last_name: last_name,
+      email: formData.email,
+      phone: formData.phone,
+      dob: formData.date_of_birth,
+      gender: formData.gender,
+      address: formData.address,
+      city: formData.city,
+      state: formData.state,
+      country: formData.country,
+      postal_code: formData.postal_code,
+      status: formData.status,
+      pan_number: formData.pan_number,
+      aadhaar_number: formData.aadhaar_number,
+      kyc_status: "pending",
+      account_holder_name: first_name + " " + last_name,
+      bank_name: formData.bank_name,
+      branch_name: formData.bank_branch,
+      account_number: formData.account_number,
+      ifsc_code: formData.ifsc_code,
+      nominee_name: formData.nominee_name,
+      nominee_relationship: formData.nominee_relationship,
+      nominee_dob: formData.nominee_dob,
+      investment_type: formData.investment_type,
+      risk_profile: formData.risk_profile,
+      expected_investment_amount: formData.expected_investment_amount,
+      added_by: "admin",
+    };
+    
+
+    try {
+      const response = await fetch("http://46.37.122.105:91/users/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        alert("User registered successfully!");
+        setFormData({
+          username: "",
+          password: "",
+          email: "",
+          phone: "",
+          full_name: "",
+          date_of_birth: "",
+          gender: "",
+          address: "",
+          city: "",
+          state: "",
+          country: "",
+          postal_code: "",
+          role: "",
+          status: "",
+          pan_number: "",
+          aadhaar_number: "",
+          bank_name: "",
+          bank_branch: "",
+          account_number: "",
+          ifsc_code: "",
+          nominee_name: "",
+          nominee_relationship: "",
+          nominee_dob: "",
+          investment_type: "",
+          risk_profile: "",
+          expected_investment_amount: "",
+        });
+      } else {
+        console.error("Registration failed:", result);
+        alert(`Error: ${result.message || "Registration failed."}`);
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      alert("An error occurred while submitting the form.");
+    }
   };
 
-  // Handle adding a new role
   const handleAddRole = async () => {
     if (!newRole) {
       alert("Please enter a role before submitting.");
@@ -100,9 +197,9 @@ const AdminKyc = () => {
 
       if (response.ok) {
         alert("Role added successfully!");
-        setRoles([...roles, { role_name: newRole }]); // Update UI with new role
-        setNewRole(""); // Clear input
-        setOpen(false); // Close modal
+        setRoles([...roles, { role_name: newRole }]);
+        setNewRole("");
+        setOpen(false);
       } else {
         console.error("Failed to add role:", result);
         alert(`Error: ${result.message || "Failed to add role."}`);
@@ -169,6 +266,28 @@ const AdminKyc = () => {
                   variant="outlined"
                   size="small"
                   value={formData.full_name}
+                  onChange={handleChange}
+                />
+              </Grid>
+              <Grid item xs={12} sm={4}>
+                <TextField
+                  fullWidth
+                  name="first_name"
+                  placeholder="First Name"
+                  variant="outlined"
+                  size="small"
+                  value={formData.first_name}
+                  onChange={handleChange}
+                />
+              </Grid>
+              <Grid item xs={12} sm={4}>
+                <TextField
+                  fullWidth
+                  name="last_name"
+                  placeholder="Last Name"
+                  variant="outlined"
+                  size="small"
+                  value={formData.last_name}
                   onChange={handleChange}
                 />
               </Grid>
@@ -245,33 +364,30 @@ const AdminKyc = () => {
               </Grid>
               <Grid item xs={12} sm={4}>
                 <Box display="flex" alignItems="center" gap={1}>
-                  <FormControl fullWidth size="small">
-                    {/* <InputLabel id="user-type-label" shrink>User Type</InputLabel> */}
-                    <Select
-                      labelId="user-type-label"
-                      name="role"
-                      value={formData.role}
-                      onChange={handleChange}
-                      displayEmpty
-                    >
-                      <MenuItem value="" disabled>
-                        Select User Type
-                      </MenuItem>
-                      {roles.map((role, index) => (
-                        <MenuItem key={index} value={role.role_name}>
-                          {role.role_name}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
+                <FormControl fullWidth size="small">
+  <Select
+    labelId="user-type-label"
+    name="role"
+    value={formData.role}
+    onChange={handleChange}
+    displayEmpty
+  >
+    <MenuItem value="" disabled>
+      Select User Type
+    </MenuItem>
+    {roles.map((role, index) => (
+      <MenuItem key={index} value={role.id}>  {/* Use role.id instead of role.role_name */}
+        {role.role_name}
+      </MenuItem>
+    ))}
+  </Select>
+</FormControl>
 
 
-                  {/* Plus Button Beside Input Field */}
                   <IconButton color="primary" onClick={() => setOpen(true)}>
                     <AddIcon />
                   </IconButton>
 
-                  {/* Dialog (Modal) for Adding Custom Roles */}
                   <Dialog open={open} onClose={() => setOpen(false)}>
                     <DialogTitle>Add New Role</DialogTitle>
                     <DialogContent>
@@ -279,8 +395,8 @@ const AdminKyc = () => {
                         fullWidth
                         size="small"
                         label="Enter Role"
-                        value={formData.role}
-                        onChange={handleChange}
+                        value={newRole}
+                        onChange={(e) => setNewRole(e.target.value)}
                       />
                     </DialogContent>
                     <DialogActions>
@@ -313,7 +429,6 @@ const AdminKyc = () => {
                   placeholder="Added_by"
                   variant="outlined"
                   size="small"
-                  type=""
                   value={formData.added_by}
                   onChange={handleChange}
                 />
@@ -572,9 +687,6 @@ const AdminKyc = () => {
               </Grid>
             </Grid>
             <Divider sx={{ my: "10px", borderWidth: "0.5px" }} />
-
-
-            {/* Additional sections such as Banking, Investment, Nominee, and KYC can be added here */}
 
             <Grid
               container
