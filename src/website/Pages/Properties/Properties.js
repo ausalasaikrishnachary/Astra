@@ -27,10 +27,10 @@ const Properties = () => {
         {/* Property 1 */}
         <Grid item md={4} xs={12}>
           <div className="property-card">
-            <img 
-              src="https://media.istockphoto.com/id/1405246054/photo/empty-warehouse-in-logistic-center.jpg?s=612x612&w=0&k=20&c=G2GPj8tAeTs71u3hHD9qze_8F41KsoTpopbW94CcRYs=" 
-              alt="Warehouse" 
-              className="property-img" 
+            <img
+              src="https://media.istockphoto.com/id/1405246054/photo/empty-warehouse-in-logistic-center.jpg?s=612x612&w=0&k=20&c=G2GPj8tAeTs71u3hHD9qze_8F41KsoTpopbW94CcRYs="
+              alt="Warehouse"
+              className="property-img"
             />
             <div className="property-description">
               <div className="property-title">LARGE WAREHOUSE</div>
@@ -51,10 +51,10 @@ const Properties = () => {
         {/* Property 2 */}
         <Grid item md={4} xs={12}>
           <div className="property-card">
-            <img 
-              src="https://images.unsplash.com/photo-1610891015188-5369212db097?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8bWFudWZhY3R1cmluZ3xlbnwwfHwwfHx8MA%3D%3D" 
-              alt="Factory" 
-              className="property-img" 
+            <img
+              src="https://images.unsplash.com/photo-1610891015188-5369212db097?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8bWFudWZhY3R1cmluZ3xlbnwwfHwwfHx8MA%3D%3D"
+              alt="Factory"
+              className="property-img"
             />
             <div className="property-description">
               <div className="property-title">MANUFACTURING FACILITY</div>
@@ -75,10 +75,10 @@ const Properties = () => {
         {/* Property 3 */}
         <Grid item md={4} xs={12}>
           <div className="property-card">
-            <img 
-              src="https://media.biltrax.com/wp-content/uploads/2023/12/News-Article-Cover-Images-28-1.png" 
-              alt="Logistics Hub" 
-              className="property-img" 
+            <img
+              src="https://media.biltrax.com/wp-content/uploads/2023/12/News-Article-Cover-Images-28-1.png"
+              alt="Logistics Hub"
+              className="property-img"
             />
             <div className="property-description">
               <div className="property-title">LOGISTICS HUB</div>
@@ -99,15 +99,15 @@ const Properties = () => {
         {/* Property 4 */}
         <Grid item md={4} xs={12}>
           <div className="property-card">
-            <img 
-              src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxMTc3M3wwfDF8c2VhcmNofDF8fGRpc3RyaWJ1dGlvbiUyMGNlbnRlcnxlbnwwfHx8fDE2NzY3NzcxMzI&ixlib=rb-1.2.1&q=80&w=400" 
-              alt="Distribution Center" 
-              className="property-img" 
+            <img
+              src="https://eu-images.contentstack.com/v3/assets/blt8eb3cdfc1fce5194/blt29d49d9dc2394b9c/66210a507963b40fc4ceec07/google_20data_20center_20cooling_20pipes.jpg?width=1280&auto=webp&quality=95&format=jpg&disable=upscale"
+              alt="Data Center"
+              className="property-img"
             />
             <div className="property-description">
-              <div className="property-title">DISTRIBUTION CENTER</div>
-              <p>Address: Logistics Park, Pune, Maharashtra.</p>
-              <p>Gross Entry Yield: 8.7% | Asset Value: ₹55,00,00,000 | Target IRR: 13.5%</p>
+              <div className="property-title">DATA CENTER</div>
+              <p>Address: IT Hub, Pune, Maharashtra.</p>
+              <p>Gross Entry Yield: 9.2% | Asset Value: ₹60,00,00,000 | Target IRR: 14.0%</p>
             </div>
             <div className="btn-container">
               <Button className="btn-purple" variant="contained">
@@ -118,15 +118,16 @@ const Properties = () => {
               </Button>
             </div>
           </div>
+
         </Grid>
 
         {/* Property 5 */}
         <Grid item md={4} xs={12}>
           <div className="property-card">
-            <img 
-              src="https://media.automotiveworld.com/app/uploads/2022/05/19084907/volkswagen-id-5-zwickau-plant.jpg" 
-              alt="Assembly Plant" 
-              className="property-img" 
+            <img
+              src="https://media.automotiveworld.com/app/uploads/2022/05/19084907/volkswagen-id-5-zwickau-plant.jpg"
+              alt="Assembly Plant"
+              className="property-img"
             />
             <div className="property-description">
               <div className="property-title">ASSEMBLY PLANT</div>
@@ -147,10 +148,10 @@ const Properties = () => {
         {/* Property 6 */}
         <Grid item md={4} xs={12}>
           <div className="property-card">
-            <img 
-              src="https://mecaluxcom.cdnwm.com/documents/d/global/m41p03-almacenamiento-frio-estanterias?e=jpg&imwidth=1024&imdensity=1" 
-              alt="Cold Storage Facility" 
-              className="property-img" 
+            <img
+              src="https://mecaluxcom.cdnwm.com/documents/d/global/m41p03-almacenamiento-frio-estanterias?e=jpg&imwidth=1024&imdensity=1"
+              alt="Cold Storage Facility"
+              className="property-img"
             />
             <div className="property-description">
               <div className="property-title">COLD STORAGE FACILITY</div>
@@ -171,10 +172,10 @@ const Properties = () => {
         {/* Property 7 */}
         <Grid item md={4} xs={12}>
           <div className="property-card">
-            <img 
-              src="https://images.unsplash.com/photo-1556740749-887f6717d7e4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxMTc3M3wwfDF8c2VhcmNofDV8fHJlY3ljaWxlJTIwcGxhbnR8ZW58MHx8fHwxNjc2Nzc3MjM0&ixlib=rb-1.2.1&q=80&w=400" 
-              alt="Recycling Plant" 
-              className="property-img" 
+            <img
+              src="https://images.unsplash.com/photo-1556740749-887f6717d7e4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxMTc3M3wwfDF8c2VhcmNofDV8fHJlY3ljaWxlJTIwcGxhbnR8ZW58MHx8fHwxNjc2Nzc3MjM0&ixlib=rb-1.2.1&q=80&w=400"
+              alt="Recycling Plant"
+              className="property-img"
             />
             <div className="property-description">
               <div className="property-title">RECYCLING PLANT</div>
@@ -195,10 +196,10 @@ const Properties = () => {
         {/* Property 8 */}
         <Grid item md={4} xs={12}>
           <div className="property-card">
-            <img 
-              src="https://media.istockphoto.com/id/178631224/photo/multi-colored-yarns-in-the-textile-machine.jpg?s=612x612&w=0&k=20&c=toug9tSwN8sZyX76vomTUyAUt7IxemUIsps0n_ip3i0=" 
-              alt="Textile Manufacturing Unit" 
-              className="property-img" 
+            <img
+              src="https://media.istockphoto.com/id/178631224/photo/multi-colored-yarns-in-the-textile-machine.jpg?s=612x612&w=0&k=20&c=toug9tSwN8sZyX76vomTUyAUt7IxemUIsps0n_ip3i0="
+              alt="Textile Manufacturing Unit"
+              className="property-img"
             />
             <div className="property-description">
               <div className="property-title">TEXTILE MANUFACTURING</div>
@@ -219,10 +220,10 @@ const Properties = () => {
         {/* Property 9 */}
         <Grid item md={4} xs={12}>
           <div className="property-card">
-            <img 
-              src="https://images.unsplash.com/photo-1593642532744-d377ab507dc8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxMTc3M3wwfDF8c2VhcmNofDl8fHJlbmV3YWJsZSUyMGVuZXJneSUyMGZhY3Rvcnl8ZW58MHx8fHwxNjc2Nzc3MzY5&ixlib=rb-1.2.1&q=80&w=400" 
-              alt="Renewable Energy Factory" 
-              className="property-img" 
+            <img
+              src="https://images.unsplash.com/photo-1593642532744-d377ab507dc8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxMTc3M3wwfDF8c2VhcmNofDl8fHJlbmV3YWJsZSUyMGVuZXJneSUyMGZhY3Rvcnl8ZW58MHx8fHwxNjc2Nzc3MzY5&ixlib=rb-1.2.1&q=80&w=400"
+              alt="Renewable Energy Factory"
+              className="property-img"
             />
             <div className="property-description">
               <div className="property-title">RENEWABLE ENERGY FACTORY</div>

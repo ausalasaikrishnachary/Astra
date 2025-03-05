@@ -94,10 +94,11 @@ function Header() {
     //   submenu: ['cadre funds', 'deal-by-deal', 'secondary market'],
     //   path: '/invest',
     // },
-    { label: 'About Us', path: '/aboutus' },
+    { label: 'How it works?', path: '/aboutus' },
     { label: 'Properties', path: '/properties' },
     { label: 'Contact us', path: '/contactus' },
     { label: 'FAQs', path: '/FAQ' },
+
   ];
 
   // --- Mobile Drawer Submenu (if needed) ---
@@ -223,36 +224,46 @@ function Header() {
               </Box>
               <Button
                 variant="outlined"
+                component={NavLink}
+                to="/signup"
                 sx={{
                   mr: 1,
-                  borderColor: '#333333',
-                  color: '#333333',
                   fontSize: '16px',
                   fontFamily: 'Calibre, sans-serif',
                   fontWeight: 'bold',
+                  borderColor: '#2d1656',
+                  color: '#2d1656',
+                  '&.active': {
+                    backgroundColor: '#2d1656',
+                    color: '#ffffff',
+                  },
                 }}
-                component={NavLink}
-                to="/signup"
                 style={{ textDecoration: 'none' }}
               >
                 Sign up
               </Button>
+
               <Button
                 variant="outlined"
+                component={NavLink}
+                to="/signin"
                 sx={{
                   mr: 1,
-                  borderColor: '#333333',
-                  color: '#333333',
                   fontSize: '16px',
                   fontFamily: 'Calibre, sans-serif',
                   fontWeight: 'bold',
+                  borderColor: '#2d1656',
+                  color: '#2d1656',
+                  '&.active': {
+                    backgroundColor: '#2d1656',
+                    color: '#ffffff',
+                  },
                 }}
-                component={NavLink}
-                to="/signin"
                 style={{ textDecoration: 'none' }}
               >
                 Sign in
               </Button>
+
               {/* Uncomment if you want to use the Search icon */}
               {/* <IconButton>
                 <SearchIcon sx={{ color: '#333333' }} />
@@ -423,36 +434,46 @@ function Header() {
               {/* Signup & Signin Buttons */}
               <Button
                 variant="outlined"
+                component={NavLink}
+                to="/signup"
                 sx={{
                   mr: 1,
-                  borderColor: '#333333',
-                  color: '#333333',
                   fontSize: '16px',
                   fontFamily: 'Calibre, sans-serif',
                   fontWeight: 'bold',
+                  borderColor: '#2d1656',
+                  color: '#2d1656',
+                  '&.active': {
+                    backgroundColor: '#2d1656',
+                    color: '#ffffff',
+                  },
                 }}
-                component={NavLink}
-                to="/signup"
                 style={{ textDecoration: 'none' }}
               >
                 Sign up
               </Button>
+
               <Button
                 variant="outlined"
+                component={NavLink}
+                to="/signin"
                 sx={{
                   mr: 1,
-                  borderColor: '#333333',
-                  color: '#333333',
                   fontSize: '16px',
                   fontFamily: 'Calibre, sans-serif',
                   fontWeight: 'bold',
+                  borderColor: '#2d1656',
+                  color: '#2d1656',
+                  '&.active': {
+                    backgroundColor: '#2d1656',
+                    color: '#ffffff',
+                  },
                 }}
-                component={NavLink}
-                to="/signin"
                 style={{ textDecoration: 'none' }}
               >
                 Sign in
               </Button>
+
             </>
           )}
         </Toolbar>

@@ -363,7 +363,7 @@ const Home = () => {
 
 
         {/* Partners Guidelines Section */}
-        <Container sx={{ mt: 6, mb: 4 }}>
+        {/* <Container sx={{ mt: 6, mb: 4 }}>
           <Grid container spacing={4}>
             <Grid item xs={12}>
               <Typography variant="h4" sx={{textAlign:"center",fontWeight:"bold"}}>Partners Guidelines</Typography>
@@ -407,7 +407,7 @@ const Home = () => {
           <Typography sx={{ mt: 2 }}>
             By partnering with us, you gain access to a trusted investment platform, exclusive opportunities, and financial growth while helping investors make smarter choices.
           </Typography>
-        </Container>
+        </Container> */}
       </Box>
     </>
   );
