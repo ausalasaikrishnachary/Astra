@@ -49,7 +49,7 @@ function Footer() {
               <li><a href="#">FAQ</a></li>
             </ul>
           </div>
-          {/* <div className="footer-column">
+          <div className="footer-column">
             <h4>About Us</h4>
             <ul>
               <li><a href="#">Astra Funds</a></li>
@@ -64,7 +64,7 @@ function Footer() {
               <li><a href="#">Acquisitions Lifecycle</a></li>
               <li><a href="#">Asset Management Approach</a></li>
             </ul>
-          </div> */}
+          </div>
           <div className="footer-column">
             <h4>FAQ</h4>
             <ul>

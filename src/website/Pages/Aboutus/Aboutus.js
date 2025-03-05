@@ -53,9 +53,9 @@ const AboutUs = () => {
                     </Box>
                   ))}
                 </Box>
-                <Button variant="contained" color="primary" sx={{ mt: 2 }}>
+                {/* <Button variant="contained" color="primary" sx={{ mt: 2 }}>
                   Learn More
-                </Button>
+                </Button> */}
               </Box>
             </CardContent>
           {/* </Card> */}
