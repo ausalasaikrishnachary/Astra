@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import axios from 'axios';
 import {
   Container,
   Card,
@@ -8,274 +9,537 @@ import {
   TextField,
   Button,
   Box,
+  InputLabel,
+  MenuItem,
+  Select,
+  FormControl,
+  Checkbox,
+  FormGroup,
+  FormControlLabel,
 } from '@mui/material';
 import PartnerHeader from '../../../Shared/Partner/PartnerNavbar';
 
 function AdminAssetForm() {
+  const [formData, setFormData] = useState({
+    property_id: '',
+    property_name: '',
+    property_type: '',
+    description: '',
+    location: '',
+    city: '',
+    state: '',
+    country: '',
+    postal_code: '',
+    latitude: '',    // Default Hyderabad coordinates
+    longitude: '',
+    total_units: '',
+    available_units: '',
+    area_sqft: '',
+    price_per_sqft: '',
+    ownership_type: '',
+    rental_yield: '',
+    expected_roi: '',
+    legal_status: '',
+    regulatory_approvals: '',
+    tax_identification_number: '',
+    amenities: '',
+    parking_spaces: '',
+    security_features: '',
+    furnished_status: '',
+    listing_status: '',
+    investors: '',         // Hardcoded for testing
+    agent: '',
+    property_img: '',
+    additional_images: '',
+    legal_documents: '',           // Hardcoded for testing
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleFileChange = (e) => {
+    const { name, files } = e.target;
+
+    // Handle single file uploads
+    if (name === 'property_img') {
+      setFormData(prev => ({
+        ...prev,
+        [name]: files[0] // Store the first file only
+      }));
+    }
+
+  
+    
+
+    // Handle multiple file uploads
+    if (name === 'additional_images' || name === 'legal_documents') {
+      setFormData(prev => ({
+        ...prev,
+        [name]: Array.from(files) // Convert FileList to array
+      }));
+    }
+  };
+
+  const handleCheckboxChange = (e) => {
+    const { name, value, checked } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: checked
+        ? [...prev[name], value]
+        : prev[name].filter(item => item !== value)
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const formDataToSend = new FormData();
+  
+      // Append normal form fields
+      Object.keys(formData).forEach((key) => {
+        if (
+          key !== 'property_img' &&
+          key !== 'additional_images' &&
+          key !== 'legal_documents'
+        ) {
+          formDataToSend.append(key, formData[key]);
+        }
+      });
+  
+      // Append files separately
+      if (formData.property_img) {
+        formDataToSend.append('property_img', formData.property_img);
+      }
+  
+      if (formData.additional_images.length > 0) {
+        formData.additional_images.forEach((file, index) => {
+          formDataToSend.append(`additional_images[${index}]`, file);
+        });
+      }
+  
+      if (formData.legal_documents.length > 0) {
+        formData.legal_documents.forEach((file, index) => {
+          formDataToSend.append(`legal_documents[${index}]`, file);
+        });
+      }
+  
+      const response = await axios.post('http://46.37.122.105:91/property/', formDataToSend, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+  
+      console.log('Submission successful:', response.data);
+      alert('Property registered successfully!');
+    } catch (error) {
+      console.error('Full error details:', error.response?.data);
+      alert(`Submission failed: ${error.response?.data?.detail || error.message}`);
+    }
+  };
+  
   return (
     <>
-    <PartnerHeader/>
-    <Container sx={{ mt: 4 }}>
-      <Card
-        sx={{
-          p: 4,
-          mb: 4,
-          boxShadow: 1,
-          maxWidth: '80%',
-          mx: 'auto',
-          // Allow card height to adjust automatically
-          height: 'auto',
-          overflowY: 'auto',
-        }}
-      >
-        <CardContent>
-          <Typography variant="h4" align="center" gutterBottom>
-            Asset Master Form
-          </Typography>
+      <PartnerHeader />
+      <Container sx={{ mt: 4 }}>
+        <Card sx={{ p: 4, mb: 4, boxShadow: 1, maxWidth: '80%', mx: 'auto' }}>
+          <form onSubmit={handleSubmit}>
+            <CardContent>
+              <Typography variant="h4" align="center" gutterBottom>
+                Property Registration Form
+              </Typography>
 
-          {/* Basic Asset Information */}
-          <Box
-            sx={{
-              border: '1px solid #ddd',
-              p: 2,
-              mb: 4,
-              borderRadius: '5px',
-            }}
-          >
-            <Typography variant="h6" gutterBottom>
-              Basic Asset Information
-            </Typography>
-            <Grid container spacing={2}>
-              <Grid item xs={12} md={3}>
-                <TextField label="Asset Name" variant="outlined" fullWidth />
-              </Grid>
-              <Grid item xs={12} md={3}>
-                <TextField label="Asset Type" variant="outlined" fullWidth />
-              </Grid>
-              <Grid item xs={12} md={3}>
-                <TextField label="Asset Code/ID" variant="outlined" fullWidth />
-              </Grid>
-              <Grid item xs={12} md={3}>
-                <TextField label="Description" variant="outlined" fullWidth />
-              </Grid>
-            </Grid>
-          </Box>
+              {/* Basic Information Section */}
+              <Box sx={{ border: '1px solid #ddd', p: 2, mb: 4, borderRadius: '5px' }}>
+                <Typography variant="h6" gutterBottom>Basic Information</Typography>
+                <Grid container spacing={2}>
+                  <Grid item xs={6} md={3}>
+                    <TextField
+                      name="property_id"
+                      label="Property id"
+                      value={formData.property_id}
+                      onChange={handleChange}
+                      fullWidth
+                      required
+                    />
+                  </Grid>
+                  <Grid item xs={12} md={6}>
+                    <TextField
+                      name="property_name"
+                      label="Property Name"
+                      value={formData.property_name}
+                      onChange={handleChange}
+                      fullWidth
+                      required
+                    />
+                  </Grid>
+                  <Grid item xs={12} md={6}>
+                    <FormControl fullWidth>
+                      <InputLabel>Property Type</InputLabel>
+                      <Select
+                        name="property_type"
+                        value={formData.property_type}
+                        onChange={handleChange}
+                        label="Property Type"
+                      >
+                        <MenuItem value="residential">Residential</MenuItem>
+                        <MenuItem value="commercial">Commercial</MenuItem>
+                      </Select>
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      name="description"
+                      label="Description"
+                      value={formData.description}
+                      onChange={handleChange}
+                      fullWidth
+                      multiline
+                      rows={3}
+                    />
+                  </Grid>
+                </Grid>
+              </Box>
 
-          {/* Purchase Details */}
-          <Box
-            sx={{
-              border: '1px solid #ddd',
-              p: 2,
-              mb: 4,
-              borderRadius: '5px',
-            }}
-          >
-            <Typography variant="h6" gutterBottom>
-              Purchase Details
-            </Typography>
-            <Grid container spacing={2}>
-              <Grid item xs={12} md={3}>
-                <TextField
-                  label="Purchase Date"
-                  type="date"
-                  InputLabelProps={{ shrink: true }}
-                  variant="outlined"
-                  fullWidth
-                />
-              </Grid>
-              <Grid item xs={12} md={3}>
-                <TextField
-                  label="Purchase Cost"
-                  type="number"
-                  variant="outlined"
-                  fullWidth
-                />
-              </Grid>
-              <Grid item xs={12} md={3}>
-                <TextField
-                  label="Vendor/Supplier"
-                  variant="outlined"
-                  fullWidth
-                />
-              </Grid>
-              <Grid item xs={12} md={3}>
-                <TextField
-                  label="Invoice Number"
-                  variant="outlined"
-                  fullWidth
-                />
-              </Grid>
-            </Grid>
-          </Box>
+              {/* Location Details Section */}
+              <Box sx={{ border: '1px solid #ddd', p: 2, mb: 4, borderRadius: '5px' }}>
+                <Typography variant="h6" gutterBottom>Location Details</Typography>
+                <Grid container spacing={2}>
+                  <Grid item xs={12} md={6}>
+                    <TextField
+                      name="location"
+                      label="Location"
+                      value={formData.location}
+                      onChange={handleChange}
+                      fullWidth
+                      required
+                    />
+                  </Grid>
+                  <Grid item xs={6} md={3}>
+                    <TextField
+                      name="state"
+                      label="State"
+                      value={formData.state}
+                      onChange={handleChange}
+                      fullWidth
+                      required
+                    />
+                  </Grid>
+                  <Grid item xs={6} md={3}>
+                    <TextField
+                      name="country"
+                      label="Country"
+                      value={formData.country}
+                      onChange={handleChange}
+                      fullWidth
+                      required
+                    />
+                  </Grid>
+                  <Grid item xs={6} md={3}>
+                    <TextField
+                      name="city"
+                      label="City"
+                      value={formData.city}
+                      onChange={handleChange}
+                      fullWidth
+                      required
+                    />
+                  </Grid>
+                  <Grid item xs={6} md={3}>
+                    <TextField
+                      name="postal_code"
+                      label="Postal Code"
+                      value={formData.postal_code}
+                      onChange={handleChange}
+                      fullWidth
+                      required
+                    />
+                  </Grid>
+                  <Grid item xs={6} md={3}>
+                    <TextField
+                      name="latitude"
+                      label="Latitude"
+                      type="number"
+                      value={formData.latitude}
+                      onChange={handleChange}
+                      fullWidth
+                      required
+                    />
+                  </Grid>
+                  <Grid item xs={6} md={3}>
+                    <TextField
+                      name="longitude"
+                      label="Longitude"
+                      type="number"
+                      value={formData.longitude}
+                      onChange={handleChange}
+                      fullWidth
+                      required
+                    />
+                  </Grid>
+                </Grid>
+              </Box>
 
-          {/* Depreciation & Valuation */}
-          <Box
-            sx={{
-              border: '1px solid #ddd',
-              p: 2,
-              mb: 4,
-              borderRadius: '5px',
-            }}
-          >
-            <Typography variant="h6" gutterBottom>
-              Depreciation &amp; Valuation
-            </Typography>
-            <Grid container spacing={2}>
-              <Grid item xs={12} md={3}>
-                <TextField
-                  label="Depreciation Method"
-                  variant="outlined"
-                  fullWidth
-                />
-              </Grid>
-              <Grid item xs={12} md={3}>
-                <TextField
-                  label="Depreciation Rate (%)"
-                  type="number"
-                  variant="outlined"
-                  fullWidth
-                />
-              </Grid>
-              <Grid item xs={12} md={3}>
-                <TextField
-                  label="Useful Life (Years)"
-                  type="number"
-                  variant="outlined"
-                  fullWidth
-                />
-              </Grid>
-              <Grid item xs={12} md={3}>
-                <TextField
-                  label="Current Value"
-                  type="number"
-                  variant="outlined"
-                  fullWidth
-                />
-              </Grid>
-            </Grid>
-          </Box>
+              {/* Pricing & Units Section */}
+              <Box sx={{ border: '1px solid #ddd', p: 2, mb: 4, borderRadius: '5px' }}>
+                <Typography variant="h6" gutterBottom>Pricing & Units</Typography>
+                <Grid container spacing={2}>
+                  {[
+                    { name: 'total_units', label: 'Total Units', type: 'number' },
+                    { name: 'available_units', label: 'Available Units', type: 'number' },
+                    { name: 'area_sqft', label: 'Area (sqft)', type: 'number' },
+                    { name: 'price_per_sqft', label: 'Price per sqft', type: 'number' },
+                    { name: 'legal_status', label: 'Legal_status', type: 'text' },
+                    { name: 'rental_yield', label: 'Rental Yield (%)', type: 'number' },
+                    { name: 'expected_roi', label: 'Expected ROI (%)', type: 'number' },
+                    { name: 'regulatory_approvals', label: 'Regulatory_approvals', type: 'text' },
+                    { name: 'ownership_type', label: 'Ownership_type', type: 'text' },
 
-          {/* Location & Assignment */}
-          <Box
-            sx={{
-              border: '1px solid #ddd',
-              p: 2,
-              mb: 4,
-              borderRadius: '5px',
-            }}
-          >
-            <Typography variant="h6" gutterBottom>
-              Location &amp; Assignment
-            </Typography>
-            <Grid container spacing={2}>
-              <Grid item xs={12} md={3}>
-                <TextField label="Location" variant="outlined" fullWidth />
-              </Grid>
-              <Grid item xs={12} md={3}>
-                <TextField label="Department" variant="outlined" fullWidth />
-              </Grid>
-              <Grid item xs={12} md={3}>
-                <TextField label="Assigned To" variant="outlined" fullWidth />
-              </Grid>
-              <Grid item xs={12} md={3}>
-                <TextField
-                  label="Documents"
-                  type="file"
-                  InputLabelProps={{ shrink: true }}
-                  variant="outlined"
-                  fullWidth
-                />
-              </Grid>
-            </Grid>
-          </Box>
 
-          {/* Maintenance & Condition */}
-          <Box
-            sx={{
-              border: '1px solid #ddd',
-              p: 2,
-              mb: 4,
-              borderRadius: '5px',
-            }}
-          >
-            <Typography variant="h6" gutterBottom>
-              Maintenance &amp; Condition
-            </Typography>
-            <Grid container spacing={2}>
-              <Grid item xs={12} md={4}>
-                <TextField
-                  label="Last Maintenance Date"
-                  type="date"
-                  InputLabelProps={{ shrink: true }}
-                  variant="outlined"
-                  fullWidth
-                />
-              </Grid>
-              <Grid item xs={12} md={4}>
-                <TextField
-                  label="Next Maintenance Due"
-                  type="date"
-                  InputLabelProps={{ shrink: true }}
-                  variant="outlined"
-                  fullWidth
-                />
-              </Grid>
-              <Grid item xs={12} md={4}>
-                <TextField label="Condition" variant="outlined" fullWidth />
-              </Grid>
-            </Grid>
-          </Box>
 
-          {/* Disposal Details */}
-          <Box
-            sx={{
-              border: '1px solid #ddd',
-              p: 2,
-              mb: 4,
-              borderRadius: '5px',
-            }}
-          >
-            <Typography variant="h6" gutterBottom>
-              Disposal Details
-            </Typography>
-            <Grid container spacing={2}>
-              <Grid item xs={12} md={4}>
-                <TextField
-                  label="Disposal Date"
-                  type="date"
-                  InputLabelProps={{ shrink: true }}
-                  variant="outlined"
-                  fullWidth
-                />
-              </Grid>
-              <Grid item xs={12} md={4}>
-                <TextField
-                  label="Disposal Method"
-                  variant="outlined"
-                  fullWidth
-                />
-              </Grid>
-              <Grid item xs={12} md={4}>
-                <TextField
-                  label="Disposal Value"
-                  type="number"
-                  variant="outlined"
-                  fullWidth
-                />
-              </Grid>
-            </Grid>
-          </Box>
+                  ].map((field) => (
+                    <Grid item xs={6} md={4} key={field.name}>
+                      <TextField
+                        name={field.name}
+                        label={field.label}
+                        type={field.type}
+                        value={formData[field.name]}
+                        onChange={handleChange}
+                        fullWidth
+                      />
+                    </Grid>
+                  ))}
+                </Grid>
+              </Box>
 
-          {/* Action Buttons */}
-          <Box sx={{ textAlign: 'center', mt: 2 }}>
-            <Button variant="outlined" sx={{ mr: 2 }}>
-              Cancel
-            </Button>
-            <Button variant="contained">Submit</Button>
-          </Box>
-        </CardContent>
-      </Card>
-    </Container>
+              {/* Features & Amenities Section */}
+              <Box sx={{ border: '1px solid #ddd', p: 2, mb: 4, borderRadius: '5px' }}>
+                <Typography variant="h6" gutterBottom>Features & Amenities</Typography>
+                <Grid container spacing={2}>
+                  <Grid item xs={12} md={6}>
+                    <Typography variant="subtitle1">Amenities</Typography>
+                    <FormGroup row>
+                      {['Swimming Pool', 'Gym', 'Clubhouse'].map((amenity) => (
+                        <FormControlLabel
+                          key={amenity}
+                          control={
+                            <Checkbox
+                              name="amenities"
+                              value={amenity}
+                              checked={formData.amenities.includes(amenity)}
+                              onChange={handleCheckboxChange}
+                            />
+                          }
+                          label={amenity}
+                        />
+                      ))}
+                    </FormGroup>
+                  </Grid>
+
+                  <Grid item xs={12} md={6}>
+                    <Typography variant="subtitle1">Security Features</Typography>
+                    <FormGroup row>
+                      {['CCTV Surveillance', '24/7 Security'].map((feature) => (
+                        <FormControlLabel
+                          key={feature}
+                          control={
+                            <Checkbox
+                              name="security_features"
+                              value={formData.security_features}
+                              checked={formData.security_features.includes(feature)}
+                              onChange={handleCheckboxChange}
+                            />
+                          }
+                          label={feature}
+                        />
+                      ))}
+                    </FormGroup>
+                  </Grid>
+
+                  <Grid item xs={12} md={6}>
+                    <TextField
+                      name="regulatory_approvals"
+                      label="Regulatory Approvals (comma-separated)"
+                      value={formData.regulatory_approvals}
+                      onChange={handleChange}
+                      fullWidth
+                    />
+                  </Grid>
+                  <Grid item xs={6} md={3}>
+                    <TextField
+                      name="parking_spaces"
+                      label="Parking Spaces"
+                      type="number"
+                      value={formData.parking_spaces}
+                      onChange={handleChange}
+                      fullWidth
+                    />
+                  </Grid>
+
+                </Grid>
+              </Box>
+
+              {/* Legal & Financial Section */}
+              <Box sx={{ border: '1px solid #ddd', p: 2, mb: 4, borderRadius: '5px' }}>
+                <Typography variant="h6" gutterBottom>Legal & Financial Details</Typography>
+                <Grid container spacing={2}>
+                  <Grid item xs={6} md={3}>
+                    <input
+                      type="file"
+                      name="legal_documents"
+                      onChange={handleFileChange}
+                      required
+                    />
+                  </Grid>
+
+
+                </Grid>
+              </Box>
+
+              <Box sx={{ border: '1px solid #ddd', p: 2, mb: 4, borderRadius: '5px' }}>
+                <Typography variant="h6" gutterBottom>Additional Information</Typography>
+                <Grid container spacing={2}>
+                  {/* Furnished Status (already exists in your example) */}
+                  <Grid item xs={12} md={6}>
+                    <FormControl fullWidth>
+                      <InputLabel>Furnished Status</InputLabel>
+                      <Select
+                        name="furnished_status"
+                        value={formData.furnished_status}
+                        onChange={handleChange}
+                        label="Furnished Status"
+                      >
+                        <MenuItem value="fully_furnished">Fully Furnished</MenuItem>
+                        <MenuItem value="semi_furnished">Semi Furnished</MenuItem>
+                        <MenuItem value="unfurnished">Unfurnished</MenuItem>
+                      </Select>
+                    </FormControl>
+                  </Grid>
+
+                  {/* Property Images */}
+                  <Grid item xs={12} md={6}>
+                    <TextField
+                      type="file"
+                      name="property_img"
+                      label="Property Image"
+                      InputLabelProps={{ shrink: true }}
+                      inputProps={{ accept: "image/*" }}
+                      onChange={handleFileChange}
+                      fullWidth
+                    />
+                  </Grid>
+
+                  {/* Additional Images */}
+                  <Grid item xs={12} md={6}>
+                    <TextField
+                      type="file"
+                      name="additional_images"
+                      label="Additional Images"
+                      InputLabelProps={{ shrink: true }}
+                      inputProps={{ accept: "image/*", multiple: true }}
+                      onChange={handleFileChange}
+                      fullWidth
+                    />
+                  </Grid>
+
+                  {/* Legal Documents */}
+                  <Grid item xs={12} md={6}>
+                    <TextField
+                      type="file"
+                      name="legal_documents"
+                      label="Legal Documents"
+                      InputLabelProps={{ shrink: true }}
+                      inputProps={{ multiple: true }}
+                      onChange={handleFileChange}
+                      fullWidth
+                    />
+                  </Grid>
+
+                  {/* Listing Status */}
+                  <Grid item xs={12} md={6}>
+                    <FormControl fullWidth>
+                      <InputLabel>Listing Status</InputLabel>
+                      <Select
+                        name="listing_status"
+                        value={formData.listing_status}
+                        onChange={handleChange}
+                        label="Listing Status"
+                      >
+                        <MenuItem value="draft">Draft</MenuItem>
+                        <MenuItem value="published">Published</MenuItem>
+                        <MenuItem value="archived">Archived</MenuItem>
+                      </Select>
+                    </FormControl>
+                  </Grid>
+
+                  {/* Agent */}
+                  <Grid item xs={6} md={3}>
+                    <TextField
+                      name="agent"
+                      label="Agent ID"
+                      type="number"
+                      value={formData.agent}
+                      onChange={handleChange}
+                      fullWidth
+                    />
+                  </Grid>
+
+                  {/* Investors */}
+                  <Grid item xs={6} md={3}>
+                    <TextField
+                      name="investors"
+                      label="Investor IDs (comma-separated)"
+                      value={formData.investors}
+                      onChange={(e) => handleChange({
+                        target: {
+                          name: 'investors',
+                          value: e.target.value.split(',').map(Number)
+                        }
+                      })}
+                      fullWidth
+                    />
+                  </Grid>
+
+                  {/* Read-only Timestamps */}
+                  {/* <Grid item xs={6} md={3}>
+      <TextField
+        name="created_at"
+        label="Created At"
+        value={formData.created_at}
+        fullWidth
+      />
+    </Grid>
+    <Grid item xs={6} md={3}>
+      <TextField
+        name="updated_at"
+        label="Updated At"
+        value={formData.updated_at}
+        fullWidth
+      />
+    </Grid> */}
+                </Grid>
+              </Box>
+
+
+              {/* Action Buttons */}
+              <Box sx={{ textAlign: 'center', mt: 4 }}>
+                <Button variant="outlined" sx={{ mr: 2, width: 120 }}>
+                  Cancel
+                </Button>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  sx={{ width: 120 }}
+                >
+                  Submit
+                </Button>
+              </Box>
+            </CardContent>
+          </form>
+        </Card>
+      </Container>
     </>
   );
 }
