@@ -51,11 +51,11 @@ const AdminKyc = () => {
     branch_name: "",
     account_number: "",
     ifsc_code: "",
-    nominee_name: " ",
+    nominee_name: "",
     nominee_relationship: "",
     nominee_phone: "",
-    nominee_email: ""
-
+    nominee_email: "",
+    image: "",
   });
 
   const [roles, setRoles] = useState([]);
@@ -87,59 +87,72 @@ const AdminKyc = () => {
     });
   };
 
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setFormData((prev) => ({
+        ...prev,
+        image: file, // Store file object
+      }));
+    }
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const [first_name, ...lastNameParts] = formData.full_name.split(" ");
+    // Split full name into first and last names
+    const [first_name, ...lastNameParts] = formData.full_name.trim().split(" ");
     const last_name = lastNameParts.join(" ") || "";
 
-    const payload = {
-      roles: formData.role ? [formData.role] : [], // Ensure it's an array of IDs
-      username: formData.username,
-      password: formData.password,
-      first_name: first_name,
-      last_name: last_name,
-      email: formData.email,
-      phone: formData.phone,
-      dob: formData.date_of_birth,
-      gender: formData.gender,
-      address: formData.address,
-      city: formData.city,
-      state: formData.state,
-      country: formData.country,
-      postal_code: formData.postal_code,
-      status: formData.status,
-      pan_number: formData.pan_number,
-      aadhaar_number: formData.aadhaar_number,
-      kyc_status: "pending",
-      account_holder_name: first_name + " " + last_name,
-      bank_name: formData.bank_name,
-      branch_name: formData.bank_branch,
-      account_number: formData.account_number,
-      ifsc_code: formData.ifsc_code,
-      nominee_name: formData.nominee_name,
-      nominee_relationship: formData.nominee_relationship,
-      nominee_dob: formData.nominee_dob,
-      investment_type: formData.investment_type,
-      risk_profile: formData.risk_profile,
-      expected_investment_amount: formData.expected_investment_amount,
-      added_by: "admin",
-    };
-    
+    // Create FormData object for multipart form submission
+    const formDataToSend = new FormData();
+    formDataToSend.append("roles", formData.role);
+    formDataToSend.append("username", formData.username);
+    formDataToSend.append("password", formData.password);
+    formDataToSend.append("first_name", first_name);
+    formDataToSend.append("last_name", last_name);
+    formDataToSend.append("email", formData.email);
+    formDataToSend.append("phone", formData.phone);
+    formDataToSend.append("dob", formData.date_of_birth);
+    formDataToSend.append("gender", formData.gender);
+    formDataToSend.append("address", formData.address);
+    formDataToSend.append("city", formData.city);
+    formDataToSend.append("state", formData.state);
+    formDataToSend.append("country", formData.country);
+    formDataToSend.append("postal_code", formData.postal_code);
+    formDataToSend.append("status", formData.status);
+    formDataToSend.append("pan_number", formData.pan_number);
+    formDataToSend.append("aadhaar_number", formData.aadhaar_number);
+    formDataToSend.append("kyc_status", "pending");
+    formDataToSend.append("account_holder_name", `${first_name} ${last_name}`);
+    formDataToSend.append("bank_name", formData.bank_name);
+    formDataToSend.append("branch_name", formData.branch_name);
+    formDataToSend.append("account_number", formData.account_number);
+    formDataToSend.append("ifsc_code", formData.ifsc_code);
+    formDataToSend.append("nominee_name", formData.nominee_name);
+    formDataToSend.append("nominee_relationship", formData.nominee_relationship);
+    formDataToSend.append("nominee_dob", formData.nominee_dob);
+    formDataToSend.append("investment_type", formData.investment_type);
+    formDataToSend.append("risk_profile", formData.risk_profile);
+    formDataToSend.append("expected_investment_amount", formData.expected_investment_amount);
+    formDataToSend.append("added_by", "admin");
+    console.log("roleid :",formData.role)
+    // Append the image file only if it's selected
+    if (formData.image) {
+      formDataToSend.append("image", formData.image);
+    }
 
     try {
       const response = await fetch("http://46.37.122.105:91/users/", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
+        body: formDataToSend, // Send FormData
       });
 
       const result = await response.json();
 
       if (response.ok) {
         alert("User registered successfully!");
+        // Reset form state
         setFormData({
           username: "",
           password: "",
@@ -158,7 +171,7 @@ const AdminKyc = () => {
           pan_number: "",
           aadhaar_number: "",
           bank_name: "",
-          bank_branch: "",
+          branch_name: "",
           account_number: "",
           ifsc_code: "",
           nominee_name: "",
@@ -167,16 +180,19 @@ const AdminKyc = () => {
           investment_type: "",
           risk_profile: "",
           expected_investment_amount: "",
+          image: null, // Reset image field
         });
       } else {
         console.error("Registration failed:", result);
-        alert(`Error: ${result.message || "Registration failed."}`);
+        alert(`Error: ${result.image ? result.image[0] : "Registration failed."}`);
       }
     } catch (error) {
       console.error("Error submitting form:", error);
       alert("An error occurred while submitting the form.");
     }
   };
+
+
 
   const handleAddRole = async () => {
     if (!newRole) {
@@ -368,20 +384,28 @@ const AdminKyc = () => {
   <Select
     labelId="user-type-label"
     name="role"
-    value={formData.role}
-    onChange={handleChange}
+    value={formData.role || ""} // Ensuring value is correctly set
+    onChange={(e) => {
+      const selectedRoleId = e.target.value;
+      console.log("Selected Role ID:", selectedRoleId); // Debugging
+      setFormData((prevData) => ({
+        ...prevData,
+        role: [selectedRoleId], // Correctly storing role_id
+      }));
+    }}
     displayEmpty
   >
     <MenuItem value="" disabled>
       Select User Type
     </MenuItem>
-    {roles.map((role, index) => (
-      <MenuItem key={index} value={role.id}>  {/* Use role.id instead of role.role_name */}
+    {roles.map((role) => (
+      <MenuItem key={role.role_id} value={role.role_id}>
         {role.role_name}
       </MenuItem>
     ))}
   </Select>
 </FormControl>
+
 
 
                   <IconButton color="primary" onClick={() => setOpen(true)}>
@@ -432,6 +456,23 @@ const AdminKyc = () => {
                   value={formData.added_by}
                   onChange={handleChange}
                 />
+              </Grid>
+              <Grid item xs={12} sm={4}>
+                <input
+                  accept="image/*"
+                  type="file"
+                  onChange={handleFileChange}
+                  style={{ display: "none" }}
+                  id="profile-image-upload"
+                />
+                <label htmlFor="profile-image-upload">
+                  <Button variant="outlined" component="span" color="primary">
+                    Upload Image
+                  </Button>
+                </label>
+                {formData.image && (
+                  <Typography variant="body2">{formData.image.name}</Typography>
+                )}
               </Grid>
             </Grid>
             <Divider sx={{ my: "10px", borderWidth: "0.5px" }} />

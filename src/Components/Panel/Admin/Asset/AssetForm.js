@@ -18,6 +18,7 @@ import {
   FormControlLabel,
 } from '@mui/material';
 import PartnerHeader from '../../../Shared/Partner/PartnerNavbar';
+import Header from '../../../Shared/Navbar/Navbar';
 
 function AdminAssetForm() {
   const [formData, setFormData] = useState({
@@ -29,25 +30,26 @@ function AdminAssetForm() {
     city: '',
     state: '',
     country: '',
-    postal_code: '',
+    postal_code: [],
     latitude: '',    // Default Hyderabad coordinates
     longitude: '',
     total_units: '',
+    total_price: [],
     available_units: '',
     area_sqft: '',
     price_per_sqft: '',
-    ownership_type: '',
+    ownership_type: [],
     rental_yield: '',
     expected_roi: '',
-    legal_status: '',
+    legal_status: [],
     regulatory_approvals: '',
     tax_identification_number: '',
-    amenities: '',
+    amenities: [],
     parking_spaces: '',
-    security_features: '',
+    security_features: [],
     furnished_status: '',
-    listing_status: '',
-    investors: '',         // Hardcoded for testing
+    listing_status: [],
+    investors: [],         // Hardcoded for testing
     agent: '',
     property_img: '',
     additional_images: '',
@@ -73,8 +75,8 @@ function AdminAssetForm() {
       }));
     }
 
-  
-    
+
+
 
     // Handle multiple file uploads
     if (name === 'additional_images' || name === 'legal_documents') {
@@ -99,39 +101,61 @@ function AdminAssetForm() {
     e.preventDefault();
     try {
       const formDataToSend = new FormData();
-  
+
       // Append normal form fields
       Object.keys(formData).forEach((key) => {
-        if (
-          key !== 'property_img' &&
-          key !== 'additional_images' &&
-          key !== 'legal_documents'
-        ) {
-          formDataToSend.append(key, formData[key]);
+        if (key !== 'property_img' && key !== 'additional_images' && key !== 'legal_documents') {
+          if (Array.isArray(formData[key])) {
+            formDataToSend.append(key, JSON.stringify(formData[key])); // Convert arrays to JSON
+          } else {
+            formDataToSend.append(key, formData[key]);
+          }
         }
       });
-  
+
       // Append files separately
       if (formData.property_img) {
         formDataToSend.append('property_img', formData.property_img);
       }
-  
       if (formData.additional_images.length > 0) {
         formData.additional_images.forEach((file, index) => {
           formDataToSend.append(`additional_images[${index}]`, file);
         });
       }
-  
       if (formData.legal_documents.length > 0) {
         formData.legal_documents.forEach((file, index) => {
           formDataToSend.append(`legal_documents[${index}]`, file);
         });
       }
-  
+
+      // Ensure postal_code is a string and within the limit
+      if (Array.isArray(formData.postal_code)) {
+        formDataToSend.set("postal_code", formData.postal_code[0].substring(0, 15));
+      }
+
+      // Ensure total_price is a number
+      if (Array.isArray(formData.total_price)) {
+        formDataToSend.set("total_price", Number(formData.total_price[0]) || 0);
+      }
+
+      // Ensure investors are valid IDs
+      if (Array.isArray(formData.investors)) {
+        const validInvestors = formData.investors.map(Number).filter((id) => !isNaN(id));
+        formDataToSend.set("investors", JSON.stringify(validInvestors));
+      }
+
+      // Ensure agent is a valid ID
+      if (Array.isArray(formData.agent)) {
+        const validAgent = Number(formData.agent[0]) || null;
+        if (validAgent) {
+          formDataToSend.set("agent", validAgent);
+        }
+      }
+
       const response = await axios.post('http://46.37.122.105:91/property/', formDataToSend, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
-  
+
       console.log('Submission successful:', response.data);
       alert('Property registered successfully!');
     } catch (error) {
@@ -139,10 +163,11 @@ function AdminAssetForm() {
       alert(`Submission failed: ${error.response?.data?.detail || error.message}`);
     }
   };
-  
+
+
   return (
     <>
-      <PartnerHeader />
+      <Header />
       <Container sx={{ mt: 4 }}>
         <Card sx={{ p: 4, mb: 4, boxShadow: 1, maxWidth: '80%', mx: 'auto' }}>
           <form onSubmit={handleSubmit}>
@@ -162,7 +187,7 @@ function AdminAssetForm() {
                       value={formData.property_id}
                       onChange={handleChange}
                       fullWidth
-                      required
+
                     />
                   </Grid>
                   <Grid item xs={12} md={6}>
@@ -172,7 +197,7 @@ function AdminAssetForm() {
                       value={formData.property_name}
                       onChange={handleChange}
                       fullWidth
-                      required
+
                     />
                   </Grid>
                   <Grid item xs={12} md={6}>
@@ -214,7 +239,7 @@ function AdminAssetForm() {
                       value={formData.location}
                       onChange={handleChange}
                       fullWidth
-                      required
+
                     />
                   </Grid>
                   <Grid item xs={6} md={3}>
@@ -224,7 +249,7 @@ function AdminAssetForm() {
                       value={formData.state}
                       onChange={handleChange}
                       fullWidth
-                      required
+
                     />
                   </Grid>
                   <Grid item xs={6} md={3}>
@@ -234,7 +259,7 @@ function AdminAssetForm() {
                       value={formData.country}
                       onChange={handleChange}
                       fullWidth
-                      required
+
                     />
                   </Grid>
                   <Grid item xs={6} md={3}>
@@ -244,7 +269,7 @@ function AdminAssetForm() {
                       value={formData.city}
                       onChange={handleChange}
                       fullWidth
-                      required
+
                     />
                   </Grid>
                   <Grid item xs={6} md={3}>
@@ -254,7 +279,7 @@ function AdminAssetForm() {
                       value={formData.postal_code}
                       onChange={handleChange}
                       fullWidth
-                      required
+
                     />
                   </Grid>
                   <Grid item xs={6} md={3}>
@@ -265,7 +290,7 @@ function AdminAssetForm() {
                       value={formData.latitude}
                       onChange={handleChange}
                       fullWidth
-                      required
+
                     />
                   </Grid>
                   <Grid item xs={6} md={3}>
@@ -276,7 +301,7 @@ function AdminAssetForm() {
                       value={formData.longitude}
                       onChange={handleChange}
                       fullWidth
-                      required
+
                     />
                   </Grid>
                 </Grid>
@@ -390,7 +415,7 @@ function AdminAssetForm() {
                       type="file"
                       name="legal_documents"
                       onChange={handleFileChange}
-                      required
+
                     />
                   </Grid>
 
