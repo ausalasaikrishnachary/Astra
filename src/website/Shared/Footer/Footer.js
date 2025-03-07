@@ -50,22 +50,6 @@ function Footer() {
             </ul>
           </div>
           <div className="footer-column">
-            <h4>About Us</h4>
-            <ul>
-              <li><a href="#">Astra Funds</a></li>
-              <li><a href="#">Deal-by-Deal</a></li>
-              <li><a href="#">Secondary Market</a></li>
-            </ul>
-          </div>
-          <div className="footer-column">
-            <h4>Properties</h4>
-            <ul>
-              <li><a href="#">The Astra Difference</a></li>
-              <li><a href="#">Acquisitions Lifecycle</a></li>
-              <li><a href="#">Asset Management Approach</a></li>
-            </ul>
-          </div>
-          <div className="footer-column">
             <h4>FAQ</h4>
             <ul>
               <li><a href="#">Insights</a></li>
