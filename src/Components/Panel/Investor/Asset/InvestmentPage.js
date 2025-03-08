@@ -1,130 +1,138 @@
 import React, { useState } from "react";
-import {
-  Box,
-  Typography,
-  Grid,
-  MenuItem,
-  Select,
-  TextField,
-  Button,
-} from "@mui/material";
-// import image4k from "./images/4kimage.jpg";
-import image4k from '../images/pic1.jpeg';
+import { Box, Typography, Grid, TextField, Button, Container, FormControlLabel, Checkbox } from "@mui/material";
 import InvestorHeader from "../../../Shared/Investor/InvestorNavbar";
 
-const InvestmentPage = () => {
-  const [investmentData, setInvestmentData] = useState({
-    asset: "",
-    shares: "",
-    nominee: "",
-    price: "",
-    description: "",
-    nomineeContact: "",
+const InvestmentForm = () => {
+  const [formData, setFormData] = useState({
+    investor: "",
+    property: "",
+    agent: "",
+    transaction_type: "purchase",
+    shares_purchased: "",
+    price_per_share: "",
+    total_amount: "",
+    ownership_percentage: "",
+    investment_period: "",
+    expected_roi: "",
+    payment_method: "",
+    transaction_reference: "",
+    currency: "USD",
+    tax_amount: "",
+    processing_fee: "",
+    discount_amount: "",
+    escrow_status: "pending",
+    commission_percentage: "",
+    commission_amount: "",
+    commission_paid_status: "pending",
+    commission_paid_date: "",
+    resale_status: "available",
+    resale_price: "",
+    resale_buyer: "",
+    remarks: "",
+    approval_status: "pending",
+    approved_by: "",
+    approval_date: "",
+    contract_signed: false,
   });
 
-  const assetDetails = {
-    location: "Downtown, NY",
-    investmentType: "Real Estate",
-    holdingPeriod: "5 Years",
-    projectedAnnualReturn: "15%",
-    propertyArea: "50,000 sq.ft",
-    rentalOccupancy: "95%",
-    leaseTenure: "10 years (Fixed)",
-    tenant: "Leading Manufacturing Firm",
-    propertyAge: "3 years",
-    exitStrategy: "Open market resale or REIT listing",
-    taxBenefits: "Depreciation claims & capital gains exemption",
-    managementFees: "1.5% annually",
-  };
-
-  const assetTransaction = {
-    assetId: "INV-001",
-    date: "2024-02-19",
-    assetName: "Luxury Villa",
-    creditDebit: "Credit",
-    type: "Investment",
-    amount: "$500,000",
-  };
-
   const handleChange = (e) => {
-    setInvestmentData({ ...investmentData, [e.target.name]: e.target.value });
+    const { name, value, type, checked } = e.target;
+    setFormData({
+      ...formData,
+      [name]: type === "checkbox" ? checked : value,
+    });
   };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+  
+    // Convert appropriate fields to numbers
+    const sanitizedData = {
+      ...formData,
+      shares_purchased: formData.shares_purchased ? Number(formData.shares_purchased) : 0,
+      price_per_share: formData.price_per_share ? Number(formData.price_per_share) : 0,
+      total_amount: formData.total_amount ? Number(formData.total_amount) : 0,
+      ownership_percentage: formData.ownership_percentage ? Number(formData.ownership_percentage) : 0,
+      investment_period: formData.investment_period ? Number(formData.investment_period) : 0,
+      expected_roi: formData.expected_roi ? Number(formData.expected_roi) : 0,
+      tax_amount: formData.tax_amount ? Number(formData.tax_amount) : 0,
+      processing_fee: formData.processing_fee ? Number(formData.processing_fee) : 0,
+      discount_amount: formData.discount_amount ? Number(formData.discount_amount) : 0,
+      commission_percentage: formData.commission_percentage ? Number(formData.commission_percentage) : 0,
+      commission_amount: formData.commission_amount ? Number(formData.commission_amount) : 0,
+      resale_price: formData.resale_price ? Number(formData.resale_price) : 0,
+      commission_paid_date: formData.commission_paid_date || null, // Ensure empty date is sent as null
+      approval_date: formData.approval_date || null,
+    };
+  
+    // Validate required fields
+    if (!sanitizedData.investor || !sanitizedData.property || !sanitizedData.transaction_type) {
+      alert("Investor, Property, and Transaction Type are required fields.");
+      return;
+    }
+  
+    try {
+      const response = await fetch("http://46.37.122.105:91/transactions/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(sanitizedData),
+      });
+  
+      if (response.ok) {
+        const result = await response.json();
+        alert("Success: Transaction submitted successfully!");
+        console.log("Success:", result);
+      } else {
+        const errorData = await response.json();
+        alert(`Failed: ${errorData.message || "Unable to submit the transaction."}`);
+        console.error("Error response:", errorData);
+      }
+    } catch (error) {
+      alert("Error: Something went wrong. Please try again.");
+      console.error("Error:", error);
+    }
+  };
+  
+  
 
   return (
     <>
       <InvestorHeader />
-      <Box sx={{ width: "80%", margin: "0 auto", padding: 3 }}>
-        <Typography variant="h4" gutterBottom>
-          Select Investment to Buy
+      <Container maxWidth="xl" sx={{ padding: 3 }}>
+        <Typography variant="h4" gutterBottom textAlign="center">
+          Investment Transaction
         </Typography>
-
-        <Grid container spacing={4}>
-          {/* Image & Asset Details */}
-          <Grid item xs={12} md={6}>
-            <img
-              src={image4k}
-              alt="Investment"
-              style={{ width: "100%", borderRadius: 8, height: "250px" }}
-            />
-
-            <Box sx={{ marginTop: 2 }}>
-              {Object.entries(assetDetails).map(([key, value]) => (
-                <Typography key={key} variant="body1" paragraph>
-                  <strong>{key.replace(/([A-Z])/g, " $1").trim()}:</strong> {value}
-                </Typography>
-              ))}
-            </Box>
+        <Box component="form" onSubmit={handleSubmit} sx={{ width: "100%", }}>
+          <Grid container spacing={2}>
+            {Object.keys(formData).map((key) => (
+              <Grid item xs={12} md={3} key={key}>
+                {typeof formData[key] === "boolean" ? (
+                  <FormControlLabel
+                    control={<Checkbox name={key} checked={formData[key]} onChange={handleChange} />}
+                    label={key.replace(/_/g, " ")}
+                  />
+                ) : (
+                  <TextField
+                    fullWidth
+                    label={key.replace(/_/g, " ")}
+                    name={key}
+                    value={formData[key]}
+                    onChange={handleChange}
+                    variant="outlined"
+                  />
+                )}
+              </Grid>
+            ))}
           </Grid>
-
-          {/* Form & Transaction Details */}
-          <Grid item xs={12} md={6}>
-            <Grid container spacing={2}>
-              <Grid item xs={6}>
-                <Select fullWidth name="asset" value={investmentData.asset} onChange={handleChange} displayEmpty>
-                  <MenuItem value="" disabled>
-                    Select Asset
-                  </MenuItem>
-                  <MenuItem value="Luxury Villa">Luxury Villa</MenuItem>
-                </Select>
-              </Grid>
-              <Grid item xs={6}>
-                <TextField fullWidth label="No of Shares" name="shares" value={investmentData.shares} onChange={handleChange} />
-              </Grid>
-              <Grid item xs={6}>
-                <TextField fullWidth label="Nominee" name="nominee" value={investmentData.nominee} onChange={handleChange} />
-              </Grid>
-              <Grid item xs={6}>
-                <TextField fullWidth label="Price" name="price" value={investmentData.price} onChange={handleChange} />
-              </Grid>
-              <Grid item xs={6}>
-                <TextField fullWidth label="Description" name="description" multiline rows={2} value={investmentData.description} onChange={handleChange} />
-              </Grid>
-              <Grid item xs={6}>
-                <TextField fullWidth label="Nominee Contact" name="nomineeContact" value={investmentData.nomineeContact} onChange={handleChange} />
-              </Grid>
-            </Grid>
-
-            <Box sx={{ marginTop: 3, padding: 2, borderRadius: 2 }}>
-              {Object.entries(assetTransaction).map(([key, value]) => (
-                <Typography key={key} variant="body1" paragraph>
-                  <strong>{key.replace(/([A-Z])/g, " $1").trim()}:</strong> {value}
-                </Typography>
-              ))}
-            </Box>
-
-            <Box sx={{ display: "flex", justifyContent: "flex-start", gap: 2, marginTop: 3 }}>
-              <Button variant="contained" sx={{ backgroundColor: "#8FD14F", color: "white" }}>
-                Confirm
-              </Button>
-              <Button variant="contained" sx={{ backgroundColor: "#185519", color: "white" }}>
-                Cancel
-              </Button>
-            </Box>
-          </Grid>
-        </Grid>
-      </Box>
+          <Box sx={{ marginTop: 3,  }}>
+            <Button type="submit" variant="contained" sx={{  color: "white", width: "200px" }}>
+              Submit
+            </Button>
+          </Box>
+        </Box>
+      </Container>
     </>
   );
 };
 
-export default InvestmentPage;
+export default InvestmentForm;
