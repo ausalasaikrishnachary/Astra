@@ -2,12 +2,12 @@ import React, { useState } from "react";
 import { Box, Typography, Grid, TextField, Button, Container, FormControlLabel, Checkbox } from "@mui/material";
 import InvestorHeader from "../../../Shared/Investor/InvestorNavbar";
 
-const InvestmentForm = () => {
+const SellAsset = () => {
   const [formData, setFormData] = useState({
     investor: "",
     property: "",
     agent: "",
-    transaction_type: "Purchase",
+    transaction_type: "Sell",
     shares_purchased: "",
     price_per_share: "",
     total_amount: "",
@@ -100,7 +100,7 @@ const InvestmentForm = () => {
       <InvestorHeader />
       <Container maxWidth="xl" sx={{ padding: 3 }}>
         <Typography variant="h4" gutterBottom textAlign="center">
-          Buy Units
+          Sell Units
         </Typography>
         <Box component="form" onSubmit={handleSubmit} sx={{ width: "100%", }}>
           <Grid container spacing={2}>
@@ -135,4 +135,4 @@ const InvestmentForm = () => {
   );
 };
 
-export default InvestmentForm;
+export default SellAsset;

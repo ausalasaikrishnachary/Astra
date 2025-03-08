@@ -18,6 +18,7 @@ import {
   ButtonGroup,
 } from '@mui/material';
 import InvestorHeader from '../../../Shared/Investor/InvestorNavbar';
+import { useNavigate } from 'react-router-dom';
 
 const rows = [
   { id: 1, assetId: 'A123', date: '2025-02-18', assetName: 'Asset A', description: 'Asset Description A', nomineeName: 'Nominee A', transactionId: 'TX12345', amount: 1000 },
@@ -31,6 +32,7 @@ const BuyShares = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(0); // Page index starts from 0
   const rowsPerPage = 3; // Number of rows per page
+  const navigate = useNavigate();
 
   const handleSortChange = (event) => {
     setSortBy(event.target.value);
@@ -75,6 +77,10 @@ const BuyShares = () => {
     currentPage * rowsPerPage,
     (currentPage + 1) * rowsPerPage
   );
+
+  const handleClick = () => {
+    navigate('/i-asset');
+  };
 
   return (
     <>
@@ -131,6 +137,7 @@ const BuyShares = () => {
                 variant="contained"
                 fullWidth
                 sx={{ width: '200px', marginLeft: '270px', color: 'white', backgroundColor: '#000' }}
+                onClick={handleClick}
               >
                 Sell Units
               </Button>

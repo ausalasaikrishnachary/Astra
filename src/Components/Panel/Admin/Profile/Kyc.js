@@ -21,7 +21,9 @@ import {
   FormControlLabel,
   Divider,
   Typography,
+  InputAdornment
 } from "@mui/material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 import AddIcon from "@mui/icons-material/Add";
 import Header from "../../../Shared/Navbar/Navbar";
 
@@ -61,6 +63,11 @@ const AdminKyc = () => {
   const [roles, setRoles] = useState([]);
   const [open, setOpen] = useState(false);
   const [newRole, setNewRole] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleTogglePassword = () => {
+    setShowPassword((prev) => !prev);
+  };
 
   useEffect(() => {
     const fetchRoles = async () => {
@@ -136,7 +143,7 @@ const AdminKyc = () => {
     formDataToSend.append("risk_profile", formData.risk_profile);
     formDataToSend.append("expected_investment_amount", formData.expected_investment_amount);
     formDataToSend.append("added_by", "admin");
-    console.log("roleid :",formData.role)
+    console.log("roleid :", formData.role)
     // Append the image file only if it's selected
     if (formData.image) {
       formDataToSend.append("image", formData.image);
@@ -310,12 +317,11 @@ const AdminKyc = () => {
               <Grid item xs={12} sm={4}>
                 <TextField
                   fullWidth
-                  name="email"
-                  placeholder="Email"
+                  name="gender"
+                  placeholder="Gender"
                   variant="outlined"
                   size="small"
-                  type="email"
-                  value={formData.email}
+                  value={formData.gender}
                   onChange={handleChange}
                 />
               </Grid>
@@ -335,23 +341,13 @@ const AdminKyc = () => {
                 <TextField
                   fullWidth
                   name="date_of_birth"
+                  label="DOB"
                   placeholder="Date of Birth"
                   variant="outlined"
                   size="small"
                   type="date"
                   InputLabelProps={{ shrink: true }}
                   value={formData.date_of_birth}
-                  onChange={handleChange}
-                />
-              </Grid>
-              <Grid item xs={12} sm={4}>
-                <TextField
-                  fullWidth
-                  name="gender"
-                  placeholder="Gender"
-                  variant="outlined"
-                  size="small"
-                  value={formData.gender}
                   onChange={handleChange}
                 />
               </Grid>
@@ -369,42 +365,63 @@ const AdminKyc = () => {
               <Grid item xs={12} sm={4}>
                 <TextField
                   fullWidth
-                  name="password"
-                  placeholder="Password"
+                  name="email"
+                  placeholder="Email"
                   variant="outlined"
                   size="small"
-                  type="password"
-                  value={formData.password}
+                  type="email"
+                  value={formData.email}
                   onChange={handleChange}
                 />
               </Grid>
               <Grid item xs={12} sm={4}>
+                <TextField
+                  fullWidth
+                  name="password"
+                  placeholder="Password"
+                  variant="outlined"
+                  size="small"
+                  type={showPassword ? "text" : "password"}
+                  value={formData.password}
+                  onChange={handleChange}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton onClick={handleTogglePassword} edge="end">
+                          {showPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+              </Grid>
+              <Grid item xs={12} sm={4}>
                 <Box display="flex" alignItems="center" gap={1}>
-                <FormControl fullWidth size="small">
-  <Select
-    labelId="user-type-label"
-    name="role"
-    value={formData.role || ""} // Ensuring value is correctly set
-    onChange={(e) => {
-      const selectedRoleId = e.target.value;
-      console.log("Selected Role ID:", selectedRoleId); // Debugging
-      setFormData((prevData) => ({
-        ...prevData,
-        role: [selectedRoleId], // Correctly storing role_id
-      }));
-    }}
-    displayEmpty
-  >
-    <MenuItem value="" disabled>
-      Select User Type
-    </MenuItem>
-    {roles.map((role) => (
-      <MenuItem key={role.role_id} value={role.role_id}>
-        {role.role_name}
-      </MenuItem>
-    ))}
-  </Select>
-</FormControl>
+                  <FormControl fullWidth size="small">
+                    <Select
+                      labelId="user-type-label"
+                      name="role"
+                      value={formData.role || ""} // Ensuring value is correctly set
+                      onChange={(e) => {
+                        const selectedRoleId = e.target.value;
+                        console.log("Selected Role ID:", selectedRoleId); // Debugging
+                        setFormData((prevData) => ({
+                          ...prevData,
+                          role: [selectedRoleId], // Correctly storing role_id
+                        }));
+                      }}
+                      displayEmpty
+                    >
+                      <MenuItem value="" disabled>
+                        Select User Type
+                      </MenuItem>
+                      {roles.map((role) => (
+                        <MenuItem key={role.role_id} value={role.role_id}>
+                          {role.role_name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
 
 
 
@@ -466,7 +483,7 @@ const AdminKyc = () => {
                   id="profile-image-upload"
                 />
                 <label htmlFor="profile-image-upload">
-                  <Button variant="outlined" component="span" color="primary">
+                  <Button label="" variant="outlined" component="span" color="primary">
                     Upload Image
                   </Button>
                 </label>
