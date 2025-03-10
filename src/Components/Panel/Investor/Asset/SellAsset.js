@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Box, Typography, Grid, TextField, Button, Container, FormControlLabel, Checkbox } from "@mui/material";
 import InvestorHeader from "../../../Shared/Investor/InvestorNavbar";
+import { useLocation } from "react-router-dom";
 
 const SellAsset = () => {
   const [formData, setFormData] = useState({
@@ -35,6 +36,40 @@ const SellAsset = () => {
     contract_signed: false,
   });
 
+  const location = useLocation();
+  console.log("Current location:", location);
+  
+  const queryParams = new URLSearchParams(location.search);
+  const propertyId = queryParams.get("property_id");
+  console.log("Property ID:", propertyId);
+  
+
+  useEffect(() => {
+    console.log("inside useffect")
+    if (propertyId) {
+      fetch(`http://46.37.122.105:91/property/${propertyId}`)
+        .then((response) => response.json())
+        
+        .then((data) => {
+          console.log(data)
+          if (data) {
+            setFormData((prevData) => ({
+              ...prevData,
+              property: data.property_id || "",
+              agent: data.agent || "",
+              total_amount: data.total_price?.toString() || "",
+              price_per_share: data.price_per_sqft?.toString() || "",
+              expected_roi: data.expected_roi?.toString() || "",
+              ownership_percentage: data.total_units
+                ? ((10 / data.total_units) * 100).toFixed(2).toString()
+                : "",
+            }));
+          }
+        })
+        .catch((error) => console.error("Error fetching property:", error));
+    }
+  }, [propertyId]);
+
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData({
@@ -45,39 +80,37 @@ const SellAsset = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
-    // Convert appropriate fields to numbers
+
     const sanitizedData = {
       ...formData,
-      shares_purchased: formData.shares_purchased ? Number(formData.shares_purchased) : 0,
-      price_per_share: formData.price_per_share ? Number(formData.price_per_share) : 0,
-      total_amount: formData.total_amount ? Number(formData.total_amount) : 0,
-      ownership_percentage: formData.ownership_percentage ? Number(formData.ownership_percentage) : 0,
-      investment_period: formData.investment_period ? Number(formData.investment_period) : 0,
-      expected_roi: formData.expected_roi ? Number(formData.expected_roi) : 0,
-      tax_amount: formData.tax_amount ? Number(formData.tax_amount) : 0,
-      processing_fee: formData.processing_fee ? Number(formData.processing_fee) : 0,
-      discount_amount: formData.discount_amount ? Number(formData.discount_amount) : 0,
-      commission_percentage: formData.commission_percentage ? Number(formData.commission_percentage) : 0,
-      commission_amount: formData.commission_amount ? Number(formData.commission_amount) : 0,
-      resale_price: formData.resale_price ? Number(formData.resale_price) : 0,
-      commission_paid_date: formData.commission_paid_date || null, // Ensure empty date is sent as null
+      shares_purchased: Number(formData.shares_purchased) || 0,
+      price_per_share: Number(formData.price_per_share) || 0,
+      total_amount: Number(formData.total_amount) || 0,
+      ownership_percentage: Number(formData.ownership_percentage) || 0,
+      investment_period: Number(formData.investment_period) || 0,
+      expected_roi: Number(formData.expected_roi) || 0,
+      tax_amount: Number(formData.tax_amount) || 0,
+      processing_fee: Number(formData.processing_fee) || 0,
+      discount_amount: Number(formData.discount_amount) || 0,
+      commission_percentage: Number(formData.commission_percentage) || 0,
+      commission_amount: Number(formData.commission_amount) || 0,
+      resale_price: Number(formData.resale_price) || 0,
+      commission_paid_date: formData.commission_paid_date || null,
       approval_date: formData.approval_date || null,
     };
-  
-    // Validate required fields
+
     if (!sanitizedData.investor || !sanitizedData.property || !sanitizedData.transaction_type) {
       alert("Investor, Property, and Transaction Type are required fields.");
       return;
     }
-  
+
     try {
       const response = await fetch("http://46.37.122.105:91/transactions/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(sanitizedData),
       });
-  
+
       if (response.ok) {
         const result = await response.json();
         alert("Success: Transaction submitted successfully!");
@@ -92,8 +125,6 @@ const SellAsset = () => {
       console.error("Error:", error);
     }
   };
-  
-  
 
   return (
     <>
@@ -102,7 +133,7 @@ const SellAsset = () => {
         <Typography variant="h4" gutterBottom textAlign="center">
           Sell Units
         </Typography>
-        <Box component="form" onSubmit={handleSubmit} sx={{ width: "100%", }}>
+        <Box component="form" onSubmit={handleSubmit} sx={{ width: "100%" }}>
           <Grid container spacing={2}>
             {Object.keys(formData).map((key) => (
               <Grid item xs={12} md={3} key={key}>
@@ -124,8 +155,8 @@ const SellAsset = () => {
               </Grid>
             ))}
           </Grid>
-          <Box sx={{ marginTop: 3,  }}>
-            <Button type="submit" variant="contained" sx={{  color: "white", width: "200px" }}>
+          <Box sx={{ marginTop: 3 }}>
+            <Button type="submit" variant="contained" sx={{ color: "white", width: "200px" }}>
               Submit
             </Button>
           </Box>

@@ -1355,7 +1355,7 @@ const AssetDashboard = () => {
                 }}
               >
                 <Box sx={{ position: 'relative' }}>
-                  {console.log(`http://46.37.122.105:91${asset.property_img}`)}
+                  {/* {console.log(`http://46.37.122.105:91${asset.property_img}`)} */}
                   <CardMedia
                     component="img"
                     image={`http://46.37.122.105:91${asset.property_img}`}
@@ -1469,7 +1469,7 @@ const AssetDashboard = () => {
                           variant="contained"
                           color="success"
                           fullWidth
-                          onClick={() => navigate("/i-investment-page")}
+                          onClick={() => navigate(`/i-investment-page?property_id=${asset.property_id}`)}
                         >
                           INVEST NOW
                         </Button>
