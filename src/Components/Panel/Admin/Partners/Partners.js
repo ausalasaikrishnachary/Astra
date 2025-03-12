@@ -38,27 +38,22 @@ const Tmanagement = () => {
   const [sortBy, setSortBy] = useState("Latest");
   const [searchTerm, setSearchTerm] = useState("");
 
+  // Fetch Users
   useEffect(() => {
     const fetchUsers = async () => {
       try {
         const response = await fetch(API_URL);
         if (!response.ok) throw new Error("Failed to fetch data");
-        
+
         const data = await response.json();
-        
-        // Filter users with roles containing either 2 or 4
-        const filteredUsers = data.filter(user => 
-          user.roles.includes(2) || user.roles.includes(4)
-        );
-  
-        setUsers(filteredUsers); // Set Filtered Users Data
+        setUsers(data); // Set user data
       } catch (error) {
         setError(error.message);
       } finally {
         setLoading(false);
       }
     };
-  
+
     fetchUsers();
   }, []);
   

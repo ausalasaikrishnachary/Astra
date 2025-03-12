@@ -32,6 +32,7 @@ export default function Header() {
     { label: 'Transactions', path: '/a-transactionmoniter' },
     { label: 'Investors', path: '/a-investormanagement' },
     { label: 'Partners', path: '/a-partners' },
+    { label: 'All Users', path: '/a-users' },
     { label: 'KYC', path: '/a-profiledetails' },
   ];
 

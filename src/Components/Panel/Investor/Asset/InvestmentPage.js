@@ -10,41 +10,25 @@ import {
   Checkbox,
 } from "@mui/material";
 import InvestorHeader from "../../../Shared/Investor/InvestorNavbar";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const InvestmentForm = () => {
   const [formData, setFormData] = useState({
     investor: "",
-    property_name:"",
-    property: "",
+    property_name: "",
+    property_type: "",
+    property_value: "",
+    total_units: "",
+    price_per_unit: "",
     agent: "",
+    agent_name: "",
     transaction_type: "Purchase",
-    no_of_shares: "",
-    price_per_share: "",
-    total_amount: "",
-    ownership_percentage: "",
+    available_units: "",
+    no_of_units_to_be_purchased: "",
     investment_period: "",
-    expected_roi: "",
-    payment_method: "",
-    transaction_reference: "",
-    currency: "USD",
-    tax_amount: "",
-    processing_fee: "",
-    discount_amount: "",
-    escrow_status: "pending",
-    commission_percentage: "",
-    commission_amount: "",
-    commission_paid_status: "pending",
-    commission_paid_date: "",
-    resale_status: "available",
-    resale_price: "",
-    resale_buyer: "",
-    remarks: "",
-    approval_status: "pending",
-    approved_by: "",
-    approval_date: "",
-    contract_signed: false,
+    total_value: ""
   });
+  const navigate = useNavigate();
 
   const hiddenFields = [
     "investor",
@@ -54,8 +38,6 @@ const InvestmentForm = () => {
     "commission_paid_date",
     "approval_date",
     "remarks",
-    "commission_amount",
-    "commission_percentage",
     "commission_paid_status",
     "commission_paid_date",
     "resale_status",
@@ -64,7 +46,10 @@ const InvestmentForm = () => {
     "resale_price",
     "contract_signed",
     "approved_by",
-    "approval_date"
+    "approval_date",
+    "expected_roi",
+    "agent_name",
+    "investment_period"
   ];
 
   // Get property_id from URL
@@ -78,30 +63,56 @@ const InvestmentForm = () => {
   // Fetch property details when propertyId is available
   useEffect(() => {
     if (propertyId) {
-      console.log("Fetching property details for ID:", `http://46.37.122.105:91/property/${propertyId}/`);
-
       fetch(`http://46.37.122.105:91/property/${propertyId}/`)
         .then((response) => response.json())
         .then((data) => {
-          console.log("Fetched Data:", data); // Debugging output
+          console.log("Fetched Data:", data);
           if (data) {
-            setFormData((prevData) => ({
-              ...prevData,
-              property_name:data.property_name || "",
-              property: data.property_id || "",
-              agent: data.agent || "",
-              // total_amount: data.total_price?.toString() || "",
-              price_per_share: data.price_per_sqft?.toString() || "",
-              expected_roi: data.expected_roi?.toString() || "",
-              ownership_percentage: data.total_units
-                ? ((10 / data.total_units) * 100).toFixed(2).toString()
-                : "",
-            }));
+            setFormData((prevData) => {
+              const updatedData = {
+                ...prevData,
+                property_name: data.property_name || "",
+                property_type: data.property_type || "",
+                agent: data.agent || "",
+                available_units: data.available_units || "0",
+                property_value: data.property_value || "",
+                total_units: data.total_units || "",
+                total_value: data.total_value || "",
+                
+              };
+  
+              // Ensure price per unit is calculated immediately after fetching data
+              if (updatedData.property_value && updatedData.total_units) {
+                updatedData.price_per_unit = (Number(updatedData.property_value) / Number(updatedData.total_units)).toFixed(2);
+              }
+  
+              return updatedData;
+            });
           }
         })
         .catch((error) => console.error("Error fetching property:", error));
     }
   }, [propertyId]);
+  
+
+  useEffect(() => {
+    if (formData.property_value && formData.total_units) {
+      setFormData((prevData) => ({
+        ...prevData,
+        price_per_unit: (Number(prevData.property_value) / Number(prevData.total_units)).toFixed(2),
+
+      }));
+    }
+  }, [formData.property_value, formData.total_units]);
+
+  useEffect(() => {
+    if (formData.price_per_unit && formData.no_of_units_to_be_purchased) {
+      setFormData((prevData) => ({
+        ...prevData,
+        total_value: (Number(formData.price_per_unit) * Number(formData.no_of_units_to_be_purchased)).toFixed(2),
+      }));
+    }
+  }, [formData.price_per_unit, formData.no_of_units_to_be_purchased]);
 
   // Handle input changes
   const handleChange = (e) => {
@@ -113,18 +124,21 @@ const InvestmentForm = () => {
   };
 
   // Form submission handler
+  // Form submission handler
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     // Convert numeric values
     const sanitizedData = {
       ...formData,
-      shares_purchased: Number(formData.no_of_shares) || 0,
-      price_per_share: Number(formData.price_per_share) || 0,
-      total_amount: Number(formData.total_amount) || 0,
+      
+      property_id:propertyId,
+      available_units: Number(formData.available_units) || 0,
+      price_per_unit: Number(formData.price_per_unit) || 0,
+      total_amount: Number(formData.property_value) || 0,
+      purchased_units: Number(formData.no_of_units_to_be_purchased) || 0,
       ownership_percentage: Number(formData.ownership_percentage) || 0,
       investment_period: Number(formData.investment_period) || 0,
-      expected_roi: Number(formData.expected_roi) || 0,
       tax_amount: Number(formData.tax_amount) || 0,
       processing_fee: Number(formData.processing_fee) || 0,
       discount_amount: Number(formData.discount_amount) || 0,
@@ -132,16 +146,11 @@ const InvestmentForm = () => {
       commission_amount: Number(formData.commission_amount) || 0,
       resale_price: Number(formData.resale_price) || 0,
       commission_paid_date: formData.commission_paid_date || null,
-      approval_date: formData.approval_date || null,
+
     };
 
-    // Validate required fields
-    if (!sanitizedData.investor || !sanitizedData.property || !sanitizedData.transaction_type) {
-      alert("Investor, Property, and Transaction Type are required fields.");
-      return;
-    }
-
     try {
+      // Step 1: Submit the transaction
       const response = await fetch("http://46.37.122.105:91/transactions/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -151,7 +160,34 @@ const InvestmentForm = () => {
       if (response.ok) {
         const result = await response.json();
         alert("Success: Transaction submitted successfully!");
+        navigate("/i-buyunits");
         console.log("Success:", result);
+
+        // Step 2: Update available_units after a successful transaction
+        if (propertyId) {
+          const updatedUnits = Math.max(
+            Number(formData.available_units) - Number(formData.no_of_units_to_be_purchased),
+            0
+          ); // Ensure it doesn't go negative
+          
+          // if (updatedUnits == 0) {
+          //   updatedUnits = 0;
+          // }
+
+          const updateResponse = await fetch(`http://46.37.122.105:91/property/${propertyId}/`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ available_units: updatedUnits }),
+          });
+
+          if (updateResponse.ok) {
+            console.log("Property available units updated successfully!");
+          } else {
+            console.error("Failed to update available units.");
+          }
+        }
+
+        
       } else {
         const errorData = await response.json();
         alert(`Failed: ${errorData.message || "Unable to submit the transaction."}`);
@@ -162,6 +198,7 @@ const InvestmentForm = () => {
       console.error("Error:", error);
     }
   };
+
 
 
 
@@ -198,7 +235,9 @@ const InvestmentForm = () => {
                       onChange={handleChange}
                       variant="outlined"
                       InputProps={{
-                        readOnly: ["property", ].includes(key),
+                        readOnly: ["property_name", "property_type", "property_value", "total_units", "available_units", "price_per_unit", "total_value"].includes(
+                          key
+                        ),
                       }}
                     />
 

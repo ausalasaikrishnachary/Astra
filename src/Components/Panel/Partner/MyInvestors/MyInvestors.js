@@ -46,17 +46,14 @@ const Tmanagement = () => {
         if (!response.ok) throw new Error("Failed to fetch data");
 
         const data = await response.json();
-
-        // Filter users where roles contain 3
-        const filteredUsers = data.filter(user => user.roles.includes(3));
-
-        setUsers(filteredUsers);
+        setUsers(data); // Set user data
       } catch (error) {
         setError(error.message);
       } finally {
         setLoading(false);
       }
     };
+
     fetchUsers();
   }, []);
 
@@ -71,13 +68,11 @@ const Tmanagement = () => {
     { field: "phone", headerName: "Phone", flex: 1, minWidth: 150 },
     { field: "dob", headerName: "DOB", flex: 1, minWidth: 150 },
     { field: "gender", headerName: "Gender", flex: 1, minWidth: 120 },
-    // { field: "password", headerName: "Password", flex: 1, minWidth: 120 },
     { field: "kyc_status", headerName: "KYC Status", flex: 1, minWidth: 130 },
     { field: "account_holder_name", headerName: "Bank Account Holder", flex: 1.5, minWidth: 200 },
     { field: "bank_name", headerName: "Bank Name", flex: 1.5, minWidth: 180 },
     { field: "ifsc_code", headerName: "IFSC Code", flex: 1, minWidth: 150 },
-    { field: "nominee_name", headerName: "Nominee", flex: 1, minWidth: 150 },
-    { field: "nominee_relationship", headerName: "Nominee Relation", flex: 1, minWidth: 150 },
+    { field: "reference_to", headerName: "Reference To", flex: 1, minWidth: 150 },
     { field: "status", headerName: "Status", flex: 1, minWidth: 150, 
       renderCell: (params) => (
         <Typography sx={{ color: getStatusColor(params.value) }}>

@@ -34,7 +34,7 @@ const AdminKyc = () => {
     first_name: "",
     last_name: "",
     email: "",
-    phone: "",
+    phone_number: "",
     full_name: "",
     date_of_birth: "",
     gender: "",
@@ -53,7 +53,7 @@ const AdminKyc = () => {
     branch_name: "",
     account_number: "",
     ifsc_code: "",
-    nominee_name: "",
+    reference_to: "",
     nominee_relationship: "",
     nominee_phone: "",
     nominee_email: "",
@@ -119,14 +119,14 @@ const AdminKyc = () => {
     formDataToSend.append("first_name", first_name);
     formDataToSend.append("last_name", last_name);
     formDataToSend.append("email", formData.email);
-    formDataToSend.append("phone", formData.phone);
-    formDataToSend.append("dob", formData.date_of_birth);
+    formDataToSend.append("phone_number", formData.phone);
+    formDataToSend.append("date_of_birth", formData.date_of_birth);
     formDataToSend.append("gender", formData.gender);
     formDataToSend.append("address", formData.address);
     formDataToSend.append("city", formData.city);
     formDataToSend.append("state", formData.state);
     formDataToSend.append("country", formData.country);
-    formDataToSend.append("postal_code", formData.postal_code);
+    formDataToSend.append("pin_code", formData.postal_code);
     formDataToSend.append("status", formData.status);
     formDataToSend.append("pan_number", formData.pan_number);
     formDataToSend.append("aadhaar_number", formData.aadhaar_number);
@@ -136,9 +136,9 @@ const AdminKyc = () => {
     formDataToSend.append("branch_name", formData.branch_name);
     formDataToSend.append("account_number", formData.account_number);
     formDataToSend.append("ifsc_code", formData.ifsc_code);
-    formDataToSend.append("nominee_name", formData.nominee_name);
-    formDataToSend.append("nominee_relationship", formData.nominee_relationship);
-    formDataToSend.append("nominee_dob", formData.nominee_dob);
+    formDataToSend.append("reference_to", formData.reference_to);
+    // formDataToSend.append("nominee_relationship", formData.nominee_relationship);
+    // formDataToSend.append("nominee_dob", formData.nominee_dob);
     formDataToSend.append("investment_type", formData.investment_type);
     formDataToSend.append("risk_profile", formData.risk_profile);
     formDataToSend.append("expected_investment_amount", formData.expected_investment_amount);
@@ -181,7 +181,7 @@ const AdminKyc = () => {
           branch_name: "",
           account_number: "",
           ifsc_code: "",
-          nominee_name: "",
+          reference_to: "",
           nominee_relationship: "",
           nominee_dob: "",
           investment_type: "",
@@ -395,62 +395,7 @@ const AdminKyc = () => {
                   }}
                 />
               </Grid>
-              <Grid item xs={12} sm={4}>
-                <Box display="flex" alignItems="center" gap={1}>
-                  <FormControl fullWidth size="small">
-                    <Select
-                      labelId="user-type-label"
-                      name="role"
-                      value={formData.role || ""} // Ensuring value is correctly set
-                      onChange={(e) => {
-                        const selectedRoleId = e.target.value;
-                        console.log("Selected Role ID:", selectedRoleId); // Debugging
-                        setFormData((prevData) => ({
-                          ...prevData,
-                          role: [selectedRoleId], // Correctly storing role_id
-                        }));
-                      }}
-                      displayEmpty
-                    >
-                      <MenuItem value="" disabled>
-                        Select User Type
-                      </MenuItem>
-                      {roles.map((role) => (
-                        <MenuItem key={role.role_id} value={role.role_id}>
-                          {role.role_name}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
 
-
-
-                  <IconButton color="primary" onClick={() => setOpen(true)}>
-                    <AddIcon />
-                  </IconButton>
-
-                  <Dialog open={open} onClose={() => setOpen(false)}>
-                    <DialogTitle>Add New Role</DialogTitle>
-                    <DialogContent>
-                      <TextField
-                        fullWidth
-                        size="small"
-                        label="Enter Role"
-                        value={newRole}
-                        onChange={(e) => setNewRole(e.target.value)}
-                      />
-                    </DialogContent>
-                    <DialogActions>
-                      <Button onClick={() => setOpen(false)} color="secondary">
-                        Cancel
-                      </Button>
-                      <Button variant="contained" color="primary" onClick={handleAddRole}>
-                        Add Role
-                      </Button>
-                    </DialogActions>
-                  </Dialog>
-                </Box>
-              </Grid>
               <Grid item xs={12} sm={4}>
                 <TextField
                   fullWidth
@@ -492,7 +437,7 @@ const AdminKyc = () => {
                 )}
               </Grid>
             </Grid>
-            <Divider sx={{ my: "10px", borderWidth: "0.5px" }} />
+
 
             {/* Address Details */}
             <Typography
@@ -563,7 +508,7 @@ const AdminKyc = () => {
               </Grid>
             </Grid>
 
-            <Divider sx={{ my: "10px", borderWidth: "0.5px" }} />
+
             {/* Banking Details */}
             <Typography
               variant="h6"
@@ -625,10 +570,10 @@ const AdminKyc = () => {
                 />
               </Grid>
             </Grid>
-            <Divider sx={{ my: "10px", borderWidth: "0.5px" }} />
+
 
             {/* Investment Details */}
-            <Typography
+            {/* <Typography
               variant="h6"
               sx={{
                 fontWeight: "bold",
@@ -664,7 +609,7 @@ const AdminKyc = () => {
                 />
               </Grid>
             </Grid>
-            <Divider sx={{ my: "10px", borderWidth: "0.5px" }} />
+      
 
             {/* Nominee Details */}
             <Typography
@@ -675,18 +620,18 @@ const AdminKyc = () => {
                 marginTop: "15px",
               }}
             >
-              Nominee Details
+              Nominee
             </Typography>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={4}>
                 <TextField
                   fullWidth
-                  placeholder="Nominee Name"
+                  placeholder="Reference to"
                   variant="outlined"
                   size="small"
                 />
               </Grid>
-              <Grid item xs={12} sm={4}>
+              {/* <Grid item xs={12} sm={4}>
                 <TextField
                   fullWidth
                   placeholder="Nominee Relationship"
@@ -703,9 +648,9 @@ const AdminKyc = () => {
                   type="date"
                   InputLabelProps={{ shrink: true }}
                 />
-              </Grid>
+              </Grid> */}
             </Grid>
-            <Divider sx={{ my: "10px", borderWidth: "0.5px" }} />
+         
 
             {/* KYC Verification */}
             <Typography
@@ -744,7 +689,7 @@ const AdminKyc = () => {
                 </Button>
               </Grid>
             </Grid>
-            <Divider sx={{ my: "10px", borderWidth: "0.5px" }} />
+            
 
             <Grid
               container

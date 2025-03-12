@@ -45,17 +45,14 @@ const Tmanagement = () => {
         if (!response.ok) throw new Error("Failed to fetch data");
 
         const data = await response.json();
-
-        // Filter users where roles contain 3
-        const filteredUsers = data.filter(user => user.roles.includes(3));
-
-        setUsers(filteredUsers);
+        setUsers(data); // Set user data
       } catch (error) {
         setError(error.message);
       } finally {
         setLoading(false);
       }
     };
+
     fetchUsers();
   }, []);
 

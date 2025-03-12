@@ -22,7 +22,6 @@ import {
   TextField,
   IconButton,
   Avatar,
-
 } from '@mui/material';
 import { Check, AArrowDown as Add, Move as Remove } from 'lucide-react';
 import CheckIcon from '@mui/icons-material/Check';
@@ -99,214 +98,256 @@ const Home = () => {
 
   return (
     <>
-   
+      {/* Hero Section - Updated to match the design in Image 1 */}
+
+      <Box
+        sx={{
+          background: 'linear-gradient(rgba(30, 30, 60, 0.85), rgba(30, 30, 60, 0.85)), url(https://img.freepik.com/free-photo/big-buildings_1127-2221.jpg?ga=GA1.1.718196285.1710491388&semt=ais_hybrid)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          color: 'white',
+          pt: 6,
+          pb: 10
+        }}
+      >
+        <Box
+          component="img"
+          src={Logo} // Replace with your logo URL or import
+          alt="Astra Logo"
+          sx={{
+            display: 'block',
+            mx: 'auto', // centers the logo horizontally
+            mb: 2,      // adds spacing below the logo
+            height: "100px",
+            transform: 'scale(2.5)',
+          }}
+        />
         <Container maxWidth="lg">
-          <Box className="home-hero-content" sx={{ textAlign: 'center' }}>
-            {/* Logo added above the heading */}
-            <Box
-              component="img"
-              src={Logo} // Replace with your logo URL or import
-              alt="Astra Logo"
-              sx={{
-                display: 'block',
-                mx: 'auto', // centers the logo horizontally
-                mb: 2,      // adds spacing below the logo
-                height:"100px",
-                transform: 'scale(2.5)',
-              }}
-            />
-            <Typography variant="h3" align="center" fontWeight="bold" gutterBottom >
-              Astra revolutionizes the real estate industry with impactful innovation.
-            </Typography>
-            <Typography variant="h6" sx={{ color: '#636363', textAlign: "justify" }}>
-              Astra is a forward-thinking commercial real estate investment firm, built on the principle that a strategic, value-driven approach in the overlooked middle market can yield outstanding returns. We invest across various asset types, risk levels, and locations, always prioritizing exceptional risk-adjusted gains for our clients. Our clientele includes endowments, foundations, wealth managers, family offices, and individual investors.
-            </Typography>
-            <StatsSection/>
-          </Box>
-          
-        </Container>
-        <Divider/>
-      
-      <Box >
-        {/* Properties Section */}
-        <Container disableGutters maxWidth={false} sx={{  p: 4 }}>
-          <Typography variant="h4" sx={{ textAlign:"center",fontWeight:"bold" }}>Properties</Typography>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-            <Typography>Search by:</Typography>
-            <FormControl sx={{ minWidth: 150 }}>
-              <Select
-                value={searchBy}
-                onChange={(e) => setSearchBy(e.target.value)}
-                size="small"
-              >
-                <MenuItem value="value">Value</MenuItem>
-                <MenuItem value="price">Price</MenuItem>
-                <MenuItem value="location">Location</MenuItem>
-              </Select>
-            </FormControl>
-          </Box>
-        </Container>
+          <Box className="home-hero-content">
+            <Container maxWidth="lg">
+              <Box className="home-hero-content" sx={{ textAlign: 'center', mt: 8 }}>
+                {/* Logo added above the heading */}
+                <Typography variant="h3" align="center" fontWeight="bold" gutterBottom >
+                  Astra revolutionizes the real estate industry with impactful innovation.
+                </Typography>
+                <Typography variant="h6" sx={{ color: '#636363', textAlign: "justify" }}>
+                  Astra is a forward-thinking commercial real estate investment firm, built on the principle that a strategic, value-driven approach in the overlooked middle market can yield outstanding returns. We invest across various asset types, risk levels, and locations, always prioritizing exceptional risk-adjusted gains for our clients. Our clientele includes endowments, foundations, wealth managers, family offices, and individual investors.
+                </Typography>
+                <StatsSection />
+              </Box>
+            </Container>
 
-        {/* Property Cards */}
-        <Container sx={{ mt: 4 }} maxWidth={false} >
+            <Box sx={{ my: 4 }}>
+              <Typography variant="h6" sx={{ mb: 1 }}>
+                Make your portfolio robust
+              </Typography>
+              <Typography variant="h6" sx={{ mb: 1 }}>
+                Explore exclusive selections
+              </Typography>
+              <Typography variant="h6" sx={{ mb: 1 }}>
+                Find your preferred asset & invest today
+              </Typography>
+            </Box>
+
+            {/* Property Card within Hero */}
+            <Card sx={{ maxWidth: 500, bgcolor: 'white', color: 'black', borderRadius: 2, mt: 4 }}>
+              <Box sx={{ bgcolor: 'success.main', py: 1, px: 2, color: 'white' }}>
+                <Typography variant="body1" fontWeight="bold">Fully Funded</Typography>
+              </Box>
+              <CardContent>
+                <Grid container spacing={2}>
+                  <Grid item xs={3}>
+                    <Box
+                      component="img"
+                      src={img1}
+                      alt="Healthcare Property"
+                      sx={{ width: '100%', borderRadius: 1 }}
+                    />
+                  </Grid>
+                  <Grid item xs={9}>
+                    <Typography variant="h6" fontWeight="bold">Greenmark Villa</Typography>
+                    <Typography variant="body2" color="text.secondary">Hosur</Typography>
+
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2 }}>
+                      <Box>
+                        <Typography variant="caption">Gross Entry Yield</Typography>
+                        <Typography variant="body2" fontWeight="bold">9.02%</Typography>
+                      </Box>
+                      <Box>
+                        <Typography variant="caption">Asset Value</Typography>
+                        <Typography variant="body2" fontWeight="bold">₹45,00,00,000</Typography>
+                      </Box>
+                      <Box>
+                        <Typography variant="caption">Target IRR</Typography>
+                        <Typography variant="body2" fontWeight="bold">13.4%</Typography>
+                      </Box>
+                    </Box>
+
+                    <Box sx={{ mt: 2 }}>
+                      <LinearProgress
+                        variant="determinate"
+                        value={100}
+                        sx={{ height: 6, borderRadius: 1 }}
+                        color="success"
+                      />
+                      <Typography variant="caption" color="success.main" sx={{ display: 'block', mt: 0.5 }}>
+                        100% Funded
+                      </Typography>
+                    </Box>
+
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2 }}>
+                      <Button variant="contained" size="small" sx={{ bgcolor: '#333', '&:hover': { bgcolor: '#222' } }}>
+                        Invest Now
+                      </Button>
+                      <Button variant="outlined" size="small" sx={{ color: '#333', borderColor: '#ccc' }}>
+                        View Details
+                      </Button>
+                    </Box>
+                  </Grid>
+                </Grid>
+              </CardContent>
+            </Card>
+
+            <Button
+              variant="contained"
+              sx={{ mt: 4, bgcolor: 'white', color: 'black', '&:hover': { bgcolor: '#f5f5f5' } }}
+            >
+              All Properties
+            </Button>
+
+            {/* App Download Buttons */}
+            <Box sx={{ display: 'flex', gap: 2, mt: 4 }}>
+              <Box
+                component="img"
+                src="https://developer.apple.com/app-store/marketing/guidelines/images/badge-download-on-the-app-store.svg"
+                alt="Download on App Store"
+                sx={{ height: 40 }}
+              />
+              <Box
+                component="img"
+                src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png"
+                alt="Get it on Google Play"
+                sx={{ height: 40 }}
+              />
+            </Box>
+          </Box>
+        </Container>
+      </Box>
+      <Box>
+        <Container sx={{ mt: 6, mb: 6 }} maxWidth="lg">
+          {/* Section Heading */}
+          <Typography variant="h4" sx={{ textAlign: "center", fontWeight: "bold", mb: 5 }}>
+            Company Tour
+          </Typography>
+
           <Grid container spacing={4}>
-            {/* First Property Card */}
+
+            {/* Left Side - Benefits Cards in 2x2 Grid */}
+    <Grid item xs={8} md={6}>
+      <Typography variant="h5" fontWeight="bold" sx={{ mb: 4, pl: 1 }}>
+        Key Benefits
+      </Typography>
+      <Grid container spacing={7.5}>
+        {[
+          { icon: "≡", title: "Stable Asset Class", description: "Lower volatility compared to public markets" },
+          { icon: "↑", title: "Monthly Cashflow", description: "Consistent passive income generation" },
+          { icon: "◢", title: "Capital Appreciation", description: "Property value growth over time" },
+          { icon: "□○", title: "Portfolio Diversification", description: "Reduced overall investment risk" }
+        ].map((item, index) => (
+          <Grid item xs={12} sm={6} key={index}>
+            <Paper
+              elevation={2}
+              sx={{
+                p: 3,
+                height: "100%",
+                borderRadius: 3,
+                
+              }}
+            >
+              <Box sx={{ 
+                fontSize: 36, 
+                fontWeight: "bold", 
+                mb: 2, 
+                color: "#1976d2"
+              }}>
+                {item.icon}
+              </Box>
+              <Typography variant="h6" fontWeight="bold" gutterBottom>
+                {item.title}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                {item.description}
+              </Typography>
+            </Paper>
+          </Grid>
+        ))}
+      </Grid>
+    </Grid>
+
+            {/* Right Side - Asset Comparison Section */}
             <Grid item xs={12} md={6}>
-              <Card elevation={3}>
-                <CardContent sx={{ p: 4 }}>
-                  <Grid container spacing={3}>
-                    <Grid item xs={12} md={5}>
-                      <CardMedia
-                        component="img"
-                        image={img1}
-                        alt="Property"
-                        sx={{
-                          borderRadius: 1,
-                          border: '1px solid',
-                          borderColor: 'primary.main',
-                          height: '100%',
-                          objectFit: 'cover'
-                        }}
-                      />
-                    </Grid>
-                    <Grid item xs={12} md={7}>
-                      <Typography variant="h5" fontWeight="bold">Greenmark Villa</Typography>
-                      <Typography color="text.secondary" sx={{ mb: 2 }}>
-                        Address: 2-11-4/2, Hyderabad, Telangana.
-                      </Typography>
+              <Typography variant="h5" fontWeight="bold" sx={{ mb: 3 }}>
+                CRE vs. Other Asset Classes
+              </Typography>
 
-                      <Paper sx={{ p: 2, bgcolor: 'grey.50', mb: 3 }}>
-                        <Grid container spacing={2}>
-                          <Grid item xs={4} sx={{ textAlign: 'center' }}>
-                            <Typography variant="subtitle2" fontWeight="bold">Gross Entry Yield</Typography>
-                            <Typography color="success.main">9.02%</Typography>
-                          </Grid>
-                          <Grid item xs={4} sx={{ textAlign: 'center' }}>
-                            <Typography variant="subtitle2" fontWeight="bold">Asset Value</Typography>
-                            <Typography color="success.main">₹45,00,00,000</Typography>
-                          </Grid>
-                          <Grid item xs={4} sx={{ textAlign: 'center' }}>
-                            <Typography variant="subtitle2" fontWeight="bold">Target IRR</Typography>
-                            <Typography color="success.main">13.4%</Typography>
-                          </Grid>
-                        </Grid>
-                      </Paper>
+              {/* Quadrant Chart Layout */}
+              <Box
+                sx={{
+                  display: "grid",
+                  gridTemplateColumns: "1fr 1fr",
+                  gridTemplateRows: "1fr 1fr",
+                  gap: 2,
+                  border: "2px solid #ddd",
+                  position: "relative",
+                  p: 3,
+                  height: 400
+                }}
+              >
+                {/* Axes Labels */}
+                <Typography sx={{ position: "absolute", top: 10, left: "50%", transform: "translateX(-50%)", fontWeight: "bold" }}>
+                  Stable
+                </Typography>
+                <Typography sx={{ position: "absolute", bottom: 10, left: "50%", transform: "translateX(-50%)", fontWeight: "bold" }}>
+                  Volatile
+                </Typography>
+                <Typography sx={{ position: "absolute", top: "50%", left: 10, transform: "translateY(-50%)", fontWeight: "bold" }}>
+                  Lower Returns
+                </Typography>
+                <Typography sx={{ position: "absolute", top: "50%", right: 10, transform: "translateY(-50%)", fontWeight: "bold" }}>
+                  Higher Returns
+                </Typography>
 
-                      <Box sx={{ mb: 3 }}>
-                        <LinearProgress
-                          variant="determinate"
-                          value={100}
-                          sx={{ height: 8, borderRadius: 1 }}
-                          color="success"
-                        />
-                        <Typography color="success.main" fontWeight="bold" sx={{ mt: 1 }}>
-                          100% Funded
-                        </Typography>
-                      </Box>
-
-                      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <Button variant="contained" color="primary">
-                          Join in Wait List
-                        </Button>
-                        <Button variant="outlined">
-                          View Details
-                        </Button>
-                      </Box>
-                    </Grid>
-                  </Grid>
-                </CardContent>
-              </Card>
-            </Grid>
-
-            {/* Second Property Card */}
-            <Grid item xs={12} md={6}>
-              <Card elevation={3}>
-                <CardContent sx={{ p: 4 }}>
-                  <Grid container spacing={3}>
-                    <Grid item xs={12} md={5}>
-                      <CardMedia
-                        component="img"
-                        image={img2}
-                        alt="Property"
-                        sx={{
-                          borderRadius: 1,
-                          border: '1px solid',
-                          borderColor: 'primary.main',
-                          height: '100%',
-                          objectFit: 'cover'
-                        }}
-                      />
-                    </Grid>
-                    <Grid item xs={12} md={7}>
-                      <Typography variant="h5" fontWeight="bold">Greenmark Villa</Typography>
-                      <Typography color="text.secondary" sx={{ mb: 2 }}>
-                        Address: 2-11-4/2, Hyderabad, Telangana.
-                      </Typography>
-
-                      <Paper sx={{ p: 2, bgcolor: 'grey.50', mb: 3 }}>
-                        <Grid container spacing={2}>
-                          <Grid item xs={4} sx={{ textAlign: 'center' }}>
-                            <Typography variant="subtitle2" fontWeight="bold">Gross Entry Yield</Typography>
-                            <Typography color="success.main">9.02%</Typography>
-                          </Grid>
-                          <Grid item xs={4} sx={{ textAlign: 'center' }}>
-                            <Typography variant="subtitle2" fontWeight="bold">Asset Value</Typography>
-                            <Typography color="success.main">₹45,00,00,000</Typography>
-                          </Grid>
-                          <Grid item xs={4} sx={{ textAlign: 'center' }}>
-                            <Typography variant="subtitle2" fontWeight="bold">Target IRR</Typography>
-                            <Typography color="success.main">13.4%</Typography>
-                          </Grid>
-                        </Grid>
-                      </Paper>
-
-                      <Box sx={{ mb: 3 }}>
-                        <LinearProgress
-                          variant="determinate"
-                          value={100}
-                          sx={{ height: 8, borderRadius: 1 }}
-                          color="success"
-                        />
-                        <Typography color="success.main" fontWeight="bold" sx={{ mt: 1 }}>
-                          100% Funded
-                        </Typography>
-                      </Box>
-
-                      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <Button variant="contained" color="primary">
-                          Join in Wait List
-                        </Button>
-                        <Button variant="outlined">
-                          View Details
-                        </Button>
-                      </Box>
-                    </Grid>
-                  </Grid>
-                </CardContent>
-              </Card>
+                {/* Quadrant Boxes */}
+                {[
+                  { title: "Residential Properties", bg: "#fff" },
+                  { title: "Commercial Real Estate", bg: "#f5d7a1", fontWeight: "bold" },
+                  { title: "Gold", bg: "#fff" },
+                  { title: "Stocks & Mutual Funds", bg: "#fff" }
+                ].map((item, index) => (
+                  <Box
+                    key={index}
+                    sx={{
+                      border: "1px solid #ddd",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      backgroundColor: item.bg,
+                      fontWeight: item.fontWeight || "normal",
+                      p: 2,
+                    }}
+                  >
+                    <Typography variant="body2" align="center">{item.title}</Typography>
+                  </Box>
+                ))}
+              </Box>
             </Grid>
           </Grid>
-
-          <Box sx={{ textAlign: "center", mt: 5 }}>
-            <Button
-              component={Link}
-              to="/properties"
-              variant="contained"
-              color="inherit"
-              sx={{ px: 5,mb:"30px" }}
-            >
-              View All
-            </Button>
-          </Box>
         </Container>
-        <hr/>
 
 
-
-        {/* Team Section */}
         {/* Team Section */}
         <Container sx={{ mt: 4, mb: 4 }} maxWidth={false} >
-          <Typography variant="h4" align="center" sx={{ mb: 4, textAlign:"center",fontWeight:"bold" }}>
+          <Typography variant="h4" align="center" sx={{ mb: 4, textAlign: "center", fontWeight: "bold" }}>
             Our Team
           </Typography>
           <Grid container spacing={4}>
@@ -315,7 +356,7 @@ const Home = () => {
                 <Card elevation={3}>
                   <CardContent sx={{ p: 3 }}>
                     <Avatar
-                      src={member.image}
+                      src={member.image || "https://www.w3schools.com/w3images/avatar5.png"}
                       sx={{
                         width: 150,
                         height: 150,
@@ -337,77 +378,6 @@ const Home = () => {
             ))}
           </Grid>
         </Container>
-
-
-        {/* Company Tour Section */}
-        <Container sx={{ mt: 6, }} >
-          <Typography variant="h4" sx={{textAlign:"center",fontWeight:"bold",mb:2}}>Company Tour</Typography>
-          <Typography sx={{ mt: 1,textAlign:"center",fontWeight:"bold" }}>
-            Take a tour of the office to explore the workplace and facilities.
-          </Typography>
-          <Box sx={{ mt: 2, position: 'relative', paddingTop: '56.25%' }}>
-            <iframe
-              style={{
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                width: '100%',
-                height: '100%',
-              }}
-              src="https://www.youtube.com/embed/VIDEO_ID"
-              title="YouTube Video"
-              allowFullScreen
-            />
-          </Box>
-        </Container>
-
-
-        {/* Partners Guidelines Section */}
-        {/* <Container sx={{ mt: 6, mb: 4 }}>
-          <Grid container spacing={4}>
-            <Grid item xs={12}>
-              <Typography variant="h4" sx={{textAlign:"center",fontWeight:"bold"}}>Partners Guidelines</Typography>
-              <Typography variant="h4" sx={{ mt: 2 }}>Who Can Be Our Partners ?</Typography>
-            </Grid>
-          </Grid>
-
-          <Typography sx={{ mt: 2 }}>
-            Our partners can be individuals or organizations who want to collaborate with us in bringing investment opportunities to a broader audience. We welcome:
-          </Typography>
-
-          <List>
-            {[
-              'Financial Advisors - Professionals who guide investors in making informed financial decisions.',
-              'Real Estate Agents & Firms - Experts who can help investors navigate property-related investments.',
-              'Investment Consultants - Specialists who analyze market trends and suggest profitable investment opportunities.',
-              'Wealth Managers - Individuals who manage high-net-worth clients and their investments.',
-              'Marketing & Referral Partners - Influencers, agencies, or businesses that help expand our network through promotions and referrals.',
-              'Business Entities & Brokers - Companies or brokers who want to collaborate for mutual growth and better investment solutions.'
-            ].map((item, index) => {
-              // Split the item into title and description
-              const [title, description] = item.split(' - ');
-
-              return (
-                <ListItem key={index}>
-                  <ListItemIcon>
-                    <CheckIcon color="success" />
-                  </ListItemIcon>
-                  <ListItemText
-                    primary={
-                      <Typography variant="body1">
-                        <strong>{title}</strong> - {description}
-                      </Typography>
-                    }
-                  />
-                </ListItem>
-              );
-            })}
-          </List>
-
-          <Typography sx={{ mt: 2 }}>
-            By partnering with us, you gain access to a trusted investment platform, exclusive opportunities, and financial growth while helping investors make smarter choices.
-          </Typography>
-        </Container> */}
       </Box>
     </>
   );

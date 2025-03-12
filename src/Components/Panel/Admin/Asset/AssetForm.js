@@ -12,44 +12,29 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import Header from '../../../Shared/Navbar/Navbar';
+import { useNavigate } from "react-router-dom";
+
 
 const PropertyForm = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     property_name: "",
-    property_type: "residential",
+    property_type: "",
     description: "",
-    location: "",
+    address: "",
     city: "",
     state: "",
     country: "",
-    postal_code: "",
+    pin_code: "",
     latitude: "",
     longitude: "",
     total_units: "",
     available_units: "",
-    area_sqft: "",
-    price_per_sqft: "",
-    total_price: "",
+    property_value: "",
     ownership_type: "freehold",
-    rental_yield: "",
-    expected_roi: "",
-    legal_status: "approved",
-    regulatory_approvals: "",
-    tax_identification_number: "",
-    amenities: [],
-    parking_spaces: "",
-    security_features: [],
-    furnished_status: "fully_furnished",
-    listing_status: "available",
-    investors: [1],
-    agent: 1,
-    property_img: "",
-    additional_images: "",
-    legal_documents: "",
+    property_image: "",
   });
 
-  const amenitiesOptions = ["Swimming Pool", "Gym", "Clubhouse"];
-  const securityOptions = ["CCTV Surveillance", "24/7 Security", "Gated Community"];
   const [previewImages, setPreviewImages] = useState([]);
   const [previewAdditionalImages, setPreviewAdditionalImages] = useState([]);
   const [previewLegalDocuments, setPreviewLegalDocuments] = useState([]);
@@ -76,7 +61,7 @@ const PropertyForm = () => {
     const allowedTypes = ["image/jpeg", "image/png", "image/jpg"];
 
     // Handle single file fields
-    if (fieldName === "property_img" || fieldName === "legal_documents") {
+    if (fieldName === "property_image" || fieldName === "legal_documents") {
       const file = files[0];
 
       if (!allowedTypes.includes(file.type)) {
@@ -139,7 +124,7 @@ const PropertyForm = () => {
       const formDataToSend = new FormData();
 
       Object.keys(formData).forEach((key) => {
-        if (key === "property_img" || key === "legal_documents") {
+        if (key === "property_image" || key === "legal_documents") {
           // Single file upload
           if (formData[key] instanceof File) {
             formDataToSend.append(key, formData[key]);
@@ -168,8 +153,9 @@ const PropertyForm = () => {
 
       if (response.ok) {
         alert("Property added successfully!");
+        navigate("/a-asset");
       } else {
-        alert(`Error adding property: ${responseData.property_img?.[0] || responseData.legal_documents?.[0] || responseData.message || "Unknown error"}`);
+        alert(`Error adding property: ${responseData.property_image?.[0] || responseData.legal_documents?.[0] || responseData.message || "Unknown error"}`);
       }
     } catch (error) {
       console.error("Error:", error);
@@ -187,7 +173,7 @@ const PropertyForm = () => {
       <Container maxWidth="md">
         <Typography
           variant="h4"
-          sx={{ color: '#100f0f', fontSize: '28px', fontWeight: 700, pt:4, pl: 2, textAlign: "center" }}
+          sx={{ color: '#100f0f', fontSize: '28px', fontWeight: 700, pt: 4, pl: 2, textAlign: "center" }}
         >
           Add Asset
         </Typography>
@@ -199,8 +185,11 @@ const PropertyForm = () => {
 
             <Grid item xs={6}>
               <TextField select fullWidth label="Property Type" name="property_type" value={formData.property_type} onChange={handleChange}>
-                <MenuItem value="residential">Residential</MenuItem>
-                <MenuItem value="commercial">Commercial</MenuItem>
+                <MenuItem value="Manufacturing Facilities">Manufacturing Facilities</MenuItem>
+                <MenuItem value="Warehouses">Warehouses </MenuItem>
+                <MenuItem value="Distribution">Distribution Centers</MenuItem>
+                <MenuItem value="Data Centers">Data Centers </MenuItem>
+                <MenuItem value="R&D">(R&D)</MenuItem>
               </TextField>
             </Grid>
 
@@ -209,7 +198,7 @@ const PropertyForm = () => {
             </Grid>
 
             <Grid item xs={6}>
-              <TextField fullWidth label="Location" name="location" value={formData.location} onChange={handleChange} />
+              <TextField fullWidth label="Location" name="address" value={formData.address} onChange={handleChange} />
             </Grid>
 
             <Grid item xs={6}>
@@ -225,7 +214,7 @@ const PropertyForm = () => {
             </Grid>
 
             <Grid item xs={6}>
-              <TextField fullWidth label="Postal Code" name="postal_code" value={formData.postal_code} onChange={handleChange} />
+              <TextField fullWidth label="Postal Code" name="pin_code" value={formData.pin_code} onChange={handleChange} />
             </Grid>
 
             <Grid item xs={6}>
@@ -244,19 +233,19 @@ const PropertyForm = () => {
               <TextField fullWidth label="Available Units" name="available_units" value={formData.available_units} onChange={handleChange} type="number" />
             </Grid>
 
-            <Grid item xs={6}>
+            {/* <Grid item xs={6}>
               <TextField fullWidth label="Area (sqft)" name="area_sqft" value={formData.area_sqft} onChange={handleChange} type="number" />
             </Grid>
 
             <Grid item xs={6}>
               <TextField fullWidth label="Price per sqft" name="price_per_sqft" value={formData.price_per_sqft} onChange={handleChange} type="number" />
-            </Grid>
+            </Grid> */}
 
             <Grid item xs={6}>
-              <TextField fullWidth label="Total Price" name="total_price" value={formData.total_price} onChange={handleChange} type="number" />
+              <TextField fullWidth label="Total Price" name="property_value" value={formData.property_value} onChange={handleChange} type="number" />
             </Grid>
 
-            <Grid item xs={12}>
+            {/* <Grid item xs={12}>
               <Typography variant="h6">Amenities</Typography>
               <FormGroup row>
                 {amenitiesOptions.map((amenity) => (
@@ -290,9 +279,9 @@ const PropertyForm = () => {
                   />
                 ))}
               </FormGroup>
-            </Grid>
+            </Grid> */}
 
-            <Grid item xs={6}>
+            {/* <Grid item xs={6}>
               <TextField fullWidth label="Parking Spaces" name="parking_spaces" value={formData.parking_spaces} onChange={handleChange} type="number" />
             </Grid>
 
@@ -302,19 +291,19 @@ const PropertyForm = () => {
                 <MenuItem value="semi_furnished">Semi Furnished</MenuItem>
                 <MenuItem value="unfurnished">Unfurnished</MenuItem>
               </TextField>
-            </Grid>
+            </Grid> */}
 
             <Grid item xs={4}>
               <Typography variant="h6">Property Image</Typography>
-              <input type="file" accept="image/*" onChange={(e) => handleFileChange(e, "property_img")} />
+              <input type="file" accept="image/*" onChange={(e) => handleFileChange(e, "property_image")} />
               <Grid item xs={3} >
-                {previewImages.property_img && (
-                  <img src={previewImages.property_img} alt="Property Preview" style={{ width: "100px", height: "100px", objectFit: "cover", marginTop: "10px", borderRadius: "8px" }} />
+                {previewImages.property_image && (
+                  <img src={previewImages.property_image} alt="Property Preview" style={{ width: "100px", height: "100px", objectFit: "cover", marginTop: "10px", borderRadius: "8px" }} />
                 )}
               </Grid>
             </Grid>
 
-            <Grid item xs={4}>
+            {/* <Grid item xs={4}>
               <Typography variant="h6">Additional Images</Typography>
               <input type="file" multiple accept="image/*" onChange={(e) => handleFileChange(e, "additional_images")} />
               <Grid container spacing={2} sx={{ marginTop: 2 }}>
@@ -335,15 +324,16 @@ const PropertyForm = () => {
                 </Grid>
               )}
 
-            </Grid>
+            </Grid> */}
 
 
 
-            <Grid item xs={3} style={{ marginBottom: "10px", textAlign: "center" }}>
-              <Button  type="submit" variant="contained" color="primary" fullWidth>
-                Submit Property
-              </Button>
-            </Grid>
+
+          </Grid>
+          <Grid sx={{ marginTop: 3, marginBottom: "10px" }}>
+            <Button type="submit" variant="contained" sx={{ color: "white", width: "200px" }}>
+              Submit Property
+            </Button>
           </Grid>
         </form>
       </Container>

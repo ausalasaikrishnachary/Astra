@@ -649,15 +649,15 @@ const AssetDashboard = () => {
                 }}
               >
                 <Box sx={{ position: 'relative' }}>
-                  {console.log(`http://46.37.122.105:91${asset.property_img}`)}
+                  {console.log(`http://46.37.122.105:91${asset.property_image}`)}
                   <CardMedia
                     component="img"
-                    image={`http://46.37.122.105:91${asset.property_img}`}
+                    image={`http://46.37.122.105:91${asset.property_image}`}
                     alt={asset.property_name}
                     sx={{ height: 220, objectFit: 'cover' }}
                   />
 
-                  <Chip
+                  {/* <Chip
                     label={asset.listing_status}
                     sx={{
                       position: 'absolute',
@@ -666,7 +666,7 @@ const AssetDashboard = () => {
                       backgroundColor: asset.listing_status === 'available' ? '#2ECC71' : '#E74C3C',
                       color: 'white',
                     }}
-                  />
+                  /> */}
                 </Box>
                 <CardContent sx={{ flexGrow: 1 }}>
                   <Typography variant="h6" fontWeight="bold" mb={1}>
@@ -684,7 +684,7 @@ const AssetDashboard = () => {
                       </Grid>
                       <Grid item xs={6}>
                         <Typography variant="body2" fontWeight="bold" color="#4A90E2" align="right">
-                          ₹{asset.total_price}/-
+                          ₹{asset.property_value}/-
                         </Typography>
                       </Grid>
                       <Grid item xs={6}>
@@ -752,20 +752,19 @@ const AssetDashboard = () => {
                   <Grid item xs={12} md={6}>
                     <Box
                       component="img"
-                      src={`http://46.37.122.105:91${selectedAsset.property_img}`}
+                      src={`http://46.37.122.105:91${selectedAsset.property_image}`}
                       alt="Pune Property"
                       sx={{ width: '100%', borderRadius: 2 }}
                     />
                   </Grid>
                   <Grid item xs={12} md={6}>
                     <Typography variant="body1" gutterBottom>{selectedAsset.description}</Typography>
-                    <Typography variant="body2" color="text.secondary" gutterBottom>Asset Value: <strong>₹{selectedAsset.total_price}/-</strong></Typography>
+                    <Typography variant="body2" color="text.secondary" gutterBottom>Asset Value: <strong>₹{selectedAsset.property_value}/-</strong></Typography>
                     <Typography variant="body2" color="text.secondary" gutterBottom>Location: <strong>{selectedAsset.city}, {selectedAsset.state}</strong></Typography>
                     <Typography variant="body2" color="text.secondary" gutterBottom>latitude: <strong>{selectedAsset.latitude}</strong></Typography>
                     <Typography variant="body2" color="text.secondary" gutterBottom>longitude: <strong>{selectedAsset.longitude}</strong></Typography>
-                    <Typography variant="body2" color="text.secondary" gutterBottom>area_sqft: <strong>{selectedAsset.area_sqft}</strong></Typography>
-                    <Typography variant="body2" color="text.secondary" gutterBottom>price_per_sqft: <strong>{selectedAsset.price_per_sqft}</strong></Typography>
-                    <Typography variant="body2" color="text.secondary" gutterBottom>total_price: <strong>{selectedAsset.total_price}</strong></Typography><Typography variant="body2" color="text.secondary" gutterBottom>Available Units: <strong>{selectedAsset.available_units}</strong></Typography>
+                    <Typography variant="body2" color="text.secondary" gutterBottom>Total Units: <strong>{selectedAsset.total_units}</strong></Typography>
+                    <Typography variant="body2" color="text.secondary" gutterBottom>Available Units: <strong>{selectedAsset.available_units}</strong></Typography>
                   </Grid>
                 </Grid>
               </DialogContent>
