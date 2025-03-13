@@ -260,18 +260,19 @@ const Home = () => {
       <Typography variant="h5" fontWeight="bold" sx={{ mb: 4, pl: 1 }}>
         Key Benefits
       </Typography>
-      <Grid container spacing={2}>
+      <Grid container spacing={3}>
         {[
           { icon: "≡", title: "Stable Asset Class", description: "Lower volatility compared to public markets" },
           { icon: "↑", title: "Monthly Cashflow", description: "Consistent passive income generation" },
           { icon: "◢", title: "Capital Appreciation", description: "Property value growth over time" },
           { icon: "□○", title: "Portfolio Diversification", description: "Reduced overall investment risk" }
         ].map((item, index) => (
-          <Grid item xs={12} sm={6} key={index}>
+          <Grid item xs={12} sm={6} key={index} spacing={2} >
             <Paper
               elevation={2}
               sx={{
-                p: 3,
+                p: 1,
+                mb:5,
                 height: "100%",
                 borderRadius: 3,
                 transition: "transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out",
@@ -281,7 +282,7 @@ const Home = () => {
                 }
               }}
             >
-              <Box sx={{ 
+              <Box  sx={{ 
                 fontSize: 36, 
                 fontWeight: "bold", 
                 mb: 2, 
