@@ -22,6 +22,7 @@ import {
   TextField,
   IconButton,
   Avatar,
+  useTheme
 
 } from '@mui/material';
 import { Check, AArrowDown as Add, Move as Remove } from 'lucide-react';
@@ -33,8 +34,11 @@ import "./Home.css"
 import Logo from '../../Images/Logo File.png';
 import StatsSection from './CountingCard';
 import Divider from '@mui/material/Divider';
+// import gif from './videos/'
 
 const Home = () => {
+  const theme = useTheme();
+
   const [searchBy, setSearchBy] = useState("value");
 
   const [investment, setInvestment] = useState(1000000);
@@ -339,8 +343,116 @@ const Home = () => {
         </Container>
 
 
+        <Container maxWidth="xl" sx={{ 
+      minHeight: '100vh',
+      display: 'flex',
+      alignItems: 'center',
+      py: 8
+    }}>
+      <Grid container spacing={6} alignItems="center">
+        {/* Left Content */}
+        <Grid item xs={12} md={6}>
+          <Box sx={{ 
+            maxWidth: 600,
+            [theme.breakpoints.up('md')]: { 
+              pr: 6 
+            }
+          }}>
+            <Typography 
+              variant="h3" 
+              component="h1" 
+              gutterBottom
+              sx={{
+                fontWeight: 700,
+                color: 'text.primary',
+                mb: 3
+              }}
+            >
+              Transform Your Digital Experience
+            </Typography>
+            
+            <Typography 
+              variant="h6" 
+              component="h2" 
+              gutterBottom
+              sx={{
+                fontWeight: 500,
+                color: 'text.secondary',
+                mb: 2
+              }}
+            >
+              Innovative Solutions for Modern Businesses
+            </Typography>
+
+            <Typography 
+              variant="body1" 
+              sx={{
+                color: 'text.secondary',
+                mb: 4,
+                lineHeight: 1.6
+              }}
+            >
+              Leverage our cutting-edge technology to streamline your operations 
+              and enhance customer engagement. Experience seamless integration 
+              with our enterprise-grade solutions.
+            </Typography>
+
+            <Button 
+              variant="contained" 
+              size="large"
+              sx={{
+                px: 4,
+                py: 1.5,
+                borderRadius: 2,
+                textTransform: 'none',
+                fontSize: '1.1rem'
+              }}
+            >
+              Get Started
+            </Button>
+          </Box>
+        </Grid>
+
+        {/* Right Video (GIF) */}
+        <Grid item xs={12} md={6}>
+          <Box sx={{
+            position: 'relative',
+            height: '500px',
+            borderRadius: 4,
+            overflow: 'hidden',
+            '&::before': {
+              content: '""',
+              position: 'absolute',
+              width: '120%',
+              height: '120%',
+              background: theme.palette.primary.main,
+              transform: 'rotate(-4deg)',
+              top: '-10%',
+              left: '-10%',
+              zIndex: -1
+            }
+          }}>
+            <Box
+              component="video"
+              src="https://media.giphy.com/media/3o7abKhOpu0NwenH3O/giphy.mp4"
+              autoPlay
+              loop
+              muted
+              playsInline
+              sx={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                borderRadius: 4,
+                boxShadow: 6,
+              }}
+            />
+          </Box>
+        </Grid>
+      </Grid>
+    </Container>
         {/* Company Tour Section */}
-        <Container sx={{ mt: 6, }} >
+        {/* <Container sx={{ mt: 6, }} >
           <Typography variant="h4" sx={{textAlign:"center",fontWeight:"bold",mb:2}}>Company Tour</Typography>
           <Typography sx={{ mt: 1,textAlign:"center",fontWeight:"bold" }}>
             Take a tour of the office to explore the workplace and facilities.
@@ -359,11 +471,11 @@ const Home = () => {
               allowFullScreen
             />
           </Box>
-        </Container>
+        </Container> */}
 
 
         {/* Partners Guidelines Section */}
-        <Container sx={{ mt: 6, mb: 4 }}>
+        {/* <Container sx={{ mt: 6, mb: 4 }}>
           <Grid container spacing={4}>
             <Grid item xs={12}>
               <Typography variant="h4" sx={{textAlign:"center",fontWeight:"bold"}}>Partners Guidelines</Typography>
@@ -407,7 +519,7 @@ const Home = () => {
           <Typography sx={{ mt: 2 }}>
             By partnering with us, you gain access to a trusted investment platform, exclusive opportunities, and financial growth while helping investors make smarter choices.
           </Typography>
-        </Container>
+        </Container> */}
       </Box>
     </>
   );
