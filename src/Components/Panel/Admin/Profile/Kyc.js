@@ -116,8 +116,8 @@ const AdminKyc = () => {
     formDataToSend.append("roles", formData.role);
     formDataToSend.append("username", formData.username);
     formDataToSend.append("password", formData.password);
-    formDataToSend.append("first_name", first_name);
-    formDataToSend.append("last_name", last_name);
+    formDataToSend.append("first_name", formData.first_name);
+    formDataToSend.append("last_name", formData.last_name);
     formDataToSend.append("email", formData.email);
     formDataToSend.append("phone_number", formData.phone);
     formDataToSend.append("date_of_birth", formData.date_of_birth);

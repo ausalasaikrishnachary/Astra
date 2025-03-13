@@ -99,11 +99,11 @@ const Home = () => {
   return (
     <>
       {/* Hero Section - Updated to match the design in Image 1 */}
-
-      <Box
-        sx={{
+      
+      <Box 
+        sx={{ 
           background: 'linear-gradient(rgba(30, 30, 60, 0.85), rgba(30, 30, 60, 0.85)), url(https://img.freepik.com/free-photo/big-buildings_1127-2221.jpg?ga=GA1.1.718196285.1710491388&semt=ais_hybrid)',
-          backgroundSize: 'cover',
+          backgroundSize: 'cover', 
           backgroundPosition: 'center',
           color: 'white',
           pt: 6,
@@ -111,32 +111,32 @@ const Home = () => {
         }}
       >
         <Box
-          component="img"
-          src={Logo} // Replace with your logo URL or import
-          alt="Astra Logo"
-          sx={{
-            display: 'block',
-            mx: 'auto', // centers the logo horizontally
-            mb: 2,      // adds spacing below the logo
-            height: "100px",
-            transform: 'scale(2.5)',
-          }}
-        />
+              component="img"
+              src={Logo} // Replace with your logo URL or import
+              alt="Astra Logo"
+              sx={{
+                display: 'block',
+                mx: 'auto', // centers the logo horizontally
+                mb: 2,      // adds spacing below the logo
+                height:"100px",
+                transform: 'scale(2.5)',
+              }}
+            />
         <Container maxWidth="lg">
           <Box className="home-hero-content">
-            <Container maxWidth="lg">
-              <Box className="home-hero-content" sx={{ textAlign: 'center', mt: 8 }}>
-                {/* Logo added above the heading */}
-                <Typography variant="h3" align="center" fontWeight="bold" gutterBottom >
-                  Astra revolutionizes the real estate industry with impactful innovation.
-                </Typography>
-                <Typography variant="h6" sx={{ color: '#636363', textAlign: "justify" }}>
-                  Astra is a forward-thinking commercial real estate investment firm, built on the principle that a strategic, value-driven approach in the overlooked middle market can yield outstanding returns. We invest across various asset types, risk levels, and locations, always prioritizing exceptional risk-adjusted gains for our clients. Our clientele includes endowments, foundations, wealth managers, family offices, and individual investors.
-                </Typography>
-                <StatsSection />
-              </Box>
-            </Container>
-
+          <Container maxWidth="lg">
+          <Box className="home-hero-content" sx={{ textAlign: 'center', mt: 8 }}>
+            {/* Logo added above the heading */}
+            <Typography variant="h3" align="center" fontWeight="bold" gutterBottom >
+              Astra revolutionizes the real estate industry with impactful innovation.
+            </Typography>
+            <Typography variant="h6" sx={{ color: '#636363', textAlign: "justify" }}>
+              Astra is a forward-thinking commercial real estate investment firm, built on the principle that a strategic, value-driven approach in the overlooked middle market can yield outstanding returns. We invest across various asset types, risk levels, and locations, always prioritizing exceptional risk-adjusted gains for our clients. Our clientele includes endowments, foundations, wealth managers, family offices, and individual investors.
+            </Typography>
+            <StatsSection/>
+          </Box>
+        </Container>
+            
             <Box sx={{ my: 4 }}>
               <Typography variant="h6" sx={{ mb: 1 }}>
                 Make your portfolio robust
@@ -157,8 +157,8 @@ const Home = () => {
               <CardContent>
                 <Grid container spacing={2}>
                   <Grid item xs={3}>
-                    <Box
-                      component="img"
+                    <Box 
+                      component="img" 
                       src={img1}
                       alt="Healthcare Property"
                       sx={{ width: '100%', borderRadius: 1 }}
@@ -167,7 +167,7 @@ const Home = () => {
                   <Grid item xs={9}>
                     <Typography variant="h6" fontWeight="bold">Greenmark Villa</Typography>
                     <Typography variant="body2" color="text.secondary">Hosur</Typography>
-
+                    
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2 }}>
                       <Box>
                         <Typography variant="caption">Gross Entry Yield</Typography>
@@ -182,7 +182,7 @@ const Home = () => {
                         <Typography variant="body2" fontWeight="bold">13.4%</Typography>
                       </Box>
                     </Box>
-
+                    
                     <Box sx={{ mt: 2 }}>
                       <LinearProgress
                         variant="determinate"
@@ -194,7 +194,7 @@ const Home = () => {
                         100% Funded
                       </Typography>
                     </Box>
-
+                    
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2 }}>
                       <Button variant="contained" size="small" sx={{ bgcolor: '#333', '&:hover': { bgcolor: '#222' } }}>
                         Invest Now
@@ -208,8 +208,8 @@ const Home = () => {
               </CardContent>
             </Card>
 
-            <Button
-              variant="contained"
+            <Button 
+              variant="contained" 
               sx={{ mt: 4, bgcolor: 'white', color: 'black', '&:hover': { bgcolor: '#f5f5f5' } }}
             >
               All Properties
@@ -217,14 +217,14 @@ const Home = () => {
 
             {/* App Download Buttons */}
             <Box sx={{ display: 'flex', gap: 2, mt: 4 }}>
-              <Box
-                component="img"
+              <Box 
+                component="img" 
                 src="https://developer.apple.com/app-store/marketing/guidelines/images/badge-download-on-the-app-store.svg"
                 alt="Download on App Store"
                 sx={{ height: 40 }}
               />
-              <Box
-                component="img"
+              <Box 
+                component="img" 
                 src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png"
                 alt="Get it on Google Play"
                 sx={{ height: 40 }}
@@ -233,21 +233,34 @@ const Home = () => {
           </Box>
         </Container>
       </Box>
-      <Box>
-        <Container sx={{ mt: 6, mb: 6 }} maxWidth="lg">
-          {/* Section Heading */}
-          <Typography variant="h4" sx={{ textAlign: "center", fontWeight: "bold", mb: 5 }}>
-            Company Tour
-          </Typography>
+      
+      <Box> 
+        <hr/>
+  <Container sx={{ my: 8, py: 6, backgroundColor: "#f9fafb", borderRadius: 4 }} maxWidth="lg">
+  {/* Section Heading with underline */}
+  <Box sx={{ textAlign: "center", mb: 6 }}>
+    <Typography variant="h4" fontWeight="bold">
+      Company Tour
+    </Typography>
+    {/* Uncomment if you want the underline
+    <Box 
+      sx={{ 
+        width: "60px", 
+        height: "4px", 
+        backgroundColor: "#1976d2", 
+        mx: "auto", 
+        mt: 2 
+      }} 
+    /> */}
+  </Box>
 
-          <Grid container spacing={4}>
-
-            {/* Left Side - Benefits Cards in 2x2 Grid */}
-    <Grid item xs={8} md={6}>
+  <Grid container spacing={4} alignItems="flex-start">
+    {/* Left Side - Benefits Cards in 2x2 Grid */}
+    <Grid item xs={12} md={6}>
       <Typography variant="h5" fontWeight="bold" sx={{ mb: 4, pl: 1 }}>
         Key Benefits
       </Typography>
-      <Grid container spacing={7.5}>
+      <Grid container spacing={2}>
         {[
           { icon: "≡", title: "Stable Asset Class", description: "Lower volatility compared to public markets" },
           { icon: "↑", title: "Monthly Cashflow", description: "Consistent passive income generation" },
@@ -261,7 +274,11 @@ const Home = () => {
                 p: 3,
                 height: "100%",
                 borderRadius: 3,
-                
+                transition: "transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out",
+                "&:hover": {
+                  transform: "translateY(-5px)",
+                  boxShadow: 6
+                }
               }}
             >
               <Box sx={{ 
@@ -284,86 +301,196 @@ const Home = () => {
       </Grid>
     </Grid>
 
-            {/* Right Side - Asset Comparison Section */}
-            <Grid item xs={12} md={6}>
-              <Typography variant="h5" fontWeight="bold" sx={{ mb: 3 }}>
-                CRE vs. Other Asset Classes
-              </Typography>
+    {/* Right Side - Asset Comparison with proper quadrant chart */}
+    <Grid item xs={12} md={6}>
+      <Typography variant="h5" fontWeight="bold" sx={{ mb: 4 }}>
+        CRE vs. Other Asset Classes
+      </Typography>
 
-              {/* Quadrant Chart Layout */}
+      <Box
+        sx={{
+          position: "relative",
+          border: "2px solid #e0e0e0",
+          borderRadius: 2,
+          height: "400px",
+          overflow: "hidden",
+          boxShadow: 1
+        }}
+      >
+        {/* Horizontal and Vertical dividing lines */}
+        <Box sx={{ 
+          position: "absolute", 
+          top: 0, 
+          bottom: 0, 
+          left: "50%", 
+          width: "1px", 
+          bgcolor: "#e0e0e0", 
+          zIndex: 1 
+        }} />
+        <Box sx={{ 
+          position: "absolute", 
+          left: 0, 
+          right: 0, 
+          top: "50%", 
+          height: "1px", 
+          bgcolor: "#e0e0e0", 
+          zIndex: 1 
+        }} />
+
+        {/* Axis Labels */}
+        <Typography sx={{ 
+          position: "absolute", 
+          top: 16, 
+          left: "50%", 
+          transform: "translateX(-50%)", 
+          fontWeight: "bold",
+          zIndex: 2
+        }}>
+          Stable
+        </Typography>
+        <Typography sx={{ 
+          position: "absolute", 
+          bottom: 16, 
+          left: "50%", 
+          transform: "translateX(-50%)", 
+          fontWeight: "bold",
+          zIndex: 2
+        }}>
+          Volatile
+        </Typography>
+        <Typography sx={{ 
+          position: "absolute", 
+          top: "50%", 
+          left: 16, 
+          transform: "translateY(-50%) rotate(-90deg)", 
+          fontWeight: "bold",
+          transformOrigin: "left center",
+          zIndex: 2
+        }}>
+          Lower Returns
+        </Typography>
+        <Typography sx={{ 
+          position: "absolute", 
+          top: "50%", 
+          right: 16, 
+          transform: "translateY(-50%) rotate(90deg)", 
+          fontWeight: "bold",
+          transformOrigin: "right center",
+          zIndex: 2
+        }}>
+          Higher Returns
+        </Typography>
+
+        {/* Quadrant Items */}
+        <Box sx={{ 
+          display: "grid", 
+          gridTemplateColumns: "1fr 1fr", 
+          gridTemplateRows: "1fr 1fr", 
+          height: "100%",
+          width: "100%",
+          position: "relative",
+          zIndex: 0
+        }}>
+          {[
+            { 
+              title: "Residential Properties", 
+              position: "top-left", 
+              bg: "#fff" ,
+              fontWeight: "bold",
+            },
+            { 
+              title: "Commercial Real Estate", 
+              position: "top-right", 
+              bg: "#f5d7a1", 
+              fontWeight: "bold",
+              desc: "High stability with strong returns"
+            },
+            { 
+              title: "Gold", 
+              position: "bottom-left", 
+              bg: "#fff",
+              fontWeight: "bold",
+              desc: "Stable store of value, lower growth"
+            },
+            { 
+              title: "Stocks & Mutual Funds", 
+              position: "bottom-right", 
+              bg: "#fff",
+              fontWeight: "bold",
+              desc: "Higher potential returns with volatility"
+            }
+          ].map((item, index) => {
+            const isTopLeft = item.position === "top-left";
+            const isTopRight = item.position === "top-right";
+            const isBottomLeft = item.position === "bottom-left";
+            const isBottomRight = item.position === "bottom-right";
+            
+            return (
               <Box
+                key={index}
                 sx={{
-                  display: "grid",
-                  gridTemplateColumns: "1fr 1fr",
-                  gridTemplateRows: "1fr 1fr",
-                  gap: 2,
-                  border: "2px solid #ddd",
-                  position: "relative",
                   p: 3,
-                  height: 400
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  backgroundColor: item.bg,
+                  gridColumn: isTopLeft || isBottomLeft ? "1" : "2",
+                  gridRow: isTopLeft || isTopRight ? "1" : "2",
+                  position: "relative",
+                  transition: "background-color 0.2s",
+                  "&:hover": {
+                    backgroundColor: isTopRight ? "#f0c379" : "#f5f5f5"
+                  }
                 }}
               >
-                {/* Axes Labels */}
-                <Typography sx={{ position: "absolute", top: 10, left: "50%", transform: "translateX(-50%)", fontWeight: "bold" }}>
-                  Stable
+                <Typography 
+                  variant="body1" 
+                  fontWeight={item.fontWeight || "normal"} 
+                  align="center"
+                  gutterBottom
+                >
+                  {item.title}
                 </Typography>
-                <Typography sx={{ position: "absolute", bottom: 10, left: "50%", transform: "translateX(-50%)", fontWeight: "bold" }}>
-                  Volatile
-                </Typography>
-                <Typography sx={{ position: "absolute", top: "50%", left: 10, transform: "translateY(-50%)", fontWeight: "bold" }}>
-                  Lower Returns
-                </Typography>
-                <Typography sx={{ position: "absolute", top: "50%", right: 10, transform: "translateY(-50%)", fontWeight: "bold" }}>
-                  Higher Returns
-                </Typography>
-
-                {/* Quadrant Boxes */}
-                {[
-                  { title: "Residential Properties", bg: "#fff" },
-                  { title: "Commercial Real Estate", bg: "#f5d7a1", fontWeight: "bold" },
-                  { title: "Gold", bg: "#fff" },
-                  { title: "Stocks & Mutual Funds", bg: "#fff" }
-                ].map((item, index) => (
-                  <Box
-                    key={index}
-                    sx={{
-                      border: "1px solid #ddd",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      backgroundColor: item.bg,
-                      fontWeight: item.fontWeight || "normal",
-                      p: 2,
-                    }}
+                {item.desc && (
+                  <Typography 
+                    variant="caption" 
+                    color="text.secondary" 
+                    align="center"
                   >
-                    <Typography variant="body2" align="center">{item.title}</Typography>
-                  </Box>
-                ))}
+                    {item.desc}
+                  </Typography>
+                )}
               </Box>
-            </Grid>
-          </Grid>
-        </Container>
+            );
+          })}
+        </Box>
+      </Box>
+    </Grid>
+  </Grid>
+</Container>
 
 
         {/* Team Section */}
         <Container sx={{ mt: 4, mb: 4 }} maxWidth={false} >
-          <Typography variant="h4" align="center" sx={{ mb: 4, textAlign: "center", fontWeight: "bold" }}>
+          <Typography variant="h4" align="center" sx={{ mb: 4, textAlign:"center",fontWeight:"bold" }}>
             Our Team
           </Typography>
+          
           <Grid container spacing={4}>
             {teamMembers.map((member, index) => (
               <Grid item xs={12} md={4} key={index}>
                 <Card elevation={3}>
                   <CardContent sx={{ p: 3 }}>
-                    <Avatar
-                      src={member.image || "https://www.w3schools.com/w3images/avatar5.png"}
-                      sx={{
-                        width: 150,
-                        height: 150,
-                        mx: 'auto',
-                        mb: 3
-                      }}
-                    />
+                  <Avatar
+                  src={member.image || "https://www.w3schools.com/w3images/avatar5.png"}
+                  sx={{
+                  width: 150,
+                  height: 150,
+                  mx: 'auto',
+                  mb: 3
+                 }}
+                 />
                     {/* Combined Role & Description */}
                     <Typography variant="body1" sx={{ textAlign: 'justify', mb: 2 }}>
                       <strong>Role:</strong> {member.role} - {member.description}
