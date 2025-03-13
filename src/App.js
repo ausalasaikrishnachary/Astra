@@ -38,6 +38,8 @@ import Header from "./website/Shared/Navbar/Navbar";
 import Footer from "./website/Shared/Footer/Footer";
 import MyInvestors from "./Components/Panel/Partner/MyInvestors/MyInvestors";
 import AdminAssetForm from "./Components/Panel/Admin/Asset/AssetForm";
+import SellAsset from "./Components/Panel/Investor/Asset/SellAsset";
+import Users from "./Components/Panel/Admin/Users/Users";
 
 function Layout() {
   const location = useLocation();
@@ -62,16 +64,18 @@ function Layout() {
           <Route path="/a-asset" element={<AdminAsset />} />
           <Route path="/a-addasset" element={<AdminAssetForm />} />
           <Route path="/a-investormanagement" element={<Tmanagement />} />
-          <Route path="/a-transactionmoniter" element={<Tmoniter />} />
-          <Route path="/a-investment-page" element={<InvestmentPage />} />
+          <Route path="/a-transactionmoniter" element={<Tmoniter />} />  
           <Route path="/a-partners" element={<PartnersDashboard />} />
           <Route path="/a-profile" element={<AdminProfile />} />
           <Route path="/a-profiledetails" element={<AdminKyc />} />
+          <Route path="/a-users" element={<Users />} />
 
           <Route path="/i-dashboard" element={<InvestorDashboard />} />
           <Route path="/i-asset" element={<InvestorAsset />} />
           <Route path="/i-buyunits" element={<BuyShares />} />
           <Route path="/i-sellunits" element={<SellShares />} />
+          <Route path="/i-investment-page" element={<InvestmentPage />} />
+          <Route path="/i-sellform" element={<SellAsset />} />
           <Route path="/i-profile" element={<InvestorProfile />} />
           <Route path="/i-profiledetails" element={<Kyc />} />
 

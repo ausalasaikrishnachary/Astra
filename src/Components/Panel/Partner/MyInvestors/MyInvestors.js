@@ -1,17 +1,18 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Container,
   Box,
   Typography,
   TextField,
   Button,
-  Menu,
   MenuItem,
   Grid,
   Card,
   CardContent,
-  FormControl,    // <-- Added
-  Select          // <-- Added
+  FormControl,
+  Select,
+  CircularProgress,
+  Alert,
 } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import VisibilityIcon from "@mui/icons-material/Visibility";
@@ -19,71 +20,60 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import IconButton from "@mui/material/IconButton";
 import Header from "../../../Shared/Navbar/Navbar";
-import "./MyInvestors.css"
 import PartnerHeader from "../../../Shared/Partner/PartnerNavbar";
 
-// Define summaryCardsData for the summary cards section
+// API Endpoint
+const API_URL = "http://46.37.122.105:91/users/";
+
+// Summary Cards Data
 const summaryCardsData = [
-  { title: "Total Investors", value: "5", subtext: "Active Investors" },
-  { title: "Active", value: "3", subtext: "Currently active" },
-  { title: "Inactive", value: "2", subtext: "Currently inactive" },
+  { title: "Total Investors", key: "total" },
+  { title: "Active", key: "active" },
+  { title: "Inactive", key: "inactive" },
 ];
 
-const investors = [
-  { id: "ID001", name: "Naveen", email: "xyz@gmail.com", lastActive: "2 hours ago", status: "Active" },
-  { id: "ID002", name: "Xyz", email: "zyx@gmail.com", lastActive: "3 hours ago", status: "Inactive" },
-  { id: "ID003", name: "Bharath", email: "abc@gmail.com", lastActive: "30 min ago", status: "Inactive" },
-  { id: "ID004", name: "Naveen", email: "zyx@gmail.com", lastActive: "5 hours ago", status: "Active" },
-  { id: "ID005", name: "Abc", email: "abc@gmail.com", lastActive: "1 day ago", status: "Active" },
-];
-
-const MyInvestors = () => {
+const Tmanagement = () => {
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [sortBy, setSortBy] = useState("Latest");
-  const [anchorEl, setAnchorEl] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
 
-  const handleSortClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const response = await fetch(API_URL);
+        if (!response.ok) throw new Error("Failed to fetch data");
 
-  const handleSortClose = (option) => {
-    if (option) {
-      setSortBy(option);
-    }
-    setAnchorEl(null);
-  };
+        const data = await response.json();
+        setUsers(data); // Set user data
+      } catch (error) {
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  const getStatusColor = (status) => (status === "Active" ? "green" : "red");
+    fetchUsers();
+  }, []);
 
+  // Status Color
+  const getStatusColor = (status) => (status === "active" ? "green" : "red");
+
+  // Columns for DataGrid
   const columns = [
-    {
-      field: "id",
-      headerName: "Asset ID",
-      flex: 1,
-      minWidth: 150,
-    },
-    {
-      field: "name",
-      headerName: "Investor Name",
-      flex: 1,
-      minWidth: 200,
-    },
-    {
-      field: "email",
-      headerName: "Email",
-      flex: 1,
-      minWidth: 250,
-    },
-    {
-      field: "lastActive",
-      headerName: "Last Active",
-      flex: 1,
-      minWidth: 180,
-    },
-    {
-      field: "status",
-      headerName: "Status",
-      flex: 1,
-      minWidth: 150,
+    { field: "user_id", headerName: "User ID", flex: 1, minWidth: 100 },
+    { field: "username", headerName: "Username", flex: 1, minWidth: 150 },
+    { field: "email", headerName: "Email", flex: 1, minWidth: 250 },
+    { field: "phone", headerName: "Phone", flex: 1, minWidth: 150 },
+    { field: "dob", headerName: "DOB", flex: 1, minWidth: 150 },
+    { field: "gender", headerName: "Gender", flex: 1, minWidth: 120 },
+    { field: "kyc_status", headerName: "KYC Status", flex: 1, minWidth: 130 },
+    { field: "account_holder_name", headerName: "Bank Account Holder", flex: 1.5, minWidth: 200 },
+    { field: "bank_name", headerName: "Bank Name", flex: 1.5, minWidth: 180 },
+    { field: "ifsc_code", headerName: "IFSC Code", flex: 1, minWidth: 150 },
+    { field: "reference_to", headerName: "Reference To", flex: 1, minWidth: 150 },
+    { field: "status", headerName: "Status", flex: 1, minWidth: 150, 
       renderCell: (params) => (
         <Typography sx={{ color: getStatusColor(params.value) }}>
           {params.value}
@@ -111,13 +101,23 @@ const MyInvestors = () => {
       ),
     },
   ];
-  
+
+  // Filter Users based on Search
+  const filteredUsers = users.filter((user) =>
+    Object.values(user).some((value) =>
+      value?.toString().toLowerCase().includes(searchTerm.toLowerCase())
+    )
+  );
+
+  // Count Active & Inactive Users
+  const totalUsers = users.length;
+  const activeUsers = users.filter((user) => user.status === "active").length;
+  const inactiveUsers = totalUsers - activeUsers;
 
   return (
     <>
       <PartnerHeader />
       <Container sx={{ maxWidth: "900px", pt: 3 }}>
-        {/* Header */}
         <Typography variant="h4" component="h2" gutterBottom style={{ textAlign: "center" }}>
           Leads Management
         </Typography>
@@ -136,38 +136,30 @@ const MyInvestors = () => {
                 }}
               >
                 <CardContent>
-                  <Typography variant="h6" gutterBottom>
-                    {card.title}
-                  </Typography>
+                  <Typography variant="h6" gutterBottom>{card.title}</Typography>
                   <Typography variant="h4" sx={{ color: "rgb(30,10,80)" }}>
-                    {card.value}
+                    {card.key === "total" ? totalUsers : card.key === "active" ? activeUsers : inactiveUsers}
                   </Typography>
-                  <Typography variant="body2">{card.subtext}</Typography>
+                  <Typography variant="body2">
+                    {card.key === "active" ? "Currently active" : "Currently inactive"}
+                  </Typography>
                 </CardContent>
               </Card>
             </Grid>
           ))}
         </Grid>
 
-        {/* Search, Sort & Filters Row */}
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "end",
-            alignItems: "center",
-            gap: "10px",
-            mt: 3,
-            mb: 2,
-          }}
-        >
+        {/* Search & Sort */}
+        <Box sx={{ display: "flex", justifyContent: "end", alignItems: "center", gap: "10px", mt: 3, mb: 2 }}>
           <TextField
             placeholder="Search..."
             variant="outlined"
             size="small"
             sx={{ width: "250px" }}
+            onChange={(e) => setSearchTerm(e.target.value)}
           />
           <FormControl size="small" sx={{ width: "120px" }}>
-            <Select defaultValue="Latest">
+            <Select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
               <MenuItem value="Latest">Latest</MenuItem>
               <MenuItem value="Oldest">Oldest</MenuItem>
             </Select>
@@ -191,18 +183,26 @@ const MyInvestors = () => {
 
         {/* DataGrid Table */}
         <Box sx={{ height: 400, width: "100%" }}>
-          <DataGrid
-            rows={investors}
-            columns={columns}
-            pageSize={4}
-            rowsPerPageOptions={[4]}
-            autoHeight
-            disableSelectionOnClick
-          />
+          {loading ? (
+            <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100%" }}>
+              <CircularProgress />
+            </Box>
+          ) : error ? (
+            <Alert severity="error">{error}</Alert>
+          ) : (
+            <DataGrid
+              rows={filteredUsers.map((user) => ({ ...user, id: user.user_id }))}
+              columns={columns}
+              pageSize={5}
+              rowsPerPageOptions={[5]}
+              autoHeight
+              disableSelectionOnClick
+            />
+          )}
         </Box>
       </Container>
     </>
   );
 };
 
-export default MyInvestors;
+export default Tmanagement;

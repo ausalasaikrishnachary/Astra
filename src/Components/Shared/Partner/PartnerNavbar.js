@@ -33,7 +33,7 @@ export default function PartnerHeader() {
     { label: 'My Assets', path: '/p-myassets' },
     { label: 'My Investors', path: '/p-myinvestors' },
     {
-      label: 'Transactions', path:"/p-transactions",
+      label: 'Transactions', path: "/p-transactions",
       path: '/p-transactions',
       submenu: [
         { label: 'Buy Units', path: '/buy-units' },
@@ -44,14 +44,14 @@ export default function PartnerHeader() {
   ];
 
   // Inside your PartnerHeader component:
-const [partnerType, setPartnerType] = useState('Partner');
+  const [partnerType, setPartnerType] = useState('Partner');
 
-useEffect(() => {
-  const savedType = localStorage.getItem('partnerType');
-  if (savedType) {
-    setPartnerType(savedType);
-  }
-}, []);
+  useEffect(() => {
+    const savedType = localStorage.getItem('partnerType');
+    if (savedType) {
+      setPartnerType(savedType);
+    }
+  }, []);
 
   // Responsive helper.
   const theme = useTheme();
@@ -127,7 +127,7 @@ useEffect(() => {
         sx={{
           backgroundColor: 'white',
           color: '#000',
-          boxShadow:"-moz-initial"
+          boxShadow: "-moz-initial"
         }}
       >
         <Toolbar>
@@ -167,8 +167,8 @@ useEffect(() => {
                   <NotificationsNoneIcon />
                 </IconButton>
                 <Typography sx={{ ml: 2, mr: 2, color: '#000', fontWeight: 'bold' }}>
-  {partnerType}
-</Typography>
+                  {partnerType}
+                </Typography>
                 <Avatar
                   onClick={handleAvatarClick}
                   sx={{ width: 40, height: 40, cursor: 'pointer' }}
@@ -206,8 +206,8 @@ useEffect(() => {
                       color: location.pathname === item.path ? 'blue' : '#000',
                       fontWeight: 'bold',
                       textTransform: 'none',
-                      fontSize:"16px"
-                      
+                      fontSize: "16px"
+
                     }}
                   >
                     {item.label}
@@ -220,8 +220,8 @@ useEffect(() => {
                 <NotificationsNoneIcon />
               </IconButton>
               <Typography sx={{ ml: 2, mr: 2, color: '#000', fontWeight: 'bold' }}>
-  {partnerType}
-</Typography>
+                REC
+              </Typography>
               <Avatar
                 onClick={handleAvatarClick}
                 sx={{ width: 40, height: 40, cursor: 'pointer' }}
@@ -306,7 +306,7 @@ useEffect(() => {
               sx={{
                 color: location.pathname === subitem.path ? 'blue' : 'inherit',
                 fontWeight: 'bold',
-                fontSize:"16px"
+                fontSize: "16px"
               }}
             >
               {subitem.label}

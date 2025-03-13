@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import "./../Transactions/TransactionMoniter.css"
 import {
   Container,
   Box,
@@ -18,8 +19,26 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Header from "../../../Shared/Navbar/Navbar";
+import axios from "axios";
 
 const Tmoniter = () => {
+  const [properties, setProperties] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState("");
+
+  useEffect(() => {
+    axios
+      .get("http://46.37.122.105:91/property/")
+      .then((response) => {
+        setProperties(response.data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+        setLoading(false);
+      });
+  }, []);
+
   const summaryCardsData = [
     {
       title: "Total Transactions",
@@ -38,101 +57,70 @@ const Tmoniter = () => {
     },
   ];
 
-  const transactions = [
-    {
-      id: "ID001",
-      date: "08-02-2025",
-      desc: "Monthly subscription",
-      amount: "50000/-",
-      status: "Successful",
-    },
-    {
-      id: "ID002",
-      date: "07-02-2025",
-      desc: "Service payment",
-      amount: "500000/-",
-      status: "Pending",
-    },
-    {
-      id: "ID003",
-      date: "06-02-2025",
-      desc: "Product purchase",
-      amount: "50000/-",
-      status: "Failed",
-    },
-    {
-      id: "ID004",
-      date: "08-02-2025",
-      desc: "Monthly subscription",
-      amount: "50000/-",
-      status: "Successful",
-    },
-  ];
-
-  // Helper to set status text color
-  const getStatusColor = (status) => {
-    if (status === "Successful") return "green";
-    if (status === "Pending") return "orange";
-    if (status === "Failed") return "red";
-    return "inherit";
-  };
+  const filteredProperties = properties.filter((property) =>
+    property.property_name.toLowerCase().includes(search.toLowerCase())
+  );
 
   const columns = [
+    // { field: "property_id", headerName: "Property ID", width: 120 },
+    // { field: "agent_name", headerName: "Agent Name", width: 150 },
+    // { field: "user_role", headerName: "User Role", width: 150 },
+    // { field: "user_id", headerName: "User Id", width: 150 },
+    { field: "property_name", headerName: "Property Name", width: 200 },
+    { field: "property_type", headerName: "Type", width: 150 },
     {
-      field: "id",
-      headerName: "Asset ID",
-      flex: 1,
-      minWidth: 150,
-      headerAlign: "center",
-      align: "center",
-    },
-    {
-      field: "date",
-      headerName: "Date",
-      flex: 1,
-      minWidth: 150,
-      headerAlign: "center",
-      align: "center",
-    },
-    {
-      field: "desc",
+      field: "description",
       headerName: "Description",
-      flex: 1,
-      minWidth: 200,
-      headerAlign: "center",
-      align: "center",
-    },
-    {
-      field: "amount",
-      headerName: "Amount",
-      flex: 1,
-      minWidth: 150,
-      headerAlign: "center",
-      align: "center",
-    },
-    {
-      field: "status",
-      headerName: "Status",
-      flex: 1,
-      minWidth: 150,
-      headerAlign: "center",
-      align: "center",
+      width: 250,
       renderCell: (params) => (
-        <Typography sx={{ color: getStatusColor(params.value) }}>
+        <Typography
+          sx={{
+            whiteSpace: "normal",
+            wordWrap: "break-word",
+            overflowWrap: "break-word",
+          }}
+        >
           {params.value}
         </Typography>
       ),
     },
     {
+      field: "address",
+      headerName: "Address",
+      width: 250,
+      renderCell: (params) => (
+        <Typography
+          sx={{
+            whiteSpace: "normal",
+            wordWrap: "break-word",
+            overflowWrap: "break-word",
+          }}
+        >
+          {params.value}
+        </Typography>
+      ),
+    },
+
+    { field: "city", headerName: "City", width: 100 },
+    { field: "state", headerName: "State", width: 100 },
+    { field: "country", headerName: "Country", width: 100 },
+    { field: "pin_code", headerName: "Pin code", width: 100 },
+    { field: "latitude", headerName: "Latitude", width: 100 },
+    { field: "longitude", headerName: "Longitude", width: 100 },
+    { field: "total_units", headerName: "Total Units", width: 120 },
+    { field: "available_units", headerName: "Available Units", width: 150 },
+    { field: "property_value", headerName: "Property Value", width: 150 },
+    { field: "ownership_type", headerName: "Ownership type", width: 150 },
+    { field: "property_image", headerName: "property image", width: 150 },
+    { field: "created_at", headerName: "created_at", width: 150 },
+    { field: "updated_at", headerName: "updated_at", width: 150 },
+
+    {
       field: "actions",
       headerName: "Actions",
-      flex: 1,
-      minWidth: 150,
-      headerAlign: "center",
-      align: "center",
-      sortable: false,
-      renderCell: (params) => (
-        <Box sx={{ display: "flex", justifyContent: "center", gap: "8px" }}>
+      width: 150,
+      renderCell: () => (
+        <Box sx={{ display: "flex", gap: "8px" }}>
           <IconButton size="small">
             <VisibilityIcon />
           </IconButton>
@@ -146,30 +134,19 @@ const Tmoniter = () => {
       ),
     },
   ];
-  
 
   return (
     <>
       <Header />
       <Container sx={{ pt: 3 }}>
-        {/* Page Title */}
-        <Typography variant="h4" component="h2" sx={{ mb: 3, textAlign:"center" }}>
+        <Typography variant="h4" component="h2" sx={{ mb: 3, textAlign: "center" }}>
           Transaction Monitor
         </Typography>
 
-        {/* Summary Cards */}
         <Grid container spacing={2}>
           {summaryCardsData.map((card, index) => (
             <Grid item xs={12} md={4} key={index}>
-              <Card
-                sx={{
-                  backgroundColor: "#f8f9fa",
-                  textAlign: "center",
-                  p: 2,
-                  borderRadius: 2,
-                  boxShadow: "2px 2px 10px rgba(0, 0, 0, 0.1)",
-                }}
-              >
+              <Card sx={{ backgroundColor: "#f8f9fa", textAlign: "center", p: 2, borderRadius: 2 }}>
                 <CardContent>
                   <Typography variant="h6" gutterBottom>
                     {card.title}
@@ -184,22 +161,13 @@ const Tmoniter = () => {
           ))}
         </Grid>
 
-        {/* Centered Search and Filters */}
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "end",
-            alignItems: "center",
-            gap: "10px",
-            mt: 3,
-            mb: 2,
-          }}
-        >
+        <Box sx={{ display: "flex", justifyContent: "end", gap: "10px", mt: 3, mb: 2 }}>
           <TextField
             placeholder="Search..."
             variant="outlined"
             size="small"
             sx={{ width: "250px" }}
+            onChange={(e) => setSearch(e.target.value)}
           />
           <FormControl size="small" sx={{ width: "120px" }}>
             <Select defaultValue="Latest">
@@ -207,33 +175,24 @@ const Tmoniter = () => {
               <MenuItem value="Oldest">Oldest</MenuItem>
             </Select>
           </FormControl>
-          <Button
-            variant="outlined"
-            sx={{
-              width: "120px",
-              fontSize: "14px",
-              padding: "5px",
-              backgroundColor: "white",
-              border: "1px solid #ced4da",
-              color: "black",
-              textTransform: "none",
-              "&:hover": { backgroundColor: "#f8f9fa" },
-            }}
-          >
+          <Button variant="outlined" sx={{ width: "120px", fontSize: "14px", textTransform: "none" }}>
             Filters
           </Button>
         </Box>
 
-        {/* Transactions DataGrid */}
         <Box sx={{ height: 400, width: "100%", mt: 3 }}>
           <DataGrid
-            rows={transactions}
+            rows={filteredProperties}
             columns={columns}
-            pageSize={4}
-            rowsPerPageOptions={[4]}
+            pageSizeOptions={[5, 10, 20]}
+            pagination
+            paginationMode="client"
             autoHeight
             disableSelectionOnClick
+            loading={loading}
+            getRowId={(row) => row.property_id}
           />
+
         </Box>
       </Container>
     </>
