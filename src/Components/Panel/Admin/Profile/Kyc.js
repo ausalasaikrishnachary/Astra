@@ -21,9 +21,7 @@ import {
   FormControlLabel,
   Divider,
   Typography,
-  InputAdornment
 } from "@mui/material";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
 import AddIcon from "@mui/icons-material/Add";
 import Header from "../../../Shared/Navbar/Navbar";
 
@@ -34,7 +32,7 @@ const AdminKyc = () => {
     first_name: "",
     last_name: "",
     email: "",
-    phone_number: "",
+    phone: "",
     full_name: "",
     date_of_birth: "",
     gender: "",
@@ -43,7 +41,7 @@ const AdminKyc = () => {
     state: "",
     country: "",
     postal_code: "",
-    role: "",
+    role: [],
     status: "",
     pan_number: "",
     aadhaar_number: "",
@@ -53,7 +51,7 @@ const AdminKyc = () => {
     branch_name: "",
     account_number: "",
     ifsc_code: "",
-    reference_to: "",
+    nominee_name: "",
     nominee_relationship: "",
     nominee_phone: "",
     nominee_email: "",
@@ -63,11 +61,6 @@ const AdminKyc = () => {
   const [roles, setRoles] = useState([]);
   const [open, setOpen] = useState(false);
   const [newRole, setNewRole] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-
-  const handleTogglePassword = () => {
-    setShowPassword((prev) => !prev);
-  };
 
   useEffect(() => {
     const fetchRoles = async () => {
@@ -94,6 +87,26 @@ const AdminKyc = () => {
     });
   };
 
+  const handleRoleChange = (event) => {
+    const selectedValues = event.target.value;
+    const numericValues = selectedValues.map((value) => Number(value)); // Convert strings to numbers
+
+    console.log("Selected Role IDs (converted):", numericValues);
+    console.log("Type of numericValues:", Array.isArray(numericValues) ? "Array" : typeof numericValues);
+
+    // Log typeof each element in the array
+    numericValues.forEach((value, index) => {
+        console.log(`Type of numericValues[${index}]:`, typeof value);
+    });
+
+    setFormData((prevData) => ({
+      ...prevData,
+      role: numericValues, // Ensure it's an array of numbers
+    }));
+};
+
+
+
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -113,20 +126,24 @@ const AdminKyc = () => {
 
     // Create FormData object for multipart form submission
     const formDataToSend = new FormData();
-    formDataToSend.append("roles", formData.role);
+    formData.role.forEach((role_id) => {
+      formDataToSend.append("role_ids", role_id);
+    });
+    // formDataToSend.append("role_ids", formData.role);
+    console.log("role_ids", formData.role)
     formDataToSend.append("username", formData.username);
     formDataToSend.append("password", formData.password);
     formDataToSend.append("first_name", formData.first_name);
     formDataToSend.append("last_name", formData.last_name);
     formDataToSend.append("email", formData.email);
     formDataToSend.append("phone_number", formData.phone);
-    formDataToSend.append("date_of_birth", formData.date_of_birth);
+    formDataToSend.append("dob", formData.date_of_birth);
     formDataToSend.append("gender", formData.gender);
     formDataToSend.append("address", formData.address);
     formDataToSend.append("city", formData.city);
     formDataToSend.append("state", formData.state);
     formDataToSend.append("country", formData.country);
-    formDataToSend.append("pin_code", formData.postal_code);
+    formDataToSend.append("postal_code", formData.postal_code);
     formDataToSend.append("status", formData.status);
     formDataToSend.append("pan_number", formData.pan_number);
     formDataToSend.append("aadhaar_number", formData.aadhaar_number);
@@ -136,9 +153,9 @@ const AdminKyc = () => {
     formDataToSend.append("branch_name", formData.branch_name);
     formDataToSend.append("account_number", formData.account_number);
     formDataToSend.append("ifsc_code", formData.ifsc_code);
-    formDataToSend.append("reference_to", formData.reference_to);
-    // formDataToSend.append("nominee_relationship", formData.nominee_relationship);
-    // formDataToSend.append("nominee_dob", formData.nominee_dob);
+    formDataToSend.append("nominee_name", formData.nominee_name);
+    formDataToSend.append("nominee_relationship", formData.nominee_relationship);
+    formDataToSend.append("nominee_dob", formData.nominee_dob);
     formDataToSend.append("investment_type", formData.investment_type);
     formDataToSend.append("risk_profile", formData.risk_profile);
     formDataToSend.append("expected_investment_amount", formData.expected_investment_amount);
@@ -173,7 +190,7 @@ const AdminKyc = () => {
           state: "",
           country: "",
           postal_code: "",
-          role: "",
+          role: [], // Change from "" to []
           status: "",
           pan_number: "",
           aadhaar_number: "",
@@ -181,14 +198,14 @@ const AdminKyc = () => {
           branch_name: "",
           account_number: "",
           ifsc_code: "",
-          reference_to: "",
+          nominee_name: "",
           nominee_relationship: "",
           nominee_dob: "",
           investment_type: "",
           risk_profile: "",
           expected_investment_amount: "",
           image: null, // Reset image field
-        });
+        });        
       } else {
         console.error("Registration failed:", result);
         alert(`Error: ${result.image ? result.image[0] : "Registration failed."}`);
@@ -317,11 +334,12 @@ const AdminKyc = () => {
               <Grid item xs={12} sm={4}>
                 <TextField
                   fullWidth
-                  name="gender"
-                  placeholder="Gender"
+                  name="email"
+                  placeholder="Email"
                   variant="outlined"
                   size="small"
-                  value={formData.gender}
+                  type="email"
+                  value={formData.email}
                   onChange={handleChange}
                 />
               </Grid>
@@ -341,13 +359,23 @@ const AdminKyc = () => {
                 <TextField
                   fullWidth
                   name="date_of_birth"
-                  label="DOB"
                   placeholder="Date of Birth"
                   variant="outlined"
                   size="small"
                   type="date"
                   InputLabelProps={{ shrink: true }}
                   value={formData.date_of_birth}
+                  onChange={handleChange}
+                />
+              </Grid>
+              <Grid item xs={12} sm={4}>
+                <TextField
+                  fullWidth
+                  name="gender"
+                  placeholder="Gender"
+                  variant="outlined"
+                  size="small"
+                  value={formData.gender}
                   onChange={handleChange}
                 />
               </Grid>
@@ -365,37 +393,72 @@ const AdminKyc = () => {
               <Grid item xs={12} sm={4}>
                 <TextField
                   fullWidth
-                  name="email"
-                  placeholder="Email"
-                  variant="outlined"
-                  size="small"
-                  type="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                />
-              </Grid>
-              <Grid item xs={12} sm={4}>
-                <TextField
-                  fullWidth
                   name="password"
                   placeholder="Password"
                   variant="outlined"
                   size="small"
-                  type={showPassword ? "text" : "password"}
+                  type="password"
                   value={formData.password}
                   onChange={handleChange}
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <IconButton onClick={handleTogglePassword} edge="end">
-                          {showPassword ? <VisibilityOff /> : <Visibility />}
-                        </IconButton>
-                      </InputAdornment>
-                    ),
-                  }}
                 />
               </Grid>
+              <Grid item xs={12} sm={4}>
+  <Box display="flex" alignItems="center" gap={1}>
+    <FormControl fullWidth size="small">
+      <Select
+        labelId="user-type-label"
+        name="role"
+        multiple
+        value={formData.role}
+        onChange={handleRoleChange} // Use updated handler
+        displayEmpty
+        renderValue={(selected) => {
+          if (selected.length === 0) {
+            return <em>Select User Type</em>;
+          }
+          return roles
+            .filter((role) => selected.includes(role.role_id))
+            .map((role) => role.role_name)
+            .join(", ");
+        }}
+      >
+        <MenuItem value="" disabled>
+          Select User Type
+        </MenuItem>
+        {roles.map((role) => (
+          <MenuItem key={role.role_id} value={role.role_id}>
+            {role.role_name}
+          </MenuItem>
+        ))}
+      </Select>
+    </FormControl>
 
+    <IconButton color="primary" onClick={() => setOpen(true)}>
+      <AddIcon />
+    </IconButton>
+
+    <Dialog open={open} onClose={() => setOpen(false)}>
+      <DialogTitle>Add New Role</DialogTitle>
+      <DialogContent>
+        <TextField
+          fullWidth
+          size="small"
+          label="Enter Role"
+          value={newRole}
+          onChange={(e) => setNewRole(e.target.value)}
+        />
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={() => setOpen(false)} color="secondary">
+          Cancel
+        </Button>
+        <Button variant="contained" color="primary" onClick={handleAddRole}>
+          Add Role
+        </Button>
+      </DialogActions>
+    </Dialog>
+  </Box>
+</Grid>
               <Grid item xs={12} sm={4}>
                 <TextField
                   fullWidth
@@ -428,7 +491,7 @@ const AdminKyc = () => {
                   id="profile-image-upload"
                 />
                 <label htmlFor="profile-image-upload">
-                  <Button label="" variant="outlined" component="span" color="primary">
+                  <Button variant="outlined" component="span" color="primary">
                     Upload Image
                   </Button>
                 </label>
@@ -437,7 +500,7 @@ const AdminKyc = () => {
                 )}
               </Grid>
             </Grid>
-
+            <Divider sx={{ my: "10px", borderWidth: "0.5px" }} />
 
             {/* Address Details */}
             <Typography
@@ -508,7 +571,7 @@ const AdminKyc = () => {
               </Grid>
             </Grid>
 
-
+            <Divider sx={{ my: "10px", borderWidth: "0.5px" }} />
             {/* Banking Details */}
             <Typography
               variant="h6"
@@ -570,10 +633,10 @@ const AdminKyc = () => {
                 />
               </Grid>
             </Grid>
-
+            <Divider sx={{ my: "10px", borderWidth: "0.5px" }} />
 
             {/* Investment Details */}
-            {/* <Typography
+            <Typography
               variant="h6"
               sx={{
                 fontWeight: "bold",
@@ -609,7 +672,7 @@ const AdminKyc = () => {
                 />
               </Grid>
             </Grid>
-      
+            <Divider sx={{ my: "10px", borderWidth: "0.5px" }} />
 
             {/* Nominee Details */}
             <Typography
@@ -620,18 +683,18 @@ const AdminKyc = () => {
                 marginTop: "15px",
               }}
             >
-              Nominee
+              Nominee Details
             </Typography>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={4}>
                 <TextField
                   fullWidth
-                  placeholder="Reference to"
+                  placeholder="Nominee Name"
                   variant="outlined"
                   size="small"
                 />
               </Grid>
-              {/* <Grid item xs={12} sm={4}>
+              <Grid item xs={12} sm={4}>
                 <TextField
                   fullWidth
                   placeholder="Nominee Relationship"
@@ -648,9 +711,9 @@ const AdminKyc = () => {
                   type="date"
                   InputLabelProps={{ shrink: true }}
                 />
-              </Grid> */}
+              </Grid>
             </Grid>
-         
+            <Divider sx={{ my: "10px", borderWidth: "0.5px" }} />
 
             {/* KYC Verification */}
             <Typography
@@ -689,7 +752,7 @@ const AdminKyc = () => {
                 </Button>
               </Grid>
             </Grid>
-            
+            <Divider sx={{ my: "10px", borderWidth: "0.5px" }} />
 
             <Grid
               container
