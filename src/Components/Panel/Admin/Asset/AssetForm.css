@@ -60,6 +60,14 @@
     height: auto; /* Allow card height to adjust automatically */
     overflow-y: auto;
   }
+
+
+  /* form {
+    width: 86vw;
+    margin-left: -20%;
+    padding-top: 15px;
+
+  } */
   
   /* For larger screens */
   @media (max-width: 1200px) {

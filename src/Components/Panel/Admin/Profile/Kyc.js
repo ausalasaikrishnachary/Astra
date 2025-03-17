@@ -270,6 +270,7 @@ const AdminKyc = () => {
             borderRadius: "12px",
             boxShadow: "0px 6px 12px rgba(0, 0, 0, 0.2)",
             marginTop: "10px",
+
           }}
         >
           <CardHeader
