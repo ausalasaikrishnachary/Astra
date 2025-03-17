@@ -409,7 +409,7 @@ const AssetForm = () => {
   // const handleSubmit = async (e) => {
   //   e.preventDefault();
   //   try {
-  //     const response = await axios.post("http://46.37.122.105:91/property/", formData);
+  //     const response = await axios.post("http://175.29.21.7:83/property/", formData);
   //     console.log("Response:", response.data);
   //     alert("Property added successfully!");
   //   } catch (error) {
@@ -444,7 +444,7 @@ const AssetForm = () => {
         }
       });
 
-      const response = await fetch("http://46.37.122.105:91/property/", {
+      const response = await fetch("http://175.29.21.7:83/property/", {
         method: "POST",
         body: formDataToSend,
       });

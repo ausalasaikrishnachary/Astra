@@ -28,6 +28,7 @@ const PropertyForm = () => {
     pin_code: "",
     latitude: "",
     longitude: "",
+    no_of_investors:"",
     total_units: "",
     available_units: "",
     property_value: "",
@@ -108,7 +109,7 @@ const PropertyForm = () => {
   // const handleSubmit = async (e) => {
   //   e.preventDefault();
   //   try {
-  //     const response = await axios.post("http://46.37.122.105:91/property/", formData);
+  //     const response = await axios.post("http://175.29.21.7:83/property/", formData);
   //     console.log("Response:", response.data);
   //     alert("Property added successfully!");
   //   } catch (error) {
@@ -143,7 +144,7 @@ const PropertyForm = () => {
         }
       });
 
-      const response = await fetch("http://46.37.122.105:91/property/", {
+      const response = await fetch("http://175.29.21.7:83/property/", {
         method: "POST",
         body: formDataToSend,
       });
@@ -217,12 +218,15 @@ const PropertyForm = () => {
               <TextField fullWidth label="Postal Code" name="pin_code" value={formData.pin_code} onChange={handleChange} />
             </Grid>
 
-            <Grid item xs={6}>
+            {/* <Grid item xs={6}>
               <TextField fullWidth label="Latitude" name="latitude" value={formData.latitude} onChange={handleChange} type="number" />
             </Grid>
 
             <Grid item xs={6}>
               <TextField fullWidth label="Longitude" name="longitude" value={formData.longitude} onChange={handleChange} type="number" />
+            </Grid> */}
+            <Grid item xs={6}>
+              <TextField fullWidth label="No of Investors" name="no_of_investors" value={formData.no_of_investors} onChange={handleChange} type="number" />
             </Grid>
 
             <Grid item xs={6}>

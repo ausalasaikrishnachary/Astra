@@ -36,7 +36,7 @@ const BuyShares = () => {
   useEffect(() => {
     const fetchTransactions = async () => {
       try {
-        const response = await axios.get('http://46.37.122.105:91/transactions/');
+        const response = await axios.get('http://175.29.21.7:83/transactions/');
         setTransactions(response.data);
       } catch (err) {
         setError('Failed to fetch transactions');
@@ -68,6 +68,10 @@ const BuyShares = () => {
 
   const handleNextPage = () => {
     setCurrentPage((prev) => prev + 1);
+  };
+
+  const handleRemainingPaymentClick = (transactionId) => {
+    navigate(`/i-payment-form/${transactionId}`);
   };
 
   // Filter transactions based on search query
@@ -169,6 +173,9 @@ const BuyShares = () => {
                   <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>
                     Created At
                   </TableCell>
+                  <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>
+                    Remaining Payment
+                  </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -195,34 +202,20 @@ const BuyShares = () => {
                     <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>
                       {new Date(transaction.created_at).toLocaleDateString()}
                     </TableCell>
+                    <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        size="small"
+                        onClick={() => navigate(`/i-payment-form?property_id=${transaction.property_id}`)}
+                      >
+                        Pay Now
+                      </Button>
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
             </Table>
-
-            <Box display="flex" justifyContent="flex-end" mt={4} mb={4} mr={1}>
-              <ButtonGroup>
-                <Button
-                  variant="contained"
-                  disabled={currentPage === 0}
-                  onClick={handlePrevPage}
-                  sx={{ backgroundColor: '#000', color: 'white' }}
-                >
-                  Previous
-                </Button>
-                <Typography sx={{ padding: '4px 12px', border: '1px solid #ddd', borderRadius: '4px' }}>
-                  {currentPage + 1}
-                </Typography>
-                <Button
-                  variant="contained"
-                  disabled={currentPage >= totalPages - 1}
-                  onClick={handleNextPage}
-                  sx={{ backgroundColor: '#000', color: 'white' }}
-                >
-                  Next
-                </Button>
-              </ButtonGroup>
-            </Box>
           </>
         )}
       </Box>

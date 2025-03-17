@@ -15,9 +15,11 @@ import { useLocation, useNavigate } from "react-router-dom";
 const InvestmentForm = () => {
   const [formData, setFormData] = useState({
     investor: "",
+    escrow_id: "",
     property_name: "",
     property_type: "",
     property_value: "",
+    no_of_investors: "",
     total_units: "",
     price_per_unit: "",
     agent: "",
@@ -26,7 +28,8 @@ const InvestmentForm = () => {
     available_units: "",
     no_of_units_to_be_purchased: "",
     investment_period: "",
-    total_value: ""
+    total_value: "",
+    advance_payment: ""
   });
   const navigate = useNavigate();
 
@@ -63,47 +66,53 @@ const InvestmentForm = () => {
   // Fetch property details when propertyId is available
   useEffect(() => {
     if (propertyId) {
-      fetch(`http://46.37.122.105:91/property/${propertyId}/`)
+      // Fetch property details
+      fetch(`http://175.29.21.7:83/property/${propertyId}/`)
         .then((response) => response.json())
         .then((data) => {
-          console.log("Fetched Data:", data);
+          console.log("Fetched Property Data:", data);
           if (data) {
-            setFormData((prevData) => {
-              const updatedData = {
-                ...prevData,
-                property_name: data.property_name || "",
-                property_type: data.property_type || "",
-                agent: data.agent || "",
-                available_units: data.available_units || "0",
-                property_value: data.property_value || "",
-                total_units: data.total_units || "",
-                total_value: data.total_value || "",
-                
-              };
-  
-              // Ensure price per unit is calculated immediately after fetching data
-              if (updatedData.property_value && updatedData.total_units) {
-                updatedData.price_per_unit = (Number(updatedData.property_value) / Number(updatedData.total_units)).toFixed(2);
-              }
-  
-              return updatedData;
-            });
+            setFormData((prevData) => ({
+              ...prevData,
+              property_name: data.property_name || "",
+              property_type: data.property_type || "",
+              agent: data.agent || "",
+              available_units: data.available_units || "0",
+              property_value: data.property_value || "",
+              total_units: data.total_units || "",
+              total_value: data.total_value || "",
+              no_of_investors: data.no_of_investors || "",
+            }));
+
+            // Fetch Escrow ID after fetching property details
+            fetch(`http://175.29.21.7:83/escrow/account/property/${propertyId}/`)
+              .then((response) => response.json())
+              .then((escrowData) => {
+                console.log("Fetched Escrow Data:", escrowData);
+                setFormData((prevData) => ({
+                  ...prevData,
+                  escrow_id: escrowData.escrow_id || "", // Update escrow_id in state
+                  deposit_amount: escrowData.deposit_amount || "",
+                }));
+              })
+              .catch((error) => console.error("Error fetching escrow details:", error));
           }
         })
         .catch((error) => console.error("Error fetching property:", error));
     }
   }, [propertyId]);
-  
+
+
 
   useEffect(() => {
-    if (formData.property_value && formData.total_units) {
+    if (formData.property_value && formData.no_of_investors) {
       setFormData((prevData) => ({
         ...prevData,
-        price_per_unit: (Number(prevData.property_value) / Number(prevData.total_units)).toFixed(2),
+        price_per_unit: (Number(prevData.property_value) / Number(prevData.no_of_investors)).toFixed(2),
 
       }));
     }
-  }, [formData.property_value, formData.total_units]);
+  }, [formData.property_value, formData.no_of_investors]);
 
   useEffect(() => {
     if (formData.price_per_unit && formData.no_of_units_to_be_purchased) {
@@ -113,6 +122,15 @@ const InvestmentForm = () => {
       }));
     }
   }, [formData.price_per_unit, formData.no_of_units_to_be_purchased]);
+
+  useEffect(() => {
+    if (formData.total_value) {
+      setFormData((prevData) => ({
+        ...prevData,
+        advance_payment: (Number(formData.total_value) * 0.1).toFixed(2),
+      }));
+    }
+  }, [formData.total_value]);
 
   // Handle input changes
   const handleChange = (e) => {
@@ -124,15 +142,12 @@ const InvestmentForm = () => {
   };
 
   // Form submission handler
-  // Form submission handler
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Convert numeric values
     const sanitizedData = {
       ...formData,
-      
-      property_id:propertyId,
+      property_id: propertyId,
       available_units: Number(formData.available_units) || 0,
       price_per_unit: Number(formData.price_per_unit) || 0,
       total_amount: Number(formData.property_value) || 0,
@@ -146,12 +161,12 @@ const InvestmentForm = () => {
       commission_amount: Number(formData.commission_amount) || 0,
       resale_price: Number(formData.resale_price) || 0,
       commission_paid_date: formData.commission_paid_date || null,
-
+      no_of_investors: formData.no_of_investors || null,
     };
 
     try {
       // Step 1: Submit the transaction
-      const response = await fetch("http://46.37.122.105:91/transactions/", {
+      const response = await fetch("http://175.29.21.7:83/transactions/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(sanitizedData),
@@ -160,21 +175,37 @@ const InvestmentForm = () => {
       if (response.ok) {
         const result = await response.json();
         alert("Success: Transaction submitted successfully!");
-        navigate("/i-buyunits");
-        console.log("Success:", result);
+        console.log("Transaction Success:", result);
 
-        // Step 2: Update available_units after a successful transaction
+        // Step 2: Submit advance payment
+        const advancePaymentData = {
+          user_id: result.investor || 1, // Replace with dynamic user ID if available
+          property_id: propertyId,
+          escrow_id: formData.escrow_id || "", // Default or fetched escrow ID
+          paid_amount: formData.advance_payment || "0.00",
+          pending_amount: (Number(formData.total_value) - Number(formData.advance_payment)).toFixed(2),
+        };
+
+        const advancePaymentResponse = await fetch("http://175.29.21.7:83/advance/payments/", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(advancePaymentData),
+        });
+
+        if (advancePaymentResponse.ok) {
+          console.log("Advance Payment Successfully Stored:", await advancePaymentResponse.json());
+        } else {
+          console.error("Failed to store advance payment", await advancePaymentResponse.json());
+        }
+
+        // Step 3: Update available units
         if (propertyId) {
           const updatedUnits = Math.max(
             Number(formData.available_units) - Number(formData.no_of_units_to_be_purchased),
             0
-          ); // Ensure it doesn't go negative
-          
-          // if (updatedUnits == 0) {
-          //   updatedUnits = 0;
-          // }
+          );
 
-          const updateResponse = await fetch(`http://46.37.122.105:91/property/${propertyId}/`, {
+          const updateResponse = await fetch(`http://175.29.21.7:83/property/${propertyId}/`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ available_units: updatedUnits }),
@@ -187,17 +218,46 @@ const InvestmentForm = () => {
           }
         }
 
-        
+        // Step 4: Fetch current deposit_amount and update it
+        const escrowResponse = await fetch(`http://175.29.21.7:83/escrow/account/property/${propertyId}/`);
+        if (escrowResponse.ok) {
+          const escrowData = await escrowResponse.json();
+          const currentDepositAmount = Number(escrowData.deposit_amount) || 0;
+          const advancePayment = Number(formData.advance_payment) || 0;
+          const updatedDepositAmount = (currentDepositAmount + advancePayment).toFixed(2);
+          console.log("updatedDepositAmount:", updatedDepositAmount)
+          // Step 5: Update deposit_amount
+          const updateDepositResponse = await fetch(
+            `http://175.29.21.7:83/escrow/account/property/${propertyId}/`,
+            {
+              method: "PUT",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ deposit_amount: updatedDepositAmount }),
+            }
+          );
+
+          if (updateDepositResponse.ok) {
+            console.log("Deposit amount updated successfully!");
+          } else {
+            console.error("Failed to update deposit amount.");
+          }
+        } else {
+          console.error("Failed to fetch escrow details.");
+        }
+
+        navigate("/i-buyunits");
       } else {
         const errorData = await response.json();
         alert(`Failed: ${errorData.message || "Unable to submit the transaction."}`);
-        console.error("Error response:", errorData);
+        console.error("Transaction Error:", errorData);
       }
     } catch (error) {
       alert("Error: Something went wrong. Please try again.");
       console.error("Error:", error);
     }
   };
+
+
 
 
 

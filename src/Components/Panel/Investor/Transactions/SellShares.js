@@ -39,7 +39,7 @@ const BuyShares = () => {
   const fetchTransactions = async () => {
     setLoading(true);
     try {
-      const response = await axios.get('http://46.37.122.105:91/transactions/');
+      const response = await axios.get('http://175.29.21.7:83/transactions/');
       setTransactions(response.data);
     } catch (error) {
       console.error('Error fetching transactions:', error);

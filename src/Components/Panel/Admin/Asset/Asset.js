@@ -33,7 +33,7 @@ const AssetDashboard = () => {
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
-    fetch("http://46.37.122.105:91/property/")
+    fetch("http://175.29.21.7:83/property/")
       .then(response => response.json())
       .then(data => setAssets(data))
       .catch(error => console.error("Error fetching data:", error));
@@ -215,10 +215,10 @@ const AssetDashboard = () => {
                 }}
               >
                 <Box sx={{ position: 'relative' }}>
-                  {console.log(`http://46.37.122.105:91${asset.property_image}`)}
+                  {console.log(`http://175.29.21.7:83${asset.property_image}`)}
                   <CardMedia
                     component="img"
-                    image={`http://46.37.122.105:91${asset.property_image}`}
+                    image={`http://175.29.21.7:83${asset.property_image}`}
                     alt={asset.property_name}
                     sx={{ height: 220, objectFit: 'cover' }}
                   />
@@ -318,7 +318,7 @@ const AssetDashboard = () => {
                   <Grid item xs={12} md={6}>
                     <Box
                       component="img"
-                      src={`http://46.37.122.105:91${selectedAsset.property_image}`}
+                      src={`http://175.29.21.7:83${selectedAsset.property_image}`}
                       alt="Pune Property"
                       sx={{ width: '100%', borderRadius: 2 }}
                     />
@@ -327,8 +327,7 @@ const AssetDashboard = () => {
                     <Typography variant="body1" gutterBottom>{selectedAsset.description}</Typography>
                     <Typography variant="body2" color="text.secondary" gutterBottom>Asset Value: <strong>₹{selectedAsset.property_value}/-</strong></Typography>
                     <Typography variant="body2" color="text.secondary" gutterBottom>Location: <strong>{selectedAsset.city}, {selectedAsset.state}</strong></Typography>
-                    <Typography variant="body2" color="text.secondary" gutterBottom>latitude: <strong>{selectedAsset.latitude}</strong></Typography>
-                    <Typography variant="body2" color="text.secondary" gutterBottom>longitude: <strong>{selectedAsset.longitude}</strong></Typography>
+                    <Typography variant="body2" color="text.secondary" gutterBottom>No of Investors: <strong>{selectedAsset.no_of_investors}</strong></Typography>
                     <Typography variant="body2" color="text.secondary" gutterBottom>Total Units: <strong>{selectedAsset.total_units}</strong></Typography>
                     <Typography variant="body2" color="text.secondary" gutterBottom>Available Units: <strong>{selectedAsset.available_units}</strong></Typography>
                   </Grid>

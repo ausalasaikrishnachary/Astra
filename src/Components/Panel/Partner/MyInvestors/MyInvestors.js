@@ -23,7 +23,7 @@ import Header from "../../../Shared/Navbar/Navbar";
 import PartnerHeader from "../../../Shared/Partner/PartnerNavbar";
 
 // API Endpoint
-const API_URL = "http://46.37.122.105:91/users/";
+const API_URL = "http://175.29.21.7:83/users/";
 
 // Summary Cards Data
 const summaryCardsData = [

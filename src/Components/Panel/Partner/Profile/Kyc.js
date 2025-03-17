@@ -465,7 +465,7 @@ const PartnerKyc = () => {
   useEffect(() => {
     const fetchRoles = async () => {
       try {
-        const response = await fetch("http://46.37.122.105:91/roles/");
+        const response = await fetch("http://175.29.21.7:83/roles/");
         const data = await response.json();
         if (response.ok) {
           setRoles(data);
@@ -543,7 +543,7 @@ const PartnerKyc = () => {
     }
 
     try {
-      const response = await fetch("http://46.37.122.105:91/users/", {
+      const response = await fetch("http://175.29.21.7:83/users/", {
         method: "POST",
         body: formDataToSend, // Send FormData
       });
@@ -601,7 +601,7 @@ const PartnerKyc = () => {
     }
 
     try {
-      const response = await fetch("http://46.37.122.105:91/roles/", {
+      const response = await fetch("http://175.29.21.7:83/roles/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

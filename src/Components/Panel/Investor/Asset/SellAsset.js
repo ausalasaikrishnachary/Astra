@@ -47,7 +47,7 @@
 //   useEffect(() => {
 //     console.log("inside useffect")
 //     if (propertyId) {
-//       fetch(`http://46.37.122.105:91/property/${propertyId}`)
+//       fetch(`http://175.29.21.7:83/property/${propertyId}`)
 //         .then((response) => response.json())
         
 //         .then((data) => {
@@ -105,7 +105,7 @@
 //     }
 
 //     try {
-//       const response = await fetch("http://46.37.122.105:91/transactions/", {
+//       const response = await fetch("http://175.29.21.7:83/transactions/", {
 //         method: "POST",
 //         headers: { "Content-Type": "application/json" },
 //         body: JSON.stringify(sanitizedData),
@@ -234,7 +234,7 @@ const InvestmentForm = () => {
   // Fetch property details when propertyId is available
   useEffect(() => {
     if (propertyId) {
-      fetch(`http://46.37.122.105:91/property/${propertyId}/`)
+      fetch(`http://175.29.21.7:83/property/${propertyId}/`)
         .then((response) => response.json())
         .then((data) => {
           console.log("Fetched Data:", data);
@@ -322,7 +322,7 @@ const InvestmentForm = () => {
 
     try {
       // Step 1: Submit the transaction
-      const response = await fetch("http://46.37.122.105:91/transactions/", {
+      const response = await fetch("http://175.29.21.7:83/transactions/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(sanitizedData),
@@ -341,7 +341,7 @@ const InvestmentForm = () => {
             0
           ); // Ensure it doesn't go negative
 
-          const updateResponse = await fetch(`http://46.37.122.105:91/property/${propertyId}/`, {
+          const updateResponse = await fetch(`http://175.29.21.7:83/property/${propertyId}/`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ available_units: updatedUnits }),

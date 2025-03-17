@@ -28,7 +28,7 @@ const Tmoniter = () => {
 
   useEffect(() => {
     axios
-      .get("http://46.37.122.105:91/property/")
+      .get("http://175.29.21.7:83/property/")
       .then((response) => {
         setProperties(response.data);
         setLoading(false);

@@ -20,7 +20,7 @@ const Transaction = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch('http://46.37.122.105:91/property/');
+                const response = await fetch('http://175.29.21.7:83/property/');
                 const data = await response.json();
                 setPropertyData(data);
                 setLoading(false);

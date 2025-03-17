@@ -17,7 +17,7 @@ const Login = () => {
     setError(""); // Clear previous errors
 
     try {
-      const response = await fetch("http://46.37.122.105:91/login/", {
+      const response = await fetch("http://175.29.21.7:83/login/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),

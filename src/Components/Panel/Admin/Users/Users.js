@@ -14,7 +14,7 @@ const Users = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch("http://46.37.122.105:91/users/")
+    fetch("http://175.29.21.7:83/users/")
       .then((response) => {
         if (!response.ok) {
           throw new Error("Failed to fetch users");
@@ -30,7 +30,7 @@ const Users = () => {
         const usersWithRoles = await Promise.all(
           data.map(async (user) => {
             try {
-              const roleResponse = await fetch(`http://46.37.122.105:91/roles/${user.user_id}/`);
+              const roleResponse = await fetch(`http://175.29.21.7:83/roles/${user.user_id}/`);
               if (!roleResponse.ok) throw new Error("Failed to fetch role");
               const roleData = await roleResponse.json();
               return { ...user, role_name: roleData.role_name || "N/A" };
@@ -58,7 +58,7 @@ const Users = () => {
       )
     );
 
-    fetch("http://46.37.122.105:91/roles/", {
+    fetch("http://175.29.21.7:83/roles/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
