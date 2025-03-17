@@ -28,6 +28,7 @@ const Login = () => {
       if (response.ok) {
         localStorage.setItem("user_id", data.user_id);
         const userRoles = data.roles || [];
+        console.log(userRoles)
 
         if (userRoles.length > 1) {
           selectUserRole(userRoles);
@@ -63,7 +64,7 @@ const Login = () => {
   const navigateToDashboard = (role) => {
     if (role === "Admin") {
       navigate("/a-dashboard");
-    } else if (role === "Partner-(REC)" || role === "Partner-(IFA)") {
+    } else if (role === "Partner") {
       navigate("/p-dashboard");
     } else if (role === "Investor") {
       navigate("/i-dashboard");
