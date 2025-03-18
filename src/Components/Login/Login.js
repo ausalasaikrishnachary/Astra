@@ -10,36 +10,25 @@ const Login = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-<<<<<<< HEAD
-  const [partnerType, setPartnerType] = useState('');
-  const [emailError, setEmailError] = useState('');
-  const [passwordError, setPasswordError] = useState('');
+  const [error, setError] = useState("");
+  const [emailError, setEmailError] = useState("");
 
-  const validateEmail = (email) => {
+  const handleEmailChange = (e) => {
+    const value = e.target.value;
+    setEmail(value);
+
+    // Basic email validation regex
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
+
+    if (!value) {
+      setEmailError("Email is required");
+    } else if (!emailRegex.test(value)) {
+      setEmailError("Enter a valid email address");
+    } else {
+      setEmailError(""); // Clear error if valid
+    }
   };
 
-  const handleLogin = () => {
-    setEmailError('');
-    setPasswordError('');
-
-    if (!validateEmail(email)) {
-      setEmailError('Invalid email format');
-      return;
-    }
-
-    if (email === 'admin@gmail.com' && password === 'admin@123') {
-      navigate('/a-dashboard');
-    } else if (email === 'partner@gmail.com' && password === 'partner@123') {
-      localStorage.setItem('partnerType', partnerType);
-      navigate('/p-dashboard');
-    } else if (email === 'investor@gmail.com' && password === 'investor@123') {
-      navigate('/i-dashboard');
-    } else {
-      setPasswordError('Incorrect password or account does not exist');
-=======
-  const [error, setError] = useState("");
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -99,7 +88,6 @@ const Login = () => {
       navigate("/i-dashboard");
     } else {
       setError("Invalid role assigned. Please contact support.");
->>>>>>> a7118dcac84fb1905424526a9d9aafbcbb391250
     }
   };
 
@@ -135,53 +123,19 @@ const Login = () => {
             item xs={12} md={6}
             sx={{ padding: 4, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}
           >
-<<<<<<< HEAD
-            <Typography variant="h4" align="center" gutterBottom>
-              Login
-            </Typography>
+            <Typography variant="h4" align="center" gutterBottom>Login</Typography>
             <TextField
               fullWidth
               label="Email"
               variant="outlined"
               margin="normal"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={handleEmailChange}
               error={!!emailError}
               helperText={emailError}
             />
-            <TextField
-              fullWidth
-              label="Password"
-              type="password"
-              variant="outlined"
-              margin="normal"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              error={!!passwordError}
-              helperText={passwordError}
-            />
-            {email === 'partner@gmail.com' && (
-              <FormControl fullWidth margin="normal">
-                <InputLabel id="partner-type-label">Select Partner Type</InputLabel>
-                <Select
-                  labelId="partner-type-label"
-                  value={partnerType}
-                  label="Select Partner Type"
-                  onChange={(e) => setPartnerType(e.target.value)}
-                >
-                  <MenuItem value="" disabled>
-                    Select Partner Type
-                  </MenuItem>
-                  <MenuItem value="IFA">IFA</MenuItem>
-                  <MenuItem value="REC">REC</MenuItem>
-                </Select>
-              </FormControl>
-            )}
-=======
-            <Typography variant="h4" align="center" gutterBottom>Login</Typography>
-            <TextField fullWidth label="Email" variant="outlined" margin="normal" value={email} onChange={(e) => setEmail(e.target.value)} />
+
             <TextField fullWidth label="Password" type="password" variant="outlined" margin="normal" value={password} onChange={(e) => setPassword(e.target.value)} />
->>>>>>> a7118dcac84fb1905424526a9d9aafbcbb391250
             <Box textAlign="right">
               <Link href="#" color="error">Forgot Password?</Link>
             </Box>
