@@ -41,7 +41,7 @@ const AdminKyc = () => {
     state: "",
     country: "",
     postal_code: "",
-    role: "",
+    role: [],
     status: "",
     pan_number: "",
     aadhaar_number: "",
@@ -65,7 +65,7 @@ const AdminKyc = () => {
   useEffect(() => {
     const fetchRoles = async () => {
       try {
-        const response = await fetch("http://46.37.122.105:91/roles/");
+        const response = await fetch("http://175.29.21.7:83/roles/");
         const data = await response.json();
         if (response.ok) {
           setRoles(data);
@@ -87,6 +87,26 @@ const AdminKyc = () => {
     });
   };
 
+  const handleRoleChange = (event) => {
+    const selectedValues = event.target.value;
+    const numericValues = selectedValues.map((value) => Number(value)); // Convert strings to numbers
+
+    console.log("Selected Role IDs (converted):", numericValues);
+    console.log("Type of numericValues:", Array.isArray(numericValues) ? "Array" : typeof numericValues);
+
+    // Log typeof each element in the array
+    numericValues.forEach((value, index) => {
+        console.log(`Type of numericValues[${index}]:`, typeof value);
+    });
+
+    setFormData((prevData) => ({
+      ...prevData,
+      role: numericValues, // Ensure it's an array of numbers
+    }));
+};
+
+
+
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -106,13 +126,17 @@ const AdminKyc = () => {
 
     // Create FormData object for multipart form submission
     const formDataToSend = new FormData();
-    formDataToSend.append("roles", formData.role);
+    formData.role.forEach((role_id) => {
+      formDataToSend.append("role_ids", role_id);
+    });
+    // formDataToSend.append("role_ids", formData.role);
+    console.log("role_ids", formData.role)
     formDataToSend.append("username", formData.username);
     formDataToSend.append("password", formData.password);
-    formDataToSend.append("first_name", first_name);
-    formDataToSend.append("last_name", last_name);
+    formDataToSend.append("first_name", formData.first_name);
+    formDataToSend.append("last_name", formData.last_name);
     formDataToSend.append("email", formData.email);
-    formDataToSend.append("phone", formData.phone);
+    formDataToSend.append("phone_number", formData.phone);
     formDataToSend.append("dob", formData.date_of_birth);
     formDataToSend.append("gender", formData.gender);
     formDataToSend.append("address", formData.address);
@@ -136,14 +160,14 @@ const AdminKyc = () => {
     formDataToSend.append("risk_profile", formData.risk_profile);
     formDataToSend.append("expected_investment_amount", formData.expected_investment_amount);
     formDataToSend.append("added_by", "admin");
-    console.log("roleid :",formData.role)
+    console.log("roleid :", formData.role)
     // Append the image file only if it's selected
     if (formData.image) {
       formDataToSend.append("image", formData.image);
     }
 
     try {
-      const response = await fetch("http://46.37.122.105:91/users/", {
+      const response = await fetch("http://175.29.21.7:83/users/", {
         method: "POST",
         body: formDataToSend, // Send FormData
       });
@@ -166,7 +190,7 @@ const AdminKyc = () => {
           state: "",
           country: "",
           postal_code: "",
-          role: "",
+          role: [], // Change from "" to []
           status: "",
           pan_number: "",
           aadhaar_number: "",
@@ -181,7 +205,7 @@ const AdminKyc = () => {
           risk_profile: "",
           expected_investment_amount: "",
           image: null, // Reset image field
-        });
+        });        
       } else {
         console.error("Registration failed:", result);
         alert(`Error: ${result.image ? result.image[0] : "Registration failed."}`);
@@ -201,7 +225,7 @@ const AdminKyc = () => {
     }
 
     try {
-      const response = await fetch("http://46.37.122.105:91/roles/", {
+      const response = await fetch("http://175.29.21.7:83/roles/", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -246,6 +270,7 @@ const AdminKyc = () => {
             borderRadius: "12px",
             boxShadow: "0px 6px 12px rgba(0, 0, 0, 0.2)",
             marginTop: "10px",
+
           }}
         >
           <CardHeader
@@ -379,61 +404,62 @@ const AdminKyc = () => {
                 />
               </Grid>
               <Grid item xs={12} sm={4}>
-                <Box display="flex" alignItems="center" gap={1}>
-                <FormControl fullWidth size="small">
-  <Select
-    labelId="user-type-label"
-    name="role"
-    value={formData.role || ""} // Ensuring value is correctly set
-    onChange={(e) => {
-      const selectedRoleId = e.target.value;
-      console.log("Selected Role ID:", selectedRoleId); // Debugging
-      setFormData((prevData) => ({
-        ...prevData,
-        role: [selectedRoleId], // Correctly storing role_id
-      }));
-    }}
-    displayEmpty
-  >
-    <MenuItem value="" disabled>
-      Select User Type
-    </MenuItem>
-    {roles.map((role) => (
-      <MenuItem key={role.role_id} value={role.role_id}>
-        {role.role_name}
-      </MenuItem>
-    ))}
-  </Select>
-</FormControl>
+  <Box display="flex" alignItems="center" gap={1}>
+    <FormControl fullWidth size="small">
+      <Select
+        labelId="user-type-label"
+        name="role"
+        multiple
+        value={formData.role}
+        onChange={handleRoleChange} // Use updated handler
+        displayEmpty
+        renderValue={(selected) => {
+          if (selected.length === 0) {
+            return <em>Select User Type</em>;
+          }
+          return roles
+            .filter((role) => selected.includes(role.role_id))
+            .map((role) => role.role_name)
+            .join(", ");
+        }}
+      >
+        <MenuItem value="" disabled>
+          Select User Type
+        </MenuItem>
+        {roles.map((role) => (
+          <MenuItem key={role.role_id} value={role.role_id}>
+            {role.role_name}
+          </MenuItem>
+        ))}
+      </Select>
+    </FormControl>
 
+    <IconButton color="primary" onClick={() => setOpen(true)}>
+      <AddIcon />
+    </IconButton>
 
-
-                  <IconButton color="primary" onClick={() => setOpen(true)}>
-                    <AddIcon />
-                  </IconButton>
-
-                  <Dialog open={open} onClose={() => setOpen(false)}>
-                    <DialogTitle>Add New Role</DialogTitle>
-                    <DialogContent>
-                      <TextField
-                        fullWidth
-                        size="small"
-                        label="Enter Role"
-                        value={newRole}
-                        onChange={(e) => setNewRole(e.target.value)}
-                      />
-                    </DialogContent>
-                    <DialogActions>
-                      <Button onClick={() => setOpen(false)} color="secondary">
-                        Cancel
-                      </Button>
-                      <Button variant="contained" color="primary" onClick={handleAddRole}>
-                        Add Role
-                      </Button>
-                    </DialogActions>
-                  </Dialog>
-                </Box>
-              </Grid>
+    <Dialog open={open} onClose={() => setOpen(false)}>
+      <DialogTitle>Add New Role</DialogTitle>
+      <DialogContent>
+        <TextField
+          fullWidth
+          size="small"
+          label="Enter Role"
+          value={newRole}
+          onChange={(e) => setNewRole(e.target.value)}
+        />
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={() => setOpen(false)} color="secondary">
+          Cancel
+        </Button>
+        <Button variant="contained" color="primary" onClick={handleAddRole}>
+          Add Role
+        </Button>
+      </DialogActions>
+    </Dialog>
+  </Box>
+</Grid>
               <Grid item xs={12} sm={4}>
                 <TextField
                   fullWidth

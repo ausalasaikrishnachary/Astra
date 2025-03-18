@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     Box,
     Grid,
@@ -14,43 +14,34 @@ import PartnerHeader from "../../../Shared/Partner/PartnerNavbar";
 import { DataGrid } from '@mui/x-data-grid';
 
 const Transaction = () => {
-    const columns = [
-        {
-            field: 'date',
-            headerName: 'Date',
-            flex: 1,
-            headerAlign: 'center',
-            align: 'center',
-        },
-        {
-            field: 'type',
-            headerName: 'Type',
-            flex: 1,
-            headerAlign: 'center',
-            align: 'center',
-        },
-        {
-            field: 'asset',
-            headerName: 'Asset',
-            flex: 1.2,
-            headerAlign: 'center',
-            align: 'center',
-        },
-        {
-            field: 'amount',
-            headerName: 'Credit/Debit Amount',
-            flex: 1.2,
-            headerAlign: 'center',
-            align: 'center',
-            cellClassName: (params) =>
-                params.value && params.value.startsWith('+') ? 'positive' : '',
-        },
-    ];
+    const [propertyData, setPropertyData] = useState([]);
+    const [loading, setLoading] = useState(true);
 
-    const rows = [
-        { id: 1, date: '2024-03-15', type: 'Dividend', asset: 'Property A', amount: '+₹20000/-' },
-        { id: 2, date: '2024-03-10', type: 'Dividend', asset: 'Property B', amount: '+₹50000/-' },
-        { id: 3, date: '2024-03-05', type: 'Dividend', asset: 'Property C', amount: '+₹80000/-' },
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetch('http://175.29.21.7:83/property/');
+                const data = await response.json();
+                setPropertyData(data);
+                setLoading(false);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                setLoading(false);
+            }
+        };
+        fetchData();
+    }, []);
+
+    const columns = [
+        { field: 'property_id', headerName: 'ID', flex: 0.5, headerAlign: 'center', align: 'center' },
+        { field: 'property_name', headerName: 'Property Name', flex: 1, headerAlign: 'center', align: 'center' },
+        { field: 'property_type', headerName: 'Type', flex: 1, headerAlign: 'center', align: 'center' },
+        { field: 'city', headerName: 'City', flex: 1, headerAlign: 'center', align: 'center' },
+        { field: 'state', headerName: 'State', flex: 1, headerAlign: 'center', align: 'center' },
+        { field: 'country', headerName: 'Country', flex: 1, headerAlign: 'center', align: 'center' },
+        { field: 'property_value', headerName: 'Value', flex: 1, headerAlign: 'center', align: 'center' },
+        { field: 'ownership_type', headerName: 'Ownership', flex: 1, headerAlign: 'center', align: 'center' },
+        { field: 'available_units', headerName: 'Available Units', flex: 1, headerAlign: 'center', align: 'center' },
     ];
 
     return (
@@ -60,6 +51,7 @@ const Transaction = () => {
                 <Typography variant="h4" sx={{ marginLeft: '10px', textAlign: "center" }}>
                     Transactions
                 </Typography>
+
                 {/* Profile Section */}
                 <Box sx={{ display: 'flex', alignItems: 'center', mb: 4 }}>
                     <Avatar
@@ -77,31 +69,18 @@ const Transaction = () => {
                 {/* Stat Cards */}
                 <Grid container spacing={4} sx={{ mb: 4 }}>
                     {[
-                        {
-                            title: 'Total Portfolio Value',
-                            value: '₹750,000/-',
-                            change: '+12.5%',
-                        },
-                        {
-                            title: 'Monthly Returns',
-                            value: '₹8,50,000/-',
-                            change: '+5.2%',
-                        },
-                        {
-                            title: 'Active Investments',
-                            value: '3',
-                            change: '+1',
-                        },
+                        { title: 'Total Portfolio Value', value: '₹750,000/-', change: '+12.5%' },
+                        { title: 'Monthly Returns', value: '₹8,50,000/-', change: '+5.2%' },
+                        { title: 'Active Investments', value: '3', change: '+1' },
                     ].map((stat, index) => (
                         <Grid item xs={12} md={4} key={index}>
                             <Card
-                                 sx={{
+                                sx={{
                                     backgroundColor: "#f8f9fa",
-                                    // textAlign: "center",
                                     p: 2,
                                     borderRadius: 2,
                                     boxShadow: "2px 2px 10px rgba(0, 0, 0, 0.1)",
-                                  }}
+                                }}
                             >
                                 <CardContent>
                                     <Typography variant="subtitle2" color="text.secondary" gutterBottom>
@@ -122,73 +101,69 @@ const Transaction = () => {
                     Your Assets
                 </Typography>
                 <Grid container spacing={4} sx={{ mb: 4 }}>
-  {[
-    { name: 'Property A', value: '₹250,000/-', Unit: 'Unit: 25%', pdfUrl: 'https://www.antennahouse.com/hubfs/xsl-fo-sample/pdf/basic-link-1.pdf' },
-    { name: 'Property B', value: '₹180,000/-', Unit: 'Unit: 15%', pdfUrl: '/path/to/propertyB.pdf' },
-    { name: 'Property C', value: '₹320,000/-', Unit: 'Unit: 30%', pdfUrl: '/path/to/propertyC.pdf' },
-  ].map((asset, index) => (
-    <Grid item xs={12} md={4} key={index}>
-      <Card
-        sx={{
-          backgroundColor: "#f8f9fa",
-          p: 2,
-          borderRadius: 2,
-          boxShadow: "2px 2px 10px rgba(0, 0, 0, 0.1)",
-        }}
-      >
-        <CardContent>
-          <Box
-            sx={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              mb: 2,
-            }}
-          >
-            <Typography variant="subtitle1">{asset.name}</Typography>
-            {/* Wrap the icon in an anchor tag to trigger download */}
-            <a href={asset.pdfUrl} download>
-              <InsertDriveFileIcon color="action" />
-            </a>
-          </Box>
-          <Typography variant="h5" component="div" gutterBottom>
-            {asset.value}
-          </Typography>
-          <Typography variant="body2" color="text.secondary">
-            {asset.Unit}
-          </Typography>
-        </CardContent>
-      </Card>
-    </Grid>
-  ))}
-</Grid>
-
+                    {[
+                        { name: 'Property A', value: '₹250,000/-', unit: 'Unit: 25%', pdfUrl: 'https://www.antennahouse.com/hubfs/xsl-fo-sample/pdf/basic-link-1.pdf' },
+                        { name: 'Property B', value: '₹180,000/-', unit: 'Unit: 15%', pdfUrl: '/path/to/propertyB.pdf' },
+                        { name: 'Property C', value: '₹320,000/-', unit: 'Unit: 30%', pdfUrl: '/path/to/propertyC.pdf' },
+                    ].map((asset, index) => (
+                        <Grid item xs={12} md={4} key={index}>
+                            <Card
+                                sx={{
+                                    backgroundColor: "#f8f9fa",
+                                    p: 2,
+                                    borderRadius: 2,
+                                    boxShadow: "2px 2px 10px rgba(0, 0, 0, 0.1)",
+                                }}
+                            >
+                                <CardContent>
+                                    <Box
+                                        sx={{
+                                            display: 'flex',
+                                            justifyContent: 'space-between',
+                                            alignItems: 'center',
+                                            mb: 2,
+                                        }}
+                                    >
+                                        <Typography variant="subtitle1">{asset.name}</Typography>
+                                        <a href={asset.pdfUrl} download>
+                                            <InsertDriveFileIcon color="action" />
+                                        </a>
+                                    </Box>
+                                    <Typography variant="h5" component="div" gutterBottom>
+                                        {asset.value}
+                                    </Typography>
+                                    <Typography variant="body2" color="text.secondary">
+                                        {asset.unit}
+                                    </Typography>
+                                </CardContent>
+                            </Card>
+                        </Grid>
+                    ))}
+                </Grid>
 
                 {/* Recent Transactions */}
                 <Typography variant="h6" sx={{ mb: 3 }}>
-                    Recent Transactions
+                    Property List
                 </Typography>
-                <Card sx={{  boxShadow: 3 }}>
-                    
-                        <Paper sx={{ height: 300, width: '100%' }}>
-                            <DataGrid
-                                rows={rows}
-                                columns={columns}
-                                autoHeight
-                                disableSelectionOnClick
-                                hideFooter
-                                sx={{
-                                    '& .MuiDataGrid-columnHeaders': {
-                                        backgroundColor: '#f5f5f5',
-                                        fontWeight: 'bold',
-                                    },
-                                    '& .MuiDataGrid-cell': {
-                                        borderBottom: 'none',
-                                    },
-                                }}
-                            />
-                        </Paper>
-                    
+                <Card sx={{ boxShadow: 3 }}>
+                    <Paper sx={{  width: '100%' }}>
+                        <DataGrid
+                            rows={propertyData.map((item, index) => ({ id: index + 1, ...item }))}
+                            columns={columns}
+                            autoHeight
+                            loading={loading}
+                            disableSelectionOnClick
+                            sx={{
+                                '& .MuiDataGrid-columnHeaders': {
+                                    backgroundColor: '#f5f5f5',
+                                    fontWeight: 'bold',
+                                },
+                                '& .MuiDataGrid-cell': {
+                                    borderBottom: 'none',
+                                },
+                            }}
+                        />
+                    </Paper>
                 </Card>
             </Box>
         </>

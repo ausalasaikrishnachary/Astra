@@ -28,7 +28,7 @@ const Tmoniter = () => {
 
   useEffect(() => {
     axios
-      .get("http://46.37.122.105:91/property/")
+      .get("http://175.29.21.7:83/property/")
       .then((response) => {
         setProperties(response.data);
         setLoading(false);
@@ -62,7 +62,10 @@ const Tmoniter = () => {
   );
 
   const columns = [
-    { field: "property_id", headerName: "Property ID", width: 120 },
+    // { field: "property_id", headerName: "Property ID", width: 120 },
+    // { field: "agent_name", headerName: "Agent Name", width: 150 },
+    // { field: "user_role", headerName: "User Role", width: 150 },
+    // { field: "user_id", headerName: "User Id", width: 150 },
     { field: "property_name", headerName: "Property Name", width: 200 },
     { field: "property_type", headerName: "Type", width: 150 },
     {
@@ -82,8 +85,8 @@ const Tmoniter = () => {
       ),
     },
     {
-      field: "location",
-      headerName: "Location",
+      field: "address",
+      headerName: "Address",
       width: 250,
       renderCell: (params) => (
         <Typography
@@ -101,32 +104,17 @@ const Tmoniter = () => {
     { field: "city", headerName: "City", width: 100 },
     { field: "state", headerName: "State", width: 100 },
     { field: "country", headerName: "Country", width: 100 },
-    { field: "postal_code", headerName: "Postal_code", width: 100 },
+    { field: "pin_code", headerName: "Pin code", width: 100 },
     { field: "latitude", headerName: "Latitude", width: 100 },
     { field: "longitude", headerName: "Longitude", width: 100 },
     { field: "total_units", headerName: "Total Units", width: 120 },
     { field: "available_units", headerName: "Available Units", width: 150 },
-    { field: "area_sqft", headerName: "Area_sqft", width: 100 },
-    { field: "price_per_sqft", headerName: "Price_per_sqft", width: 150 },
-    { field: "total_price", headerName: "Total Price", width: 150 },
-    { field: "ownership_type", headerName: "Ownership_type", width: 150 },
-    { field: "rental_yield", headerName: "Rental_yield", width: 150 },
-    { field: "expected_roi", headerName: "expected_roi", width: 150 },
-    { field: "legal_status", headerName: "legal_status", width: 150 },
-    { field: "regulatory_approvals", headerName: "regulatory_approvals", width: 150 },
-    { field: "tax_identification_number", headerName: "tax_identification_number", width: 150 },
-    { field: "amenities", headerName: "amenities", width: 150 },
-    { field: "parking_spaces", headerName: "parking_spaces", width: 150 },
-    { field: "security_features", headerName: "security_features", width: 150 },
-    { field: "furnished_status", headerName: "furnished_status", width: 150 },
-    { field: "property_img", headerName: "property_img", width: 150 },
-    { field: "additional_images", headerName: "additional_images", width: 150 },
-    { field: "legal_documents", headerName: "legal_documents", width: 150 },
-    { field: "listing_status", headerName: "listing_status", width: 150 },
+    { field: "property_value", headerName: "Property Value", width: 150 },
+    { field: "ownership_type", headerName: "Ownership type", width: 150 },
+    { field: "property_image", headerName: "property image", width: 150 },
     { field: "created_at", headerName: "created_at", width: 150 },
     { field: "updated_at", headerName: "updated_at", width: 150 },
-    { field: "agent", headerName: "agent", width: 150 },
-    { field: "investors", headerName: "investors", width: 150 },
+
     {
       field: "actions",
       headerName: "Actions",
@@ -173,7 +161,7 @@ const Tmoniter = () => {
           ))}
         </Grid>
 
-        <Box sx={{ display: "flex", justifyContent: "center", gap: "10px", mt: 3, mb: 2 }}>
+        <Box sx={{ display: "flex", justifyContent: "end", gap: "10px", mt: 3, mb: 2 }}>
           <TextField
             placeholder="Search..."
             variant="outlined"

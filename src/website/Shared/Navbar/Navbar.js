@@ -94,7 +94,7 @@ function Header() {
     //   submenu: ['cadre funds', 'deal-by-deal', 'secondary market'],
     //   path: '/invest',
     // },
-    { label: 'How it works?', path: '/aboutus' },
+    { label: 'How it works', path: '/aboutus' },
     { label: 'Properties', path: '/properties' },
     { label: 'Contact us', path: '/contactus' },
     { label: 'FAQs', path: '/FAQ' },
