@@ -9,20 +9,33 @@ const Login = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  // Change the default partner type to an empty string
   const [partnerType, setPartnerType] = useState('');
+  const [emailError, setEmailError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
 
   const handleLogin = () => {
+    setEmailError('');
+    setPasswordError('');
+
+    if (!validateEmail(email)) {
+      setEmailError('Invalid email format');
+      return;
+    }
+
     if (email === 'admin@gmail.com' && password === 'admin@123') {
       navigate('/a-dashboard');
     } else if (email === 'partner@gmail.com' && password === 'partner@123') {
-      // Save the selected partner type so that the header can display it.
       localStorage.setItem('partnerType', partnerType);
       navigate('/p-dashboard');
     } else if (email === 'investor@gmail.com' && password === 'investor@123') {
       navigate('/i-dashboard');
     } else {
-      alert('Invalid credentials');
+      setPasswordError('Incorrect password or account does not exist');
     }
   };
 
@@ -72,6 +85,8 @@ const Login = () => {
               margin="normal"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              error={!!emailError}
+              helperText={emailError}
             />
             <TextField
               fullWidth
@@ -81,8 +96,9 @@ const Login = () => {
               margin="normal"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              error={!!passwordError}
+              helperText={passwordError}
             />
-            {/* Conditionally render the partner type dropdown */}
             {email === 'partner@gmail.com' && (
               <FormControl fullWidth margin="normal">
                 <InputLabel id="partner-type-label">Select Partner Type</InputLabel>
@@ -92,7 +108,6 @@ const Login = () => {
                   label="Select Partner Type"
                   onChange={(e) => setPartnerType(e.target.value)}
                 >
-                  {/* Disabled placeholder option */}
                   <MenuItem value="" disabled>
                     Select Partner Type
                   </MenuItem>
