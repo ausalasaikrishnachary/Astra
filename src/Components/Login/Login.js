@@ -11,6 +11,24 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState("");
+  const [emailError, setEmailError] = useState("");
+
+  const handleEmailChange = (e) => {
+    const value = e.target.value;
+    setEmail(value);
+
+    // Basic email validation regex
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!value) {
+      setEmailError("Email is required");
+    } else if (!emailRegex.test(value)) {
+      setEmailError("Enter a valid email address");
+    } else {
+      setEmailError(""); // Clear error if valid
+    }
+  };
+
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -106,7 +124,17 @@ const Login = () => {
             sx={{ padding: 4, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}
           >
             <Typography variant="h4" align="center" gutterBottom>Login</Typography>
-            <TextField fullWidth label="Email" variant="outlined" margin="normal" value={email} onChange={(e) => setEmail(e.target.value)} />
+            <TextField
+              fullWidth
+              label="Email"
+              variant="outlined"
+              margin="normal"
+              value={email}
+              onChange={handleEmailChange}
+              error={!!emailError}
+              helperText={emailError}
+            />
+
             <TextField fullWidth label="Password" type="password" variant="outlined" margin="normal" value={password} onChange={(e) => setPassword(e.target.value)} />
             <Box textAlign="right">
               <Link href="#" color="error">Forgot Password?</Link>
