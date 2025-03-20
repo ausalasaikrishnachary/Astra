@@ -42,6 +42,7 @@ import SellAsset from "./Components/Panel/Investor/Asset/SellAsset";
 import Users from "./Components/Panel/Admin/Users/Users";
 import EscroAccount from "./Components/Panel/Admin/EscroAccount/EscroAccount";
 import PaymentForm from "./Components/Panel/Investor/Transactions/PaymentForm";
+import Commission from "./Components/Panel/Partner/Commission/Commission";
 
 function Layout() {
   const location = useLocation();
@@ -91,6 +92,7 @@ function Layout() {
           <Route path="/p-profile" element={<PartnerProfile />} />
           <Route path="/p-profiledetails" element={<PartnerKyc />} />
           <Route path="/p-myinvestors" element={<MyInvestors />} />
+          <Route path="/p-commission" element={<Commission />} />
 
           <Route path="/login" element={<Login />} />
         </Routes>

@@ -761,8 +761,7 @@ const AssetDashboard = () => {
                     <Typography variant="body1" gutterBottom>{selectedAsset.description}</Typography>
                     <Typography variant="body2" color="text.secondary" gutterBottom>Asset Value: <strong>₹{selectedAsset.property_value}/-</strong></Typography>
                     <Typography variant="body2" color="text.secondary" gutterBottom>Location: <strong>{selectedAsset.city}, {selectedAsset.state}</strong></Typography>
-                    <Typography variant="body2" color="text.secondary" gutterBottom>latitude: <strong>{selectedAsset.latitude}</strong></Typography>
-                    <Typography variant="body2" color="text.secondary" gutterBottom>longitude: <strong>{selectedAsset.longitude}</strong></Typography>
+                    <Typography variant="body2" color="text.secondary" gutterBottom>No of Investors: <strong>{selectedAsset.no_of_investors}</strong></Typography>
                     <Typography variant="body2" color="text.secondary" gutterBottom>Total Units: <strong>{selectedAsset.total_units}</strong></Typography>
                     <Typography variant="body2" color="text.secondary" gutterBottom>Available Units: <strong>{selectedAsset.available_units}</strong></Typography>
                   </Grid>

@@ -10,6 +10,9 @@ import {
   Button,
   Avatar,
   Drawer,
+  FormControl,
+  InputLabel,
+  Select,
   List,
   ListItem,
   ListItemButton,
@@ -19,6 +22,7 @@ import {
   useTheme,
   useMediaQuery,
 } from '@mui/material';
+import axios from 'axios';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
@@ -40,6 +44,7 @@ export default function PartnerHeader() {
         { label: 'Sell Units', path: '/sell-units' },
       ],
     },
+    { label: 'Commission', path: '/p-commission' },
     { label: 'Report', path: '/p-report' },
   ];
 
@@ -120,6 +125,41 @@ export default function PartnerHeader() {
     </Box>
   );
 
+  const [roles, setRoles] = useState([]); // Store roles from API
+    const [selectedRole, setSelectedRole] = useState(''); // Store selected role
+  
+    useEffect(() => {
+      // Fetch roles from API
+      const fetchRoles = async () => {
+        try {
+          const response = await axios.get('http://175.29.21.7:83/roles/');
+          setRoles(response.data); // Set roles from API response
+          setSelectedRole(response.data[0]?.role_name || ''); // Set default role
+        } catch (error) {
+          console.error('Error fetching roles:', error);
+        }
+      };
+  
+      fetchRoles();
+    }, []);
+  
+    const handleRoleChange = (event) => {
+      const role = event.target.value;
+      setSelectedRole(role);
+  
+      // Define role-based navigation
+      const rolePaths = {
+        Admin: '/a-dashboard',
+        Partner: '/p-dashboard',
+        Investor: '/i-dashboard',
+      };
+  
+      // Navigate to the corresponding dashboard if role exists
+      if (rolePaths[role]) {
+        navigate(rolePaths[role]);
+      }
+    };
+
   return (
     <>
       <AppBar
@@ -166,9 +206,19 @@ export default function PartnerHeader() {
                 <IconButton sx={{ color: '#000' }}>
                   <NotificationsNoneIcon />
                 </IconButton>
-                <Typography sx={{ ml: 2, mr: 2, color: '#000', fontWeight: 'bold' }}>
-                  {partnerType}
-                </Typography>
+                {/* <FormControl sx={{ minWidth: 120, ml: 2, mr: 2 }}>
+                  <InputLabel>Role</InputLabel>
+                  <Select value={selectedRole} onChange={handleRoleChange} displayEmpty>
+                    {roles.map((role) => (
+                      <MenuItem key={role.role_id} value={role.role_name}>
+                        {role.role_name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl> */}
+                <Typography variant='h6'>
+                              Partner
+                            </Typography>
                 <Avatar
                   onClick={handleAvatarClick}
                   sx={{ width: 40, height: 40, cursor: 'pointer' }}
@@ -219,9 +269,19 @@ export default function PartnerHeader() {
               <IconButton sx={{ color: '#000' }}>
                 <NotificationsNoneIcon />
               </IconButton>
-              <Typography sx={{ ml: 2, mr: 2, color: '#000', fontWeight: 'bold' }}>
-                REC
-              </Typography>
+              {/* <FormControl sx={{ minWidth: 120, ml: 2, mr: 2 }}>
+                <InputLabel>Role</InputLabel>
+                <Select value={selectedRole} onChange={handleRoleChange} displayEmpty>
+                  {roles.map((role) => (
+                    <MenuItem key={role.role_id} value={role.role_name}>
+                      {role.role_name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl> */}
+              <Typography variant='h6'>
+                            Partner
+                          </Typography>
               <Avatar
                 onClick={handleAvatarClick}
                 sx={{ width: 40, height: 40, cursor: 'pointer' }}
@@ -271,6 +331,7 @@ export default function PartnerHeader() {
         </MenuItem>
         <MenuItem
           onClick={() => {
+            localStorage.removeItem("user_id");
             handleProfileMenuClose();
             navigate('/login');
           }}

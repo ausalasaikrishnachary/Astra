@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Logo from '../../Images/Logo File.png';
 import LogoutIcon from '@mui/icons-material/Logout';
 import {
@@ -10,6 +10,9 @@ import {
   Button,
   Avatar,
   Drawer,
+  FormControl,
+  InputLabel,
+  Select,
   List,
   ListItem,
   ListItemButton,
@@ -19,10 +22,12 @@ import {
   useTheme,
   useMediaQuery,
 } from '@mui/material';
+import axios from 'axios';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
+
 
 export default function Header() {
   // Updated nav items with no submenu for Transactions.
@@ -91,6 +96,42 @@ export default function Header() {
     </Box>
   );
 
+  const [roles, setRoles] = useState([]); // Store roles from API
+  const [selectedRole, setSelectedRole] = useState(''); // Store selected role
+
+  useEffect(() => {
+    // Fetch roles from API
+    const fetchRoles = async () => {
+      try {
+        const response = await axios.get('http://175.29.21.7:83/roles/');
+        setRoles(response.data); // Set roles from API response
+        setSelectedRole(response.data[0]?.role_name || ''); // Set default role
+      } catch (error) {
+        console.error('Error fetching roles:', error);
+      }
+    };
+
+    fetchRoles();
+  }, []);
+
+  const handleRoleChange = (event) => {
+    const role = event.target.value;
+    setSelectedRole(role);
+
+    // Define role-based navigation
+    const rolePaths = {
+      Admin: '/a-dashboard',
+      Partner: '/p-dashboard',
+      Investor: '/i-dashboard',
+    };
+
+    // Navigate to the corresponding dashboard if role exists
+    if (rolePaths[role]) {
+      navigate(rolePaths[role]);
+    }
+  };
+
+
   return (
     <>
       <AppBar
@@ -134,17 +175,19 @@ export default function Header() {
                 <IconButton sx={{ color: '#000' }}>
                   <NotificationsNoneIcon />
                 </IconButton>
-                <Typography
-                  sx={{
-                    ml: 2,
-                    mr: 2,
-                    color: '#000',
-                    fontWeight: 'bold',
-                    fontSize: '16px',
-                  }}
-                >
-                  Admin
-                </Typography>
+                {/* <FormControl sx={{ minWidth: 120, ml: 2, mr: 2 }}>
+                  <InputLabel>Role</InputLabel>
+                  <Select value={selectedRole} onChange={handleRoleChange} displayEmpty>
+                    {roles.map((role) => (
+                      <MenuItem key={role.role_id} value={role.role_name}>
+                        {role.role_name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl> */}
+                <Typography variant='h6'>
+                              Admin
+                            </Typography>
                 <Avatar
                   onClick={handleAvatarClick}
                   sx={{ width: 40, height: 40, cursor: 'pointer' }}
@@ -192,17 +235,19 @@ export default function Header() {
               <IconButton sx={{ color: '#000' }}>
                 <NotificationsNoneIcon />
               </IconButton>
-              <Typography
-                sx={{
-                  ml: 2,
-                  mr: 2,
-                  color: '#000',
-                  fontWeight: 'bold',
-                  fontSize: '16px',
-                }}
-              >
-                Admin
-              </Typography>
+              {/* <FormControl sx={{ minWidth: 120, ml: 2, mr: 2 }}>
+                
+                <Select value={selectedRole} onChange={handleRoleChange} displayEmpty>
+                  {roles.map((role) => (
+                    <MenuItem key={role.role_id} value={role.role_name}>
+                      {role.role_name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl> */}
+              <Typography variant='h6'>
+                            Admin
+                          </Typography>
               <Avatar
                 onClick={handleAvatarClick}
                 sx={{ width: 40, height: 40, cursor: 'pointer' }}
@@ -258,6 +303,7 @@ export default function Header() {
         </MenuItem>
         <MenuItem
           onClick={() => {
+            localStorage.removeItem("user_id");
             handleProfileMenuClose();
             navigate('/login');
           }}

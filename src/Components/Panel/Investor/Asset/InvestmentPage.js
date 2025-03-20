@@ -8,6 +8,11 @@ import {
   Container,
   FormControlLabel,
   Checkbox,
+  MenuItem,
+  Select,
+  FormControl,
+  InputLabel
+
 } from "@mui/material";
 import InvestorHeader from "../../../Shared/Investor/InvestorNavbar";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -15,6 +20,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 const InvestmentForm = () => {
   const [formData, setFormData] = useState({
     investor: "",
+    partner_id:"",
     escrow_id: "",
     property_name: "",
     property_type: "",
@@ -62,6 +68,20 @@ const InvestmentForm = () => {
 
   console.log("Current location:", location);
   console.log("Extracted Property ID:", propertyId);
+  const [partners, setPartners] = useState([]);
+
+   // Fetch Partners (Role: Partner)
+  useEffect(() => {
+    fetch("http://175.29.21.7:83/users/role/Partner/")
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Fetched Partners:", data);
+        if (Array.isArray(data)) {
+          setPartners(data); // Store partners in state
+        }
+      })
+      .catch((error) => console.error("Error fetching partners:", error));
+  }, []);
 
   // Fetch property details when propertyId is available
   useEffect(() => {
@@ -148,9 +168,11 @@ const InvestmentForm = () => {
     const sanitizedData = {
       ...formData,
       property_id: propertyId,
+      partner_id:Number(formData.partner_id) || 0,
       available_units: Number(formData.available_units) || 0,
       price_per_unit: Number(formData.price_per_unit) || 0,
-      total_amount: Number(formData.property_value) || 0,
+      property_value: Number(formData.property_value) || 0,
+      total_amount: Number(formData.total_value) || 0,
       purchased_units: Number(formData.no_of_units_to_be_purchased) || 0,
       ownership_percentage: Number(formData.ownership_percentage) || 0,
       investment_period: Number(formData.investment_period) || 0,
@@ -162,6 +184,12 @@ const InvestmentForm = () => {
       resale_price: Number(formData.resale_price) || 0,
       commission_paid_date: formData.commission_paid_date || null,
       no_of_investors: formData.no_of_investors || null,
+      user_id: formData.investor || 1, // Replace with dynamic user ID if available
+      escrow_id: formData.escrow_id || "", // Default or fetched escrow ID
+      paid_amount: formData.advance_payment || "0.00",
+      remaining_amount: (Number(formData.total_value) - Number(formData.advance_payment)).toFixed(2),
+      payment_type:"Advance",
+      payment_method:"Cash",
     };
 
     try {
@@ -178,25 +206,25 @@ const InvestmentForm = () => {
         console.log("Transaction Success:", result);
 
         // Step 2: Submit advance payment
-        const advancePaymentData = {
-          user_id: result.investor || 1, // Replace with dynamic user ID if available
-          property_id: propertyId,
-          escrow_id: formData.escrow_id || "", // Default or fetched escrow ID
-          paid_amount: formData.advance_payment || "0.00",
-          pending_amount: (Number(formData.total_value) - Number(formData.advance_payment)).toFixed(2),
-        };
+        // const advancePaymentData = {
+        //   user_id: result.investor || 1, // Replace with dynamic user ID if available
+        //   property_id: propertyId,
+        //   escrow_id: formData.escrow_id || "", // Default or fetched escrow ID
+        //   paid_amount: formData.advance_payment || "0.00",
+        //   pending_amount: (Number(formData.total_value) - Number(formData.advance_payment)).toFixed(2),
+        // };
 
-        const advancePaymentResponse = await fetch("http://175.29.21.7:83/advance/payments/", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(advancePaymentData),
-        });
+        // const advancePaymentResponse = await fetch("http://175.29.21.7:83/advance/payments/", {
+        //   method: "POST",
+        //   headers: { "Content-Type": "application/json" },
+        //   body: JSON.stringify(advancePaymentData),
+        // });
 
-        if (advancePaymentResponse.ok) {
-          console.log("Advance Payment Successfully Stored:", await advancePaymentResponse.json());
-        } else {
-          console.error("Failed to store advance payment", await advancePaymentResponse.json());
-        }
+        // if (advancePaymentResponse.ok) {
+        //   console.log("Advance Payment Successfully Stored:", await advancePaymentResponse.json());
+        // } else {
+        //   console.error("Failed to store advance payment", await advancePaymentResponse.json());
+        // }
 
         // Step 3: Update available units
         if (propertyId) {
@@ -271,6 +299,27 @@ const InvestmentForm = () => {
         </Typography>
         <Box component="form" onSubmit={handleSubmit} sx={{ width: "100%" }}>
           <Grid container spacing={2}>
+            {/* Partner ID Dropdown */}
+            <Grid item xs={12} md={3}>
+              <FormControl fullWidth>
+                <InputLabel id="partner_id">Select Partner</InputLabel>
+                <Select
+                labelId="partner_id"
+                id="partner_id"
+                  name="partner_id"
+                  value={formData.partner_id}
+                  onChange={handleChange}
+                  label="Select Partner"
+                >
+                  {partners.map((partner) => (
+                    <MenuItem key={partner.user_id} value={partner.user_id}>
+                      {partner.username}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
+
             {Object.keys(formData)
               .filter((key) => !hiddenFields.includes(key)) // Exclude hidden fields
               .map((key) => (

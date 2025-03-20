@@ -162,16 +162,25 @@ const BuyShares = () => {
                     Transaction Type
                   </TableCell>
                   <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>
+                    Payment Type
+                  </TableCell>
+                  <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>
                     Purchased Units
                   </TableCell>
                   <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>
                     Price Per Unit
                   </TableCell>
                   <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>
-                    Total Value
+                    Total Units Amount
                   </TableCell>
                   <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>
-                    Created At
+                    Paid Amount
+                  </TableCell>
+                  <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>
+                    Remaining Amount
+                  </TableCell>
+                  <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>
+                    Transaction Date
                   </TableCell>
                   <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>
                     Remaining Payment
@@ -191,13 +200,22 @@ const BuyShares = () => {
                       {transaction.transaction_type}
                     </TableCell>
                     <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>
+                      {transaction.payment_type}
+                    </TableCell>
+                    <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>
                       {transaction.purchased_units}
                     </TableCell>
                     <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>
                       {transaction.price_per_unit}
                     </TableCell>
                     <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>
-                      {transaction.total_value}
+                      {transaction.total_amount}
+                    </TableCell>
+                    <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>
+                      {transaction.paid_amount}
+                    </TableCell>
+                    <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>
+                      {transaction.remaining_amount}
                     </TableCell>
                     <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>
                       {new Date(transaction.created_at).toLocaleDateString()}
@@ -207,7 +225,9 @@ const BuyShares = () => {
                         variant="contained"
                         color="primary"
                         size="small"
-                        onClick={() => navigate(`/i-payment-form?property_id=${transaction.property_id}`)}
+                        onClick={() =>
+                          navigate(`/i-payment-form?property_id=${transaction.property_id}&transaction_id=${transaction.transaction_id}`)
+                        }
                       >
                         Pay Now
                       </Button>
