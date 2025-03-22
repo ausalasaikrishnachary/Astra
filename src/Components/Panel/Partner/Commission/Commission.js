@@ -5,25 +5,41 @@ import { DataGrid } from "@mui/x-data-grid";
 
 const Commission = () => {
     const [commissionData, setCommissionData] = useState([]);
+    const [userIdMap, setUserIdMap] = useState({});
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
     useEffect(() => {
         const fetchCommissions = async () => {
             try {
-                // Get partner_id from localStorage
                 const partnerId = localStorage.getItem("user_id");
                 if (!partnerId) {
                     throw new Error("Partner ID not found in localStorage");
                 }
 
-                const response = await fetch(`http://175.29.21.7:83/commissions/partner/${partnerId}/`);
+                // Fetch commissions data
+                const response = await fetch(`http://175.29.21.7:83/commissions/partner-id/${partnerId}/`);
                 if (!response.ok) {
-                    throw new Error(`Error fetching data: ${response.statusText}`);
+                    throw new Error(`Error fetching commission data: ${response.statusText}`);
                 }
 
                 const data = await response.json();
-                setCommissionData(Array.isArray(data) ? data : [data]);
+                const commissions = Array.isArray(data) ? data : [data];
+                setCommissionData(commissions);
+
+                // Fetch user_id mapping
+                const transactionResponse = await fetch(`http://175.29.21.7:83/transactions/property/2/`);
+                if (!transactionResponse.ok) {
+                    throw new Error(`Error fetching transaction data: ${transactionResponse.statusText}`);
+                }
+
+                const transactionData = await transactionResponse.json();
+                const userIdMap = {};
+                transactionData.forEach((item) => {
+                    userIdMap[item.transaction_id] = item.user_id; // Map transaction_id to user_id
+                });
+
+                setUserIdMap(userIdMap);
             } catch (error) {
                 setError(error.message);
             } finally {
@@ -35,22 +51,20 @@ const Commission = () => {
     }, []);
 
     const columns = [
-        { field: "commission_id", headerName: "Commission ID", width: 150 },
-        { field: "transaction_id", headerName: "Transaction ID", width: 150 },
-        // { field: "partner_id", headerName: "Partner ID", width: 150 },
-        { field: "property_id", headerName: "Property ID", width: 150 },
-        { field: "sale_price", headerName: "Sale Price", width: 150, type: "number" },
+        { field: "commission_id", headerName: "Commission ID", width: 180 },
+        // { field: "transaction_id", headerName: "Transaction ID", width: 180 },
+        { field: "user_id", headerName: "User ID", width: 180 }, // New column for user_id
+        { field: "property_id", headerName: "Property ID", width: 180 },
+        { field: "sale_price", headerName: "Sale Price", width: 180, type: "number" },
         { field: "commission_percentage", headerName: "Commission (%)", width: 180, type: "number" },
         { field: "commission_amount", headerName: "Commission Amount", width: 180, type: "number" },
-        // { field: "paid_commission_amount", headerName: "Paid Commission", width: 180, type: "number" },
-        // { field: "balance_commission_amount", headerName: "Balance Commission", width: 180, type: "number" },
         { field: "commission_payment_status", headerName: "Payment Status", width: 180 },
     ];
 
     return (
         <>
             <PartnerHeader />
-            <Typography variant="h4" sx={{ mb: 3,pt:3, textAlign: "center" }}>
+            <Typography variant="h4" sx={{ mb: 3, pt: 3, textAlign: "center" }}>
                 Commission Details
             </Typography>
             <Box display="flex" justifyContent="center" alignItems="center">
@@ -65,7 +79,11 @@ const Commission = () => {
                         </Typography>
                     ) : (
                         <DataGrid
-                            rows={commissionData.map((item) => ({ id: item.commission_id, ...item }))}
+                            rows={commissionData.map((item) => ({
+                                id: item.commission_id,
+                                user_id: userIdMap[item.transaction_id] || "N/A", // Add user_id from mapping
+                                ...item,
+                            }))}
                             columns={columns}
                             autoHeight
                             disableSelectionOnClick

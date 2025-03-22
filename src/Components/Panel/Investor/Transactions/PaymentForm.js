@@ -31,6 +31,7 @@ function PaymentForm() {
     commission_percentage:"2",
     commission_amount:"",
     remaining_amount: "",
+    total_paid_amount:"",
     
   });
 
@@ -38,6 +39,7 @@ function PaymentForm() {
 
     "commission_percentage",
     "commission_amount",
+    "total_paid_amount",
 
   ]
 
@@ -97,6 +99,7 @@ function PaymentForm() {
       setFormData((prevData) => ({
         ...prevData,
         escrow_id: data.escrow_id,
+        total_paid_amount:data.deposit_amount
       }));
   
       console.log("Global Deposit Amount:", globalDepositAmount); // Debugging
@@ -155,6 +158,7 @@ function PaymentForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const userId = localStorage.getItem("user_id");
 
     // Convert fields to correct data types
     const transactionData = {
@@ -167,15 +171,16 @@ function PaymentForm() {
         price_per_unit: Number(formData.price_per_unit),
         total_amount: Number(formData.no_of_units_purchased) * Number(formData.price_per_unit),
         paid_amount: Number(formData.remaining_amount),
+        total_paid_amount:Number(formData.total_paid_amount)+Number(formData.remaining_amount),
         remaining_amount: 0,
         sold_units: null,
         available_units: null,
         agent_name: "",
         transaction_type: formData.transaction_type,
-        payment_type: "Full PAYMENT",
+        payment_type: "Full-Payment",
         payment_method: "Cash",
         created_at: new Date().toISOString(),
-        user_id: 1,
+        user_id: userId,
         property_id: Number(propertyId),
         escrow_id: Number(formData.escrow_id),
         partner_id:Number(formData.partner_id),
@@ -250,7 +255,7 @@ function PaymentForm() {
         console.log("Commission data saved successfully");
 
         alert("Transaction, deposit amount, and commission data saved successfully!");
-        navigate("/i-buyunits");
+        navigate("/i-fullpayments")
     } catch (error) {
         console.error("Error:", error);
         alert("An error occurred, please try again.");

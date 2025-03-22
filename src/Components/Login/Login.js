@@ -86,6 +86,8 @@ const Login = () => {
       navigate("/p-dashboard");
     } else if (role === "Investor") {
       navigate("/i-dashboard");
+    } else if (role === "Super Admin") {
+      navigate("/s-dashboard");
     } else {
       setError("Invalid role assigned. Please contact support.");
     }

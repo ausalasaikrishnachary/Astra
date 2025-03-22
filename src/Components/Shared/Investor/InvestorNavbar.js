@@ -34,14 +34,15 @@ export default function InvestorHeader() {
   // For the "Transactions" item, we add a submenu.
   const navItems = [
     { label: 'Dashboard', path: '/i-dashboard' },
-    { label: 'Assets', path: '/i-asset' },
+    { label: 'Buy Assets', path: '/i-asset' },
     {
       label: 'Transactions',
       submenu: [
-        { label: 'Buy Units', path: '/i-buyunits' },
-        { label: 'Sell Units', path: '/i-sellunits' },
+        { label: 'Advance Payments', path: '/i-buyunits' },
+        { label: 'Full Payments', path: '/i-fullpayments' },
       ],
     },
+    { label: 'Purchased Assets', path: '/i-purchasedasset' },
   ];
 
   // Responsive helper.

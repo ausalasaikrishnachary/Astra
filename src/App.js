@@ -43,6 +43,10 @@ import Users from "./Components/Panel/Admin/Users/Users";
 import EscroAccount from "./Components/Panel/Admin/EscroAccount/EscroAccount";
 import PaymentForm from "./Components/Panel/Investor/Transactions/PaymentForm";
 import Commission from "./Components/Panel/Partner/Commission/Commission";
+import PurchasedAssets from "./Components/Panel/Investor/Asset/PurchasedAssets";
+import Dashboard from "./Components/Panel/SuperAdmin/Dashboard/Dashboard";
+import AddAdmin from "./Components/Panel/SuperAdmin/AddAdmin/AddAdmin";
+import ViewAdmin from "./Components/Panel/SuperAdmin/ViewAdmin/ViewAdmin";
 
 function Layout() {
   const location = useLocation();
@@ -77,12 +81,13 @@ function Layout() {
           <Route path="/i-dashboard" element={<InvestorDashboard />} />
           <Route path="/i-asset" element={<InvestorAsset />} />
           <Route path="/i-buyunits" element={<BuyShares />} />
-          <Route path="/i-sellunits" element={<SellShares />} />
+          <Route path="/i-fullpayments" element={<SellShares />} />
           <Route path="/i-investment-page" element={<InvestmentPage />} />
           <Route path="/i-sellform" element={<SellAsset />} />
           <Route path="/i-profile" element={<InvestorProfile />} />
           <Route path="/i-profiledetails" element={<Kyc />} />
           <Route path="/i-payment-form" element={<PaymentForm />} />
+          <Route path="/i-purchasedasset" element={<PurchasedAssets />} />
 
           <Route path="/p-dashboard" element={<PartnerDashboard />} />
           <Route path="/p-report" element={<Report />} />
@@ -93,6 +98,10 @@ function Layout() {
           <Route path="/p-profiledetails" element={<PartnerKyc />} />
           <Route path="/p-myinvestors" element={<MyInvestors />} />
           <Route path="/p-commission" element={<Commission />} />
+
+          <Route path="/s-dashboard" element={<Dashboard />} />
+          <Route path="/s-addadmin" element={<AddAdmin />} />
+          <Route path="/s-viewadmins" element={<ViewAdmin />} />
 
           <Route path="/login" element={<Login />} />
         </Routes>

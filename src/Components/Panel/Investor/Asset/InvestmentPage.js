@@ -35,7 +35,8 @@ const InvestmentForm = () => {
     no_of_units_to_be_purchased: "",
     investment_period: "",
     total_value: "",
-    advance_payment: ""
+    advance_payment: "",
+    total_paid_amount:""
   });
   const navigate = useNavigate();
 
@@ -58,7 +59,8 @@ const InvestmentForm = () => {
     "approval_date",
     "expected_roi",
     "agent_name",
-    "investment_period"
+    "investment_period",
+    "total_paid_amount"
   ];
 
   // Get property_id from URL
@@ -164,6 +166,7 @@ const InvestmentForm = () => {
   // Form submission handler
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const userId = localStorage.getItem("user_id");
 
     const sanitizedData = {
       ...formData,
@@ -184,11 +187,12 @@ const InvestmentForm = () => {
       resale_price: Number(formData.resale_price) || 0,
       commission_paid_date: formData.commission_paid_date || null,
       no_of_investors: formData.no_of_investors || null,
-      user_id: formData.investor || 1, // Replace with dynamic user ID if available
+      user_id: userId || null, // Replace with dynamic user ID if available
       escrow_id: formData.escrow_id || "", // Default or fetched escrow ID
       paid_amount: formData.advance_payment || "0.00",
+      total_paid_amount:formData.advance_payment || "0.00",
       remaining_amount: (Number(formData.total_value) - Number(formData.advance_payment)).toFixed(2),
-      payment_type:"Advance",
+      payment_type:"Advance-Payment",
       payment_method:"Cash",
     };
 
@@ -310,6 +314,7 @@ const InvestmentForm = () => {
                   value={formData.partner_id}
                   onChange={handleChange}
                   label="Select Partner"
+                  required
                 >
                   {partners.map((partner) => (
                     <MenuItem key={partner.user_id} value={partner.user_id}>

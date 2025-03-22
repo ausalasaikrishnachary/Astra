@@ -36,14 +36,14 @@ export default function PartnerHeader() {
     { label: 'Dashboard', path: '/p-dashboard' },
     { label: 'My Assets', path: '/p-myassets' },
     { label: 'My Investors', path: '/p-myinvestors' },
-    {
-      label: 'Transactions', path: "/p-transactions",
-      path: '/p-transactions',
-      submenu: [
-        { label: 'Buy Units', path: '/buy-units' },
-        { label: 'Sell Units', path: '/sell-units' },
-      ],
-    },
+    // {
+    //   label: 'Transactions', path: "/p-transactions",
+    //   path: '/p-transactions',
+    //   submenu: [
+    //     { label: 'Buy Units', path: '/buy-units' },
+    //     { label: 'Sell Units', path: '/sell-units' },
+    //   ],
+    // },
     { label: 'Commission', path: '/p-commission' },
     { label: 'Report', path: '/p-report' },
   ];
@@ -348,7 +348,7 @@ export default function PartnerHeader() {
       </Menu>
 
       {/* Transactions Dropdown Menu for Desktop */}
-      <Menu
+      {/* <Menu
         anchorEl={transAnchorEl}
         open={transMenuOpen}
         onClose={handleTransClose}
@@ -373,7 +373,7 @@ export default function PartnerHeader() {
               {subitem.label}
             </MenuItem>
           ))}
-      </Menu>
+      </Menu> */}
     </>
   );
 }
