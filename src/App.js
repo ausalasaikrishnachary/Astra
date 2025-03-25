@@ -47,6 +47,7 @@ import PurchasedAssets from "./Components/Panel/Investor/Asset/PurchasedAssets";
 import Dashboard from "./Components/Panel/SuperAdmin/Dashboard/Dashboard";
 import AddAdmin from "./Components/Panel/SuperAdmin/AddAdmin/AddAdmin";
 import ViewAdmin from "./Components/Panel/SuperAdmin/ViewAdmin/ViewAdmin";
+import TransactionDetails from "./Components/Panel/Investor/Transactions/TransactionDetails";
 
 function Layout() {
   const location = useLocation();
@@ -88,6 +89,8 @@ function Layout() {
           <Route path="/i-profiledetails" element={<Kyc />} />
           <Route path="/i-payment-form" element={<PaymentForm />} />
           <Route path="/i-purchasedasset" element={<PurchasedAssets />} />
+          <Route path="/i-transaction-details" element={<TransactionDetails />} />
+
 
           <Route path="/p-dashboard" element={<PartnerDashboard />} />
           <Route path="/p-report" element={<Report />} />

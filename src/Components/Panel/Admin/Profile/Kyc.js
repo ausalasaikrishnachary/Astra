@@ -10,6 +10,7 @@ import {
   Box,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
+import Header from "../../../Shared/Navbar/Navbar";
 
 const ApiForm = () => {
   const [formData, setFormData] = useState({
@@ -112,8 +113,10 @@ const ApiForm = () => {
   };
 
   return (
+    <>
+    <Header />
     <Grid container justifyContent="center" alignItems="center" style={{ minHeight: "100vh" }}>
-    <Box style={{ padding: 20, maxWidth: 1200, margin: "auto", marginTop: 50, marginBottom: 50 }}>
+    <Box style={{ padding: 20, maxWidth: 1200, margin: "auto", marginTop: 20, marginBottom: 50 }}>
 
         <Typography variant="h5" gutterBottom align="center" marginBottom={5}>
           User Registration
@@ -203,6 +206,7 @@ const ApiForm = () => {
         </form>
       </Box>
     </Grid>
+    </>
   );
 };
 

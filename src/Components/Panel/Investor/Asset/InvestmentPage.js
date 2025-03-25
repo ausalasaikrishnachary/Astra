@@ -107,7 +107,7 @@ const InvestmentForm = () => {
             }));
 
             // Fetch Escrow ID after fetching property details
-            fetch(`http://175.29.21.7:83/escrow/account/property/${propertyId}/`)
+            fetch(`http://175.29.21.7:83/escrow/account/property-id/${propertyId}/`)
               .then((response) => response.json())
               .then((escrowData) => {
                 console.log("Fetched Escrow Data:", escrowData);
@@ -251,7 +251,7 @@ const InvestmentForm = () => {
         }
 
         // Step 4: Fetch current deposit_amount and update it
-        const escrowResponse = await fetch(`http://175.29.21.7:83/escrow/account/property/${propertyId}/`);
+        const escrowResponse = await fetch(`http://175.29.21.7:83/escrow/account/property-id/${propertyId}/`);
         if (escrowResponse.ok) {
           const escrowData = await escrowResponse.json();
           const currentDepositAmount = Number(escrowData.deposit_amount) || 0;
@@ -260,7 +260,7 @@ const InvestmentForm = () => {
           console.log("updatedDepositAmount:", updatedDepositAmount)
           // Step 5: Update deposit_amount
           const updateDepositResponse = await fetch(
-            `http://175.29.21.7:83/escrow/account/property/${propertyId}/`,
+            `http://175.29.21.7:83/escrow/account/property-id/${propertyId}/`,
             {
               method: "PUT",
               headers: { "Content-Type": "application/json" },

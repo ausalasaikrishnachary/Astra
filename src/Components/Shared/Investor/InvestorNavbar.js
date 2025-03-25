@@ -35,13 +35,7 @@ export default function InvestorHeader() {
   const navItems = [
     { label: 'Dashboard', path: '/i-dashboard' },
     { label: 'Buy Assets', path: '/i-asset' },
-    {
-      label: 'Transactions',
-      submenu: [
-        { label: 'Advance Payments', path: '/i-buyunits' },
-        { label: 'Full Payments', path: '/i-fullpayments' },
-      ],
-    },
+    { label: 'Transactions', path: '/i-buyunits'},
     { label: 'Purchased Assets', path: '/i-purchasedasset' },
   ];
 
@@ -403,7 +397,7 @@ export default function InvestorHeader() {
       </Menu>
 
       {/* Transactions Dropdown Menu for Desktop */}
-      <Menu
+      {/* <Menu
         anchorEl={transAnchorEl}
         open={transMenuOpen}
         onClose={handleTransClose}
@@ -428,7 +422,7 @@ export default function InvestorHeader() {
               {subitem.label}
             </MenuItem>
           ))}
-      </Menu>
+      </Menu> */}
     </>
   );
 }
