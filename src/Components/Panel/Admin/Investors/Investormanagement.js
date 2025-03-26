@@ -22,7 +22,7 @@ import IconButton from "@mui/material/IconButton";
 import Header from "../../../Shared/Navbar/Navbar";
 
 // API Endpoint
-const API_URL = "http://175.29.21.7:83/users/";
+const API_URL = "http://175.29.21.7:83/users/role/Investor/";
 
 // Summary Cards Data
 const summaryCardsData = [
@@ -64,8 +64,8 @@ const Tmanagement = () => {
     { field: "user_id", headerName: "User ID", flex: 1, minWidth: 100 },
     { field: "username", headerName: "Username", flex: 1, minWidth: 150 },
     { field: "email", headerName: "Email", flex: 1, minWidth: 250 },
-    { field: "phone", headerName: "Phone", flex: 1, minWidth: 150 },
-    { field: "dob", headerName: "DOB", flex: 1, minWidth: 150 },
+    { field: "phone_number", headerName: "Phone", flex: 1, minWidth: 150 },
+    // { field: "dob", headerName: "DOB", flex: 1, minWidth: 150 },
     { field: "gender", headerName: "Gender", flex: 1, minWidth: 120 },
     // { field: "password", headerName: "Password", flex: 1, minWidth: 120 },
     { field: "kyc_status", headerName: "KYC Status", flex: 1, minWidth: 130 },
@@ -141,9 +141,9 @@ const Tmanagement = () => {
                   <Typography variant="h4" sx={{ color: "rgb(30,10,80)" }}>
                     {card.key === "total" ? totalUsers : card.key === "active" ? activeUsers : inactiveUsers}
                   </Typography>
-                  <Typography variant="body2">
+                  {/* <Typography variant="body2">
                     {card.key === "active" ? "Currently active" : "Currently inactive"}
-                  </Typography>
+                  </Typography> */}
                 </CardContent>
               </Card>
             </Grid>

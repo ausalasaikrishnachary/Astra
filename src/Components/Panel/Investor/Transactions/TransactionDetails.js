@@ -31,7 +31,7 @@ const TransactionList = () => {
             const userId = localStorage.getItem("user_id");
             try {
                 const response = await axios.get(`http://175.29.21.7:83/transactions/user-id/${userId}/property-id/${propertyId}/`);
-                
+
                 if (!response.data || response.data.length === 0) {
                     throw new Error("No transactions found");
                 }
@@ -69,7 +69,7 @@ const TransactionList = () => {
                                     <TableCell>Transaction ID</TableCell>
                                     <TableCell>Property Name</TableCell>
                                     <TableCell>Property Value</TableCell>
-                                    <TableCell>Partner Name</TableCell>
+                                    {/* <TableCell>Partner Name</TableCell> */}
                                     <TableCell>Payment Type</TableCell>
                                     <TableCell>Purchased Units</TableCell>
                                     <TableCell>Price Per Unit</TableCell>
@@ -85,7 +85,7 @@ const TransactionList = () => {
                                 {transactions.map((transaction) => (
                                     <TableRow key={transaction.transaction_id}>
                                         <TableCell>{transaction.transaction_id}</TableCell>
-                                        <TableCell>{transaction.property_name}</TableCell>
+                                        {/* <TableCell>{transaction.property_name}</TableCell> */}
                                         <TableCell>{transaction.property_value || 'N/A'}</TableCell>
                                         <TableCell>{transaction.partner_name || 'N/A'}</TableCell>
                                         <TableCell>{transaction.payment_type || 'N/A'}</TableCell>

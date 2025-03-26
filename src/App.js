@@ -48,6 +48,9 @@ import Dashboard from "./Components/Panel/SuperAdmin/Dashboard/Dashboard";
 import AddAdmin from "./Components/Panel/SuperAdmin/AddAdmin/AddAdmin";
 import ViewAdmin from "./Components/Panel/SuperAdmin/ViewAdmin/ViewAdmin";
 import TransactionDetails from "./Components/Panel/Investor/Transactions/TransactionDetails";
+import EditAdmin from "./Components/Panel/SuperAdmin/ViewAdmin/EditAdmin";
+import TransactionMoniterDetails from "./Components/Panel/Admin/Transactions/TransactionMoniterDetails";
+import CommissionForm from "./Components/Panel/Admin/Transactions/CommissionForm";
 
 function Layout() {
   const location = useLocation();
@@ -78,6 +81,8 @@ function Layout() {
           <Route path="/a-profiledetails" element={<AdminKyc />} />
           <Route path="/a-users" element={<Users />} />
           <Route path="/a-escro" element={<EscroAccount />} />
+          <Route path="/a-transaction-details" element={<TransactionMoniterDetails />} />
+          <Route path="/a-commission-form" element={<CommissionForm />} />
 
           <Route path="/i-dashboard" element={<InvestorDashboard />} />
           <Route path="/i-asset" element={<InvestorAsset />} />
@@ -105,6 +110,7 @@ function Layout() {
           <Route path="/s-dashboard" element={<Dashboard />} />
           <Route path="/s-addadmin" element={<AddAdmin />} />
           <Route path="/s-viewadmins" element={<ViewAdmin />} />
+          <Route path="/s-editadmins" element={<EditAdmin />} />
 
           <Route path="/login" element={<Login />} />
         </Routes>

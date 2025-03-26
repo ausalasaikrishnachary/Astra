@@ -230,31 +230,31 @@ function PaymentForm() {
 
       console.log("Deposit amount updated successfully");
       // Step 4: Save Commission Data
-      const commissionData = {
-        transaction_id: responseData.transaction_id, // Ensure correct transaction_id
-        partner_id: transactionData.partner_id,
-        property_id: transactionData.property_id,
-        sale_price: transactionData.property_value,
-        commission_percentage: formData.commission_percentage,
-        commission_amount: formData.commission_amount,
-        commission_payment_status: "Paid", // Default status
-      };
+      // const commissionData = {
+      //   transaction_id: responseData.transaction_id, // Ensure correct transaction_id
+      //   partner_id: transactionData.partner_id,
+      //   property_id: transactionData.property_id,
+      //   sale_price: transactionData.property_value,
+      //   commission_percentage: formData.commission_percentage,
+      //   commission_amount: formData.commission_amount,
+      //   commission_payment_status: "Paid", // Default status
+      // };
 
-      const commissionResponse = await fetch("http://175.29.21.7:83/commissions/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(commissionData),
-      });
+      // const commissionResponse = await fetch("http://175.29.21.7:83/commissions/", {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify(commissionData),
+      // });
 
-      if (!commissionResponse.ok) {
-        throw new Error("Failed to save commission data");
-      }
+      // if (!commissionResponse.ok) {
+      //   throw new Error("Failed to save commission data");
+      // }
 
-      console.log("Commission data saved successfully");
+      // console.log("Commission data saved successfully");
 
-      alert("Transaction, deposit amount, and commission data saved successfully!");
+      alert("Transaction and deposit amount data saved successfully!");
       navigate("/i-buyunits")
     } catch (error) {
       console.error("Error:", error);

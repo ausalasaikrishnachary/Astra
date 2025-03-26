@@ -22,8 +22,10 @@ import IconButton from "@mui/material/IconButton";
 import Header from "../../../Shared/Navbar/Navbar";
 import PartnerHeader from "../../../Shared/Partner/PartnerNavbar";
 
+const userId = localStorage.getItem("user_id");
+
 // API Endpoint
-const API_URL = "http://175.29.21.7:83/users/";
+const API_URL = `http://175.29.21.7:83/users/referral-id/${userId}/`;
 
 // Summary Cards Data
 const summaryCardsData = [
@@ -63,16 +65,16 @@ const Tmanagement = () => {
   // Columns for DataGrid
   const columns = [
     { field: "user_id", headerName: "User ID", flex: 1, minWidth: 100 },
-    { field: "username", headerName: "Username", flex: 1, minWidth: 150 },
+    { field: "first_name", headerName: "Name", flex: 1, minWidth: 150 },
     { field: "email", headerName: "Email", flex: 1, minWidth: 250 },
-    { field: "phone", headerName: "Phone", flex: 1, minWidth: 150 },
-    { field: "dob", headerName: "DOB", flex: 1, minWidth: 150 },
+    { field: "phone_number", headerName: "Phone", flex: 1, minWidth: 150 },
+    // { field: "dob", headerName: "DOB", flex: 1, minWidth: 150 },
     { field: "gender", headerName: "Gender", flex: 1, minWidth: 120 },
     { field: "kyc_status", headerName: "KYC Status", flex: 1, minWidth: 130 },
-    { field: "account_holder_name", headerName: "Bank Account Holder", flex: 1.5, minWidth: 200 },
-    { field: "bank_name", headerName: "Bank Name", flex: 1.5, minWidth: 180 },
-    { field: "ifsc_code", headerName: "IFSC Code", flex: 1, minWidth: 150 },
-    { field: "reference_to", headerName: "Reference To", flex: 1, minWidth: 150 },
+    // { field: "account_holder_name", headerName: "Bank Account Holder", flex: 1.5, minWidth: 200 },
+    // { field: "bank_name", headerName: "Bank Name", flex: 1.5, minWidth: 180 },
+    // { field: "ifsc_code", headerName: "IFSC Code", flex: 1, minWidth: 150 },
+    { field: "referral_id", headerName: "Reference To", flex: 1, minWidth: 150 },
     { field: "status", headerName: "Status", flex: 1, minWidth: 150, 
       renderCell: (params) => (
         <Typography sx={{ color: getStatusColor(params.value) }}>
@@ -91,12 +93,12 @@ const Tmanagement = () => {
           <IconButton size="small" color="primary">
             <VisibilityIcon />
           </IconButton>
-          <IconButton size="small" color="primary">
+          {/* <IconButton size="small" color="primary">
             <EditIcon />
           </IconButton>
           <IconButton size="small" color="error">
             <DeleteIcon />
-          </IconButton>
+          </IconButton> */}
         </Box>
       ),
     },

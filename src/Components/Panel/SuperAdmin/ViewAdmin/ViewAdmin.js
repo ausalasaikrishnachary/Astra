@@ -39,15 +39,34 @@ function ViewAdmin() {
     fetchAdmins();
   }, []);
 
-  const handleEdit = (id) => {
-    console.log("Edit admin:", id);
-    // Implement edit functionality
+  const handleEdit = (admin) => {
+    navigate("/s-editadmins", { state: { admin } });
+    console.log("userid:",admin)
   };
 
-  const handleDelete = (id) => {
-    console.log("Delete admin:", id);
-    // Implement delete functionality
+  const handleDelete = async (id) => {
+    const confirmDelete = window.confirm("Are you sure you want to delete this admin?");
+    if (!confirmDelete) return;
+  
+    try {
+      const response = await fetch(`http://175.29.21.7:83/users/${id}/`, {
+        method: "DELETE",
+      });
+  
+      if (!response.ok) {
+        throw new Error("Failed to delete admin");
+      }
+  
+      // Remove deleted user from state
+      setAdmins((prevAdmins) => prevAdmins.filter((admin) => admin.user_id !== id));
+  
+      alert("Admin deleted successfully!");
+    } catch (error) {
+      console.error("Error deleting admin:", error);
+      alert("Failed to delete admin. Please try again.");
+    }
   };
+  
 
   return (
     <>
@@ -88,7 +107,7 @@ function ViewAdmin() {
                       </TableCell>
                     ))}
                     <TableCell>
-                      <IconButton color="primary" onClick={() => handleEdit(admin.user_id)}>
+                      <IconButton color="primary" onClick={() => handleEdit(admin)}>
                         <EditIcon />
                       </IconButton>
                       <IconButton color="error" onClick={() => handleDelete(admin.user_id)}>

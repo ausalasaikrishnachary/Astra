@@ -15,11 +15,11 @@ import Header from "../../../Shared/Navbar/Navbar";
 const ApiForm = () => {
   const [formData, setFormData] = useState({
     username: "",
-    password: "",
     first_name: "",
     last_name: "",
     role_ids: [],
     email: "",
+    password: "",
     phone_number: "",
     date_of_birth: "",
     gender: "",
@@ -50,6 +50,7 @@ const ApiForm = () => {
   const [pancardName, setPancardName] = useState("");
   const [aadharName, setAadharName] = useState("");
   const [imageName, setImageName] = useState("");
+  const [partnerUsers, setPartnerUsers] = useState([]);
 
   useEffect(() => {
     fetch("http://175.29.21.7:83/roles/")
@@ -61,6 +62,12 @@ const ApiForm = () => {
       .then((res) => res.json())
       .then((data) => setUsers(data))
       .catch((err) => console.error("Error fetching users:", err));
+
+    // Fetch users with role "Partner"
+    fetch("http://175.29.21.7:83/users/role/Partner/")
+      .then((res) => res.json())
+      .then((data) => setPartnerUsers(data))
+      .catch((err) => console.error("Error fetching partner users:", err));
   }, []);
 
   const handleChange = (e) => {
@@ -80,18 +87,20 @@ const ApiForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!pancard || !aadhar || !image) {
-      alert("Please upload Pancard, Aadhar, and an Image.");
-      return;
-    }
+    // if (!pancard || !aadhar || !image) {
+    //   alert("Please upload Pancard, Aadhar, and an Image.");
+    //   return;
+    // }
 
     const formDataToSend = new FormData();
     Object.keys(formData).forEach((key) => {
       formDataToSend.append(key, formData[key]);
     });
-    formDataToSend.append("pan", pancard);
-    formDataToSend.append("aadhaar", aadhar);
-    formDataToSend.append("image", image);
+
+     // Append files ONLY if they are selected
+  if (pancard) formDataToSend.append("pan", pancard);
+  if (aadhar) formDataToSend.append("aadhaar", aadhar);
+  if (image) formDataToSend.append("image", image);
 
     try {
       const response = await fetch("http://175.29.21.7:83/users/", {
@@ -114,98 +123,122 @@ const ApiForm = () => {
 
   return (
     <>
-    <Header />
-    <Grid container justifyContent="center" alignItems="center" style={{ minHeight: "100vh" }}>
-    <Box style={{ padding: 20, maxWidth: 1200, margin: "auto", marginTop: 20, marginBottom: 50 }}>
+      <Header />
+      <Grid container justifyContent="center" alignItems="center" style={{ minHeight: "100vh" }}>
+        <Box style={{ padding: 20, maxWidth: 1200, margin: "auto", marginTop: 20, marginBottom: 50 }}>
 
-        <Typography variant="h5" gutterBottom align="center" marginBottom={5}>
-          User Registration
-        </Typography>
-        <form onSubmit={handleSubmit} encType="multipart/form-data">
-          <Grid container spacing={2}>
-            {Object.keys(formData).map(
-              (key) =>
-                key !== "role_ids" && (
-                  <Grid item xs={12} sm={4} key={key}>
-                    <TextField
-                      fullWidth
-                      label={key.replace(/_/g, " ").replace(/\b\w/g, (char) => char.toUpperCase())}
-                      name={key}
-                      value={formData[key]}
-                      onChange={handleChange}
-                      required
-                      type={key.includes("password") || key.includes("account_number") ? "password" : key.includes("date") ? "date" : "text"}
-                      InputLabelProps={key.includes("date") ? { shrink: true } : {}}
-                    />
-                  </Grid>
-                )
-            )}
+          <Typography variant="h4" component="h2"  gutterBottom align="center" marginBottom={5}>
+            User Registration
+          </Typography>
+          <form onSubmit={handleSubmit} encType="multipart/form-data">
 
-            <Grid item xs={6} sm={3}>
-              <TextField
-                select
-                fullWidth
-                label="Role"
-                name="role_ids"
-                value={formData.role_ids[0] || ""}
-                onChange={handleChange}
-                required
-              >
-                {roles.map((role) => (
-                  <MenuItem key={role.role_id} value={role.role_id}>
-                    {role.role_name}
-                  </MenuItem>
-                ))}
-              </TextField>
+            <Grid container spacing={2}>
+              {Object.keys(formData).map(
+                (key) =>
+                  !["referral_id"].includes(key) &&
+                  key !== "role_ids" && (
+                    <Grid item xs={12} sm={4} key={key}>
+                      <TextField
+                        fullWidth
+                        label={key.replace(/_/g, " ").replace(/\b\w/g, (char) => char.toUpperCase())}
+                        name={key}
+                        value={formData[key]}
+                        onChange={handleChange}
+                        required
+                        type={key.includes("password") ? "password" : key.includes("date") ? "date" : "text"}
+                        InputLabelProps={key.includes("date") ? { shrink: true } : {}}
+                      />
+                    </Grid>
+                  )
+              )}
+
+
+
+
+              <Grid item xs={10} sm={3}>
+                <TextField
+                  select
+                  fullWidth
+                  label="Role"
+                  name="role_ids"
+                  value={formData.role_ids[0] || ""}
+                  onChange={handleChange}
+                  required
+                >
+                  {roles.map((role) => (
+                    <MenuItem key={role.role_id} value={role.role_id}>
+                      {role.role_name}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              </Grid>
+
+              <Grid item xs={2} sm={1}>
+                <IconButton color="primary">
+                  <AddIcon />
+                </IconButton>
+              </Grid>
+
+              {/* Referral ID Dropdown */}
+              <Grid item xs={12} sm={4}>
+                <TextField
+                  select
+                  fullWidth
+                  label="Referral ID"
+                  name="referral_id"
+                  value={formData.referral_id}
+                  onChange={handleChange}
+                  required
+                >
+                  {partnerUsers.length > 0 ? (
+                    partnerUsers.map((user) => (
+                      <MenuItem key={user.user_id} value={user.user_id}>
+                        {user.user_id} - {user.first_name}
+                      </MenuItem>
+                    ))
+                  ) : (
+                    <MenuItem disabled>No Partners Available</MenuItem>
+                  )}
+                </TextField>
+              </Grid>
+
+              <Box display="flex" justifyContent="center" alignItems="flex-start" gap={2} marginTop={3} marginBottom={3}>
+                {/* Pancard Upload */}
+                <Box display="flex" flexDirection="column" alignItems="center" mx={2}>
+                  <Button variant="outlined" component="label">
+                    Upload Pancard (PDF Only)
+                    <input type="file" accept=".pdf" hidden onChange={(e) => handleFileChange(e, setPancard, setPancardName)} />
+                  </Button>
+                  {pancardName && <Typography variant="body2" color="textSecondary">{pancardName}</Typography>}
+                </Box>
+
+                {/* Aadhar Upload */}
+                <Box display="flex" flexDirection="column" alignItems="center" mx={2}>
+                  <Button variant="outlined" component="label">
+                    Upload Aadhar Card (PDF Only)
+                    <input type="file" accept=".pdf" hidden onChange={(e) => handleFileChange(e, setAadhar, setAadharName)} />
+                  </Button>
+                  {aadharName && <Typography variant="body2" color="textSecondary">{aadharName}</Typography>}
+                </Box>
+
+                {/* Image Upload */}
+                <Box display="flex" flexDirection="column" alignItems="center" mx={2}>
+                  <Button variant="outlined" component="label">
+                    Upload Image
+                    <input type="file" accept="image/*" hidden onChange={(e) => handleFileChange(e, setImage, setImageName)} />
+                  </Button>
+                  {imageName && <Typography variant="body2" color="textSecondary">{imageName}</Typography>}
+                </Box>
+              </Box>
             </Grid>
-
-            <Grid item xs={2} sm={1}>
-              <IconButton color="primary">
-                <AddIcon />
-              </IconButton>
+            <Grid container justifyContent="center" style={{ marginTop: 20 }}>
+              <Button type="submit" variant="contained" color="primary" size="small">
+                Submit
+              </Button>
             </Grid>
-
-            <Box display="flex" justifyContent="center" alignItems="flex-start" gap={2} marginTop={3} marginBottom={3}>
-              {/* Pancard Upload */}
-              <Box display="flex" flexDirection="column" alignItems="center" mx={2}>
-                <Button variant="outlined" component="label">
-                  Upload Pancard (PDF Only)
-                  <input type="file" accept=".pdf" hidden onChange={(e) => handleFileChange(e, setPancard, setPancardName)} />
-                </Button>
-                {pancardName && <Typography variant="body2" color="textSecondary">{pancardName}</Typography>}
-              </Box>
-
-              {/* Aadhar Upload */}
-              <Box display="flex" flexDirection="column" alignItems="center" mx={2}>
-                <Button variant="outlined" component="label">
-                  Upload Aadhar Card (PDF Only)
-                  <input type="file" accept=".pdf" hidden onChange={(e) => handleFileChange(e, setAadhar, setAadharName)} />
-                </Button>
-                {aadharName && <Typography variant="body2" color="textSecondary">{aadharName}</Typography>}
-              </Box>
-
-              {/* Image Upload */}
-              <Box display="flex" flexDirection="column" alignItems="center" mx={2}>
-                <Button variant="outlined" component="label">
-                  Upload Image
-                  <input type="file" accept="image/*" hidden onChange={(e) => handleFileChange(e, setImage, setImageName)} />
-                </Button>
-                {imageName && <Typography variant="body2" color="textSecondary">{imageName}</Typography>}
-              </Box>
-            </Box>
-
-
-
-          </Grid>
-
-          <Grid container justifyContent="center" style={{ marginTop: 20 }}>
-            <Button type="submit" variant="contained" color="primary" size="small">
-              Submit
-            </Button>
-          </Grid>
-        </form>
-      </Box>
-    </Grid>
+          </form>
+        </Box>
+      </Grid>
     </>
   );
 };
