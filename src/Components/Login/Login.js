@@ -45,6 +45,7 @@ const Login = () => {
 
       if (response.ok) {
         localStorage.setItem("user_id", data.user_id);
+        localStorage.setItem("user_name", data.first_name + data.last_name);
         const userRoles = data.roles || [];
         console.log(userRoles)
 
@@ -138,9 +139,9 @@ const Login = () => {
             />
 
             <TextField fullWidth label="Password" type="password" variant="outlined" margin="normal" value={password} onChange={(e) => setPassword(e.target.value)} />
-            <Box textAlign="right">
+            {/* <Box textAlign="right">
               <Link href="#" color="error">Forgot Password?</Link>
-            </Box>
+            </Box> */}
             <Button
               fullWidth
               variant="contained"
@@ -149,7 +150,7 @@ const Login = () => {
             >
               Login
             </Button>
-            <Typography align="center" sx={{ mt: 2 }}>Or</Typography>
+            {/* <Typography align="center" sx={{ mt: 2 }}>Or</Typography>
             <Button fullWidth variant="outlined" sx={{ mt: 2 }}>
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <img src={google} alt="Google Logo" style={{ width: 20, height: 20, marginRight: 8 }} />
@@ -158,7 +159,7 @@ const Login = () => {
             </Button>
             <Typography align="center" sx={{ mt: 2 }}>
               Don't have an account? <Link href="#">Register for free</Link>
-            </Typography>
+            </Typography> */}
           </Grid>
         </Grid>
       </Paper>

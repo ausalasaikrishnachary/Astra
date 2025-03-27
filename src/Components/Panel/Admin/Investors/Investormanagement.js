@@ -13,6 +13,11 @@ import {
   Select,
   CircularProgress,
   Alert,
+  Table,
+  TableHead,
+  TableBody,
+  TableRow,
+  TableCell,
 } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import VisibilityIcon from "@mui/icons-material/Visibility";
@@ -58,6 +63,14 @@ const Tmanagement = () => {
 
   // Status Color
   const getStatusColor = (status) => (status === "active" ? "green" : "red");
+
+  const handleEdit = (userId) => {
+    console.log("Edit user with ID:", userId);
+  };
+
+  const handleDelete = (userId) => {
+    console.log("Delete user with ID:", userId);
+  };
 
   // Columns for DataGrid
   const columns = [
@@ -182,25 +195,66 @@ const Tmanagement = () => {
           </Button>
         </Box>
 
-        {/* DataGrid Table */}
-        <Box sx={{ height: 400, width: "100%" }}>
-          {loading ? (
-            <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100%" }}>
-              <CircularProgress />
-            </Box>
-          ) : error ? (
-            <Alert severity="error">{error}</Alert>
-          ) : (
-            <DataGrid
-              rows={filteredUsers.map((user) => ({ ...user, id: user.user_id }))}
-              columns={columns}
-              pageSize={5}
-              rowsPerPageOptions={[5]}
-              autoHeight
-              disableSelectionOnClick
-            />
-          )}
-        </Box>
+        <Box sx={{ marginTop: 4, padding: "50px" }}>
+        {loading ? (
+          <CircularProgress />
+        ) : error ? (
+          <Typography color="error">{error}</Typography>
+        ) : (
+          <Table sx={{ border: "1px solid black"}}>
+            <TableHead>
+              <TableRow>
+                <TableCell sx={{ fontWeight: "bold", textAlign: "center", border: "1px solid #000" }}>
+                  User ID
+                </TableCell>
+                <TableCell sx={{ fontWeight: "bold", textAlign: "center", border: "1px solid #000" }}>
+                  Username
+                </TableCell>
+                <TableCell sx={{ fontWeight: "bold", textAlign: "center", border: "1px solid #000" }}>
+                  Email
+                </TableCell>
+                <TableCell sx={{ fontWeight: "bold", textAlign: "center", border: "1px solid #000" }}>
+                  Phone
+                </TableCell>
+                <TableCell sx={{ fontWeight: "bold", textAlign: "center", border: "1px solid #000" }}>
+                  Status
+                </TableCell>
+                <TableCell sx={{ fontWeight: "bold", textAlign: "center", border: "1px solid #000" }}>
+                  Actions
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {users.map((user) => (
+                <TableRow
+                  key={user.user_id}
+                  
+                  sx={{ cursor: "pointer", "&:hover": { backgroundColor: "#f5f5f5" } }}
+                >
+                  <TableCell sx={{ textAlign: "center", border: "1px solid #000" }}>{user.user_id}</TableCell>
+                  <TableCell sx={{ textAlign: "center", border: "1px solid #000" }}>{user.username}</TableCell>
+                  <TableCell sx={{ textAlign: "center", border: "1px solid #000" }}>{user.email}</TableCell>
+                  <TableCell sx={{ textAlign: "center", border: "1px solid #000" }}>{user.phone_number}</TableCell>
+                  <TableCell sx={{ textAlign: "center", border: "1px solid #000", color: user.status === "active" ? "green" : "red" }}>
+                    {user.status}
+                  </TableCell>
+                  <TableCell sx={{ textAlign: "center", border: "1px solid #000"  }}>
+                      <IconButton size="small" color="primary">
+                        <VisibilityIcon />
+                      </IconButton>
+                      <IconButton size="small" color="primary" onClick={() => handleEdit(user.user_id)}>
+                        <EditIcon />
+                      </IconButton>
+                      <IconButton size="small" color="error" onClick={() => handleDelete(user.user_id)}>
+                        <DeleteIcon />
+                      </IconButton>
+                    </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        )}
+      </Box>
       </Container>
     </>
   );

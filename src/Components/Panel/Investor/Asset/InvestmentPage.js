@@ -21,6 +21,7 @@ const InvestmentForm = () => {
   const [formData, setFormData] = useState({
     investor: "",
     partner_id:"",
+    partner_name:"",
     escrow_id: "",
     property_name: "",
     property_type: "",
@@ -43,6 +44,7 @@ const InvestmentForm = () => {
   const hiddenFields = [
     "investor",
     "agent",
+    "partner_id",
     "transaction_type",
     "transaction_reference",
     "commission_paid_date",
@@ -154,23 +156,37 @@ const InvestmentForm = () => {
     }
   }, [formData.total_value]);
 
-  // Handle input changes
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: type === "checkbox" ? checked : value,
-    }));
+  
+    setFormData((prevData) => {
+      if (name === "partner_id") {
+        const selectedPartner = partners.find((partner) => partner.user_id === value);
+        return {
+          ...prevData,
+          partner_id: value,
+          partner_name: selectedPartner ? selectedPartner.username : "", // Assign partner_name
+        };
+      }
+  
+      return {
+        ...prevData,
+        [name]: type === "checkbox" ? checked : value,
+      };
+    });
   };
+  
 
   // Form submission handler
   const handleSubmit = async (e) => {
     e.preventDefault();
     const userId = localStorage.getItem("user_id");
+    const userName = localStorage.getItem("user_name");
 
     const sanitizedData = {
       ...formData,
       property_id: propertyId,
+      partner_name:formData.partner_name || null,
       partner_id:Number(formData.partner_id) || 0,
       available_units: Number(formData.available_units) || 0,
       price_per_unit: Number(formData.price_per_unit) || 0,
@@ -188,6 +204,7 @@ const InvestmentForm = () => {
       commission_paid_date: formData.commission_paid_date || null,
       no_of_investors: formData.no_of_investors || null,
       user_id: userId || null, // Replace with dynamic user ID if available
+      user_name:userName || null,
       escrow_id: formData.escrow_id || "", // Default or fetched escrow ID
       paid_amount: formData.advance_payment || "0.00",
       total_paid_amount:formData.advance_payment || "0.00",

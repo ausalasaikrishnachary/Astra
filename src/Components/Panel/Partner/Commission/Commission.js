@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
 import PartnerHeader from "../../../Shared/Partner/PartnerNavbar";
-import { Typography, Paper, Box, CircularProgress } from "@mui/material";
+import { Typography, Paper, Box, CircularProgress,TableCell,TableBody,TableRow,Table,TableHead } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
+import { useParams, useNavigate } from 'react-router-dom';
 
 const Commission = () => {
     const [commissionData, setCommissionData] = useState([]);
     const [userIdMap, setUserIdMap] = useState({});
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+        const navigate = useNavigate();
 
     useEffect(() => {
         const fetchCommissions = async () => {
@@ -78,44 +80,83 @@ const Commission = () => {
 
     return (
         <>
-            <PartnerHeader />
-            <Typography variant="h4" sx={{ mb: 3, pt: 3, textAlign: "center" }}>
-                Commission Details
-            </Typography>
-            <Box display="flex" justifyContent="center" alignItems="center">
-                <Typography sx={{ width: "100%", maxWidth: 1300, padding: 2 }}>
-                    {loading ? (
-                        <Box display="flex" justifyContent="center" p={3}>
-                            <CircularProgress />
-                        </Box>
-                    ) : error ? (
-                        <Typography color="error" textAlign="center">
-                            {error}
-                        </Typography>
-                    ) : (
-                        <DataGrid
-                            rows={commissionData.map((item) => ({
-                                id: item.commission_id,
-                                user_id: userIdMap[item.transaction_id] || "N/A", // Add user_id from mapping
-                                ...item,
-                            }))}
-                            columns={columns}
-                            autoHeight
-                            disableSelectionOnClick
-                            sx={{
-                                "& .MuiDataGrid-columnHeaders": {
-                                    backgroundColor: "#f5f5f5",
-                                    fontWeight: "bold",
-                                },
-                                "& .MuiDataGrid-cell": {
-                                    borderBottom: "none",
-                                },
-                            }}
-                        />
-                    )}
-                </Typography>
-            </Box>
-        </>
+  <PartnerHeader />
+  <Typography variant="h4" sx={{  pt: 3, textAlign: "center" }}>
+    Commission Details
+  </Typography>
+  <Box sx={{ marginTop: 4, padding: '50px' }}>
+  {loading ? (
+    <CircularProgress />
+  ) : (
+    <Table sx={{ border: '1px solid black', width: '100%' }}>
+      <TableHead>
+        <TableRow>
+          <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>
+            Partner Id
+          </TableCell>
+          <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>
+            Transaction ID
+          </TableCell>
+          <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>
+            Proverty Value
+          </TableCell>
+          <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>
+            Commission Percentage
+          </TableCell>
+          <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>
+           Commission Amount
+          </TableCell>
+          <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>
+            Commission Payment Status
+          </TableCell>
+          <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>
+            Date
+          </TableCell>
+        </TableRow>
+      </TableHead>
+      <TableBody>
+        {commissionData.length > 0 ? (
+          commissionData.map((commission) => (
+            <TableRow
+              key={commission.commission_id}
+              sx={{ cursor: 'pointer', '&:hover': { backgroundColor: '#f5f5f5' } }}
+            >
+              <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>
+                {commission.partner_id}
+              </TableCell>
+              <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>
+                {commission.transaction_id}
+              </TableCell>
+              <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>
+                {commission.sale_price}
+              </TableCell>
+              <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>
+                {commission.commission_percentage}
+              </TableCell>
+              <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>
+                {commission.commission_amount}
+              </TableCell>
+              <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>
+                {commission.commission_payment_status}
+              </TableCell>
+              <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>
+                {new Date(commission.created_at).toLocaleDateString('en-IN')}
+              </TableCell>
+            </TableRow>
+          ))
+        ) : (
+          <TableRow>
+            <TableCell colSpan={7} sx={{ textAlign: 'center', border: '1px solid #000', padding: '16px' }}>
+              No data found
+            </TableCell>
+          </TableRow>
+        )}
+      </TableBody>
+    </Table>
+  )}
+</Box>
+
+</>
     );
 };
 

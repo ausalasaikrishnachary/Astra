@@ -23,6 +23,7 @@ function CommissionForm() {
     // escrow_id: "",
     transaction_id:transactionId,
     partner_id: "",
+    partner_name:"",
     property_name: "",
     property_type: "",
     // no_of_investors: "",
@@ -48,6 +49,7 @@ function CommissionForm() {
     "no_of_units_purchased",
     "transaction_type",
     "price_per_unit",
+    "partner_id",
   ]
 
 
@@ -129,6 +131,7 @@ function CommissionForm() {
         property_name:data.property_name,
         property_value:data.property_value,
         property_id:data.property_id,
+        partner_name:data.partner_name,
       }));
     } catch (error) {
       console.error("Error fetching escrow data:", error);

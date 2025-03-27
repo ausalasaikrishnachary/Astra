@@ -58,13 +58,17 @@ const TransactionList = () => {
         <>
         <InvestorHeader />
         <Box sx={{ marginTop: 4, padding: '50px' }}>
-          <Typography variant="h5" sx={{ marginBottom: 2, fontWeight: 'bold' }}>Transaction List</Typography>
+        <Box sx={{ marginTop: 3, textAlign: 'left' }}>
+            <Button variant="outlined" onClick={() => navigate(-1)}>Back</Button>
+          </Box>
+          <Typography variant="h5" sx={{ marginBottom: 2, fontWeight: 'bold',textAlign:"center" }}>Transaction List</Typography>
           <TableContainer>
             <Table sx={{ border: '1px solid black', width: '100%' }}>
               <TableHead>
                 <TableRow>
                   <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>Transaction ID</TableCell>
                   <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>Property Name</TableCell>
+                  <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>Partner Name</TableCell>
                   <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>Property Value</TableCell>
                   <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>Payment Type</TableCell>
                   <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>Purchased Units</TableCell>
@@ -81,11 +85,12 @@ const TransactionList = () => {
                 {transactions.map((transaction) => (
                   <TableRow
                     key={transaction.transaction_id}
-                    onClick={() => navigate(`/i-transaction-details?transaction_id=${transaction.transaction_id}`)}
+                    // onClick={() => navigate(`/i-transaction-details?transaction_id=${transaction.transaction_id}`)}
                     sx={{ cursor: 'pointer', '&:hover': { backgroundColor: '#f5f5f5' } }}
                   >
                     <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>{transaction.transaction_id}</TableCell>
                     <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>{transaction.property_name}</TableCell>
+                    <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>{transaction.partner_name}</TableCell>
                     <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>{transaction.property_value || 'N/A'}</TableCell>
                     <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>{transaction.payment_type || 'N/A'}</TableCell>
                     <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>{transaction.purchased_units}</TableCell>
@@ -94,7 +99,7 @@ const TransactionList = () => {
                     <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>{transaction.paid_amount}</TableCell>
                     <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>{transaction.remaining_amount}</TableCell>
                     <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>{transaction.payment_method}</TableCell>
-                    <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>{new Date(transaction.created_at).toLocaleDateString()}</TableCell>
+                    <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>{new Date(transaction.created_at).toLocaleDateString('en-IN')}</TableCell>
                     {/* <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }} onClick={(e) => e.stopPropagation()}>
                       <Button
                         variant="contained"
@@ -115,9 +120,7 @@ const TransactionList = () => {
               </TableBody>
             </Table>
           </TableContainer>
-          <Box sx={{ marginTop: 3, textAlign: 'center' }}>
-            <Button variant="outlined" onClick={() => navigate(-1)}>Back</Button>
-          </Box>
+          
         </Box>
       </>
       

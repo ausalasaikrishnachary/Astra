@@ -184,54 +184,47 @@ const BuyShares = () => {
   );
 
   return (
-    <>
-      <InvestorHeader />
-      <Box sx={{ marginTop: 4, padding: '50px' }}>
-        {loading ? (
-          <CircularProgress />
-        ) : error ? (
-          <Typography color="error">{error}</Typography>
-        ) : (
-          <>
-            <Table sx={{ border: '1px solid black', width: '100%' }}>
-              <TableHead>
-                <TableRow>
-                  <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>
-                    Property Name
-                  </TableCell>
-                  <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>
-                    Property Value
-                  </TableCell>
-                  <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>
-                    Purchased Units
-                  </TableCell>
-                  {/* <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>
-                                  Price Per Unit
-                                </TableCell> */}
-                  {/* <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>
-                                  Transaction Type
-                                </TableCell> */}
-                  <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>
-                    Payment Type
-                  </TableCell>
-                  <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>
-                    Total Paid Amount
-                  </TableCell>
-                  <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>
-                    Remaining Amount
-                  </TableCell>
-                  <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>
-                    Transaction Date
-                  </TableCell>
-                  <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>
-                    Action
-                  </TableCell>
-                </TableRow>
-              </TableHead>
+<>
+  <InvestorHeader />
+  <Box sx={{ marginTop: 4, padding: '50px' }}>
+    {loading ? (
+      <CircularProgress />
+    ) : (
+      <>
+        <Table sx={{ border: '1px solid black', width: '100%' }}>
+          <TableHead>
+            <TableRow>
+              <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>
+                Property Name
+              </TableCell>
+              <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>
+                Property Value
+              </TableCell>
+              <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>
+                Purchased Units
+              </TableCell>
+              <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>
+                Payment Type
+              </TableCell>
+              <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>
+                Total Paid Amount
+              </TableCell>
+              <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>
+                Remaining Amount
+              </TableCell>
+              <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>
+                Transaction Date
+              </TableCell>
+              <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>
+                Action
+              </TableCell>
+            </TableRow>
+          </TableHead>
 
-              <TableBody>
-                {paginatedTransactions.map((transaction) => (
-                  <TableRow
+          <TableBody>
+            {paginatedTransactions.length > 0 ? (
+              paginatedTransactions.map((transaction) => (
+                <TableRow
                   key={transaction.property_id}
                   onClick={() => navigate(`/i-transaction-details?property_id=${transaction.property_id}`)}
                   sx={{ cursor: 'pointer', '&:hover': { backgroundColor: '#f5f5f5' } }}
@@ -255,9 +248,8 @@ const BuyShares = () => {
                     {transaction.remaining_amount}
                   </TableCell>
                   <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>
-                    {new Date(transaction.created_at).toLocaleDateString()}
+                    {new Date(transaction.created_at).toLocaleDateString('en-IN')}
                   </TableCell>
-                  {/* Prevent row click for this column */}
                   <TableCell
                     sx={{ textAlign: 'center', border: '1px solid #000' }}
                     onClick={(e) => e.stopPropagation()}
@@ -266,7 +258,7 @@ const BuyShares = () => {
                       variant="contained"
                       color="primary"
                       onClick={(e) => {
-                        e.stopPropagation(); // Prevent row click when clicking the button
+                        e.stopPropagation();
                         navigate(
                           `/i-payment-form?property_id=${transaction.property_id}&transaction_id=${transaction.transaction_id}`
                         );
@@ -277,15 +269,22 @@ const BuyShares = () => {
                     </Button>
                   </TableCell>
                 </TableRow>
-                
-                ))}
-              </TableBody>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={8} sx={{ textAlign: 'center', border: '1px solid #000', padding: 2 }}>
+                  No Data Found
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </>
+    )}
+  </Box>
+</>
 
-            </Table>
-          </>
-        )}
-      </Box>
-    </>
+
   );
 };
 

@@ -18,6 +18,7 @@ function PaymentForm() {
   const [formData, setFormData] = useState({
     escrow_id: "",
     partner_id: "",
+    partner_name:"",
     property_name: "",
     property_type: "",
     property_value: "",
@@ -40,6 +41,7 @@ function PaymentForm() {
     "commission_percentage",
     "commission_amount",
     "total_paid_amount",
+    "partner_id",
 
   ]
 
@@ -122,6 +124,7 @@ function PaymentForm() {
         no_of_units_purchased: data.purchased_units,
         remaining_amount: data.remaining_amount,
         partner_id: data.partner_id,
+        partner_name:data.partner_name,
       }));
     } catch (error) {
       console.error("Error fetching escrow data:", error);
@@ -184,6 +187,7 @@ function PaymentForm() {
       property_id: Number(propertyId),
       escrow_id: Number(formData.escrow_id),
       partner_id: Number(formData.partner_id),
+      partner_name:formData.partner_name,
 
     };
 
