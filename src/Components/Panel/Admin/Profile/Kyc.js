@@ -8,6 +8,10 @@ import {
   Typography,
   IconButton,
   Box,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import Header from "../../../Shared/Navbar/Navbar";
@@ -121,6 +125,45 @@ const ApiForm = () => {
     }
   };
 
+    // Role Dialog States
+    const [openRoleDialog, setOpenRoleDialog] = useState(false);
+    const [newRole, setNewRole] = useState("");
+
+    // Handle role addition popup
+    const handleOpenRoleDialog = () => setOpenRoleDialog(true);
+    const handleCloseRoleDialog = () => {
+      setNewRole("");
+      setOpenRoleDialog(false);
+    };
+
+    // Submit new role
+    const handleAddRole = async () => {
+      if (!newRole.trim()) {
+        alert("Role name cannot be empty");
+        return;
+      }
+  
+      try {
+        const response = await fetch("http://175.29.21.7:83/roles/", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ role_name: newRole }),
+        });
+  
+        if (!response.ok) {
+          throw new Error("Failed to add role");
+        }
+  
+        const addedRole = await response.json();
+        setRoles([...roles, addedRole]); // Update roles list
+        handleCloseRoleDialog(); // Close dialog
+        alert("Role added successfully!");
+      } catch (error) {
+        console.error("Error adding role:", error);
+        alert("Failed to add role");
+      }
+    };
+
   return (
     <>
       <Header />
@@ -173,11 +216,36 @@ const ApiForm = () => {
                 </TextField>
               </Grid>
 
-              <Grid item xs={2} sm={1}>
-                <IconButton color="primary">
+             {/* Add Role Button */}
+             <Grid item xs={2} sm={1}>
+                <IconButton color="primary" onClick={handleOpenRoleDialog}>
                   <AddIcon />
                 </IconButton>
               </Grid>
+
+              {/* Role Dialog Popup */}
+              <Dialog open={openRoleDialog} onClose={handleCloseRoleDialog}>
+                <DialogTitle>Add New Role</DialogTitle>
+                <DialogContent>
+                  <TextField
+                    autoFocus
+                    margin="dense"
+                    label="Role Name"
+                    type="text"
+                    fullWidth
+                    value={newRole}
+                    onChange={(e) => setNewRole(e.target.value)}
+                  />
+                </DialogContent>
+                <DialogActions>
+                  <Button onClick={handleCloseRoleDialog} color="secondary">
+                    Cancel
+                  </Button>
+                  <Button onClick={handleAddRole} color="primary">
+                    Add Role
+                  </Button>
+                </DialogActions>
+              </Dialog>
 
               {/* Referral ID Dropdown */}
               <Grid item xs={12} sm={4}>
@@ -188,7 +256,6 @@ const ApiForm = () => {
                   name="referral_id"
                   value={formData.referral_id}
                   onChange={handleChange}
-                  required
                 >
                   {partnerUsers.length > 0 ? (
                     partnerUsers.map((user) => (

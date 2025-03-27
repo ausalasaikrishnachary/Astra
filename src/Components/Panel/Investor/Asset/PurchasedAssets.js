@@ -28,7 +28,7 @@ import InvestorHeader from '../../../Shared/Investor/InvestorNavbar';
 
 const PurchasedAssets = () => {
   const navigate = useNavigate();
-  const [assets, setAssets] = useState([]);
+  const [asset, setAssets] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
   const [selectedAsset, setSelectedAsset] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
@@ -63,11 +63,44 @@ const PurchasedAssets = () => {
   }, []);
 
   useEffect(() => {
-    fetch(`http://175.29.21.7:83/property/${propertyId}/`)
-      .then(response => response.json())
-      .then(data => setAssets(data))
-      .catch(error => console.error("Error fetching data:", error));
-  }, []);
+    if (!propertyId || !Array.isArray(propertyId) || propertyId.length === 0) {
+      console.warn("propertyId is invalid or empty:", propertyId);
+      return; // Prevents unnecessary fetch calls
+    }
+
+    // Fetch all properties using multiple IDs
+    Promise.all(
+      propertyId.map(id =>
+        fetch(`http://175.29.21.7:83/property/${id}/`)
+          .then(response => {
+            if (!response.ok) {
+              throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+          })
+          .catch(error => {
+            console.error("Error fetching property:", error);
+            return null; // Prevents breaking Promise.all if one fetch fails
+          })
+      )
+    )
+      .then(results => {
+        const validData = results.filter(data => data !== null); // Remove null values
+        if (validData.length > 0) {
+          setAssets(validData);
+        } else {
+          setAssets([]);
+        }
+      })
+      .catch(error => {
+        console.error("Error processing property fetch:", error);
+        setAssets([]);
+      });
+  }, [propertyId]);
+
+
+
+
 
   const handleOpenDialog = (asset) => {
     setSelectedAsset(asset);
@@ -79,7 +112,7 @@ const PurchasedAssets = () => {
     setSelectedAsset(null);
   };
 
-  const filteredAssets = assets.filter(asset =>
+  const filteredAssets = asset.filter(asset =>
     asset.property_name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
@@ -101,7 +134,7 @@ const PurchasedAssets = () => {
             {/* Search Input */}
             <Grid item xs={12} md={6} lg={7}>
               <TextField
-                placeholder="Search assets..."
+                placeholder="Search asset..."
                 fullWidth
                 variant="outlined"
                 InputProps={{
@@ -152,37 +185,42 @@ const PurchasedAssets = () => {
             </Grid>
           </Grid>
         </Box>
-        
-        <Grid container spacing={2}>
-          {filteredAssets.map((asset, index) => (
-            <Grid item xs={12} md={6} lg={4} key={index} sx={{ display: 'flex' }}>
-              <Card
-                sx={{
-                  flex: 1,
-                  display: 'flex',
-                  flexDirection: 'column',
-                  borderRadius: 2,
-                  boxShadow: '0 4px 5px rgba(0, 0, 0, 0.749)',
-                  transition: 'all 0.3s ease',
-                  position: 'relative',
-                  backgroundColor: 'white',
-                  overflow: 'visible',
-                  '&:hover': {
-                    transform: 'translateY(-5px)',
-                    boxShadow: '0 8px 25px rgba(0,0,0,0.1)'
-                  }
-                }}
-              >
-                <Box sx={{ position: 'relative' }}>
-                  {/* {console.log(`http://175.29.21.7:83${asset.property_image}`)} */}
-                  <CardMedia
-                    component="img"
-                    image={`http://175.29.21.7:83${asset.property_image}`}
-                    alt={asset.property_name}
-                    sx={{ height: 220, objectFit: 'cover' }}
-                  />
+        {asset.length === 0 ? (
+          <Typography variant="h6" color="black" align="center" sx={{ mt: 4 }}>
+            No Assets purchased
+          </Typography>
+        ) : (
 
-                  {/* <Chip
+          <Grid container spacing={2}>
+            {filteredAssets.map((asset, index) => (
+              <Grid item xs={12} md={6} lg={4} key={index} sx={{ display: 'flex' }}>
+                <Card
+                  sx={{
+                    flex: 1,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    borderRadius: 2,
+                    boxShadow: '0 4px 5px rgba(0, 0, 0, 0.749)',
+                    transition: 'all 0.3s ease',
+                    position: 'relative',
+                    backgroundColor: 'white',
+                    overflow: 'visible',
+                    '&:hover': {
+                      transform: 'translateY(-5px)',
+                      boxShadow: '0 8px 25px rgba(0,0,0,0.1)'
+                    }
+                  }}
+                >
+                  <Box sx={{ position: 'relative' }}>
+                    {/* {console.log(`http://175.29.21.7:83${asset.property_image}`)} */}
+                    <CardMedia
+                      component="img"
+                      image={`http://175.29.21.7:83${asset.property_image}`}
+                      alt={asset.property_name}
+                      sx={{ height: 220, objectFit: 'cover' }}
+                    />
+
+                    {/* <Chip
                     label={asset.listing_status}
                     sx={{
                       position: 'absolute',
@@ -192,75 +230,75 @@ const PurchasedAssets = () => {
                       color: 'white',
                     }}
                   /> */}
-                </Box>
-                <CardContent sx={{ flexGrow: 1 }}>
-                  <Typography variant="h6" fontWeight="bold" mb={1}>
-                    {asset.property_name}
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary" mb={2}>
-                    {asset.description}
-                  </Typography>
-                  <Box sx={{ backgroundColor: '#F8F9FA', borderRadius: 1, p: 1.5, mb: 2 }}>
-                    <Grid container>
-                      <Grid item xs={6}>
+                  </Box>
+                  <CardContent sx={{ flexGrow: 1 }}>
+                    <Typography variant="h6" fontWeight="bold" mb={1}>
+                      {asset.property_name}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary" mb={2}>
+                      {asset.description}
+                    </Typography>
+                    <Box sx={{ backgroundColor: '#F8F9FA', borderRadius: 1, p: 1.5, mb: 2 }}>
+                      <Grid container>
+                        <Grid item xs={6}>
+                          <Typography variant="body2" color="text.secondary">
+                            Asset Value
+                          </Typography>
+                        </Grid>
+                        <Grid item xs={6}>
+                          <Typography variant="body2" fontWeight="bold" color="#4A90E2" align="right">
+                            ₹{asset.property_value}/-
+                          </Typography>
+                        </Grid>
+                        <Grid item xs={6}>
+                          <Typography variant="body2" color="text.secondary">
+                            Location
+                          </Typography>
+                        </Grid>
+                        <Grid item xs={6}>
+                          <Typography variant="body2" fontWeight="bold" color="text.secondary" align="right">
+                            {asset.city}, {asset.state}
+                          </Typography>
+                        </Grid>
+                      </Grid>
+                    </Box>
+                  </CardContent>
+                  <Box sx={{ p: 2 }}>
+                    <Grid container alignItems="center" justifyContent="space-between">
+                      <Grid item>
                         <Typography variant="body2" color="text.secondary">
-                          Asset Value
+                          Available Units
+                        </Typography>
+                        <Typography variant="body2" fontWeight="bold" color="#2ECC71">
+                          {asset.available_units}
                         </Typography>
                       </Grid>
-                      <Grid item xs={6}>
-                        <Typography variant="body2" fontWeight="bold" color="#4A90E2" align="right">
-                          ₹{asset.property_value}/-
-                        </Typography>
-                      </Grid>
-                      <Grid item xs={6}>
-                        <Typography variant="body2" color="text.secondary">
-                          Location
-                        </Typography>
-                      </Grid>
-                      <Grid item xs={6}>
-                        <Typography variant="body2" fontWeight="bold" color="text.secondary" align="right">
-                          {asset.city}, {asset.state}
-                        </Typography>
+
+                      <Button
+                        variant="contained"
+                        sx={{ backgroundColor: '#4A90E2', '&:hover': { backgroundColor: '#357ABD' }, marginBottom: "10px", }}
+                        onClick={() => handleOpenDialog(asset)}
+                      >
+                        View Details
+                      </Button>
+
+                      <Grid item>
+                        <Grid
+                          item
+                          sx={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                            width: "340px",
+                          }}>
+                        </Grid>
                       </Grid>
                     </Grid>
                   </Box>
-                </CardContent>
-                <Box sx={{ p: 2 }}>
-                  <Grid container alignItems="center" justifyContent="space-between">
-                    <Grid item>
-                      <Typography variant="body2" color="text.secondary">
-                        Available Units
-                      </Typography>
-                      <Typography variant="body2" fontWeight="bold" color="#2ECC71">
-                        {asset.available_units}
-                      </Typography>
-                    </Grid>
-
-                    <Button
-                      variant="contained"
-                      sx={{ backgroundColor: '#4A90E2', '&:hover': { backgroundColor: '#357ABD' },marginBottom:"10px", }}
-                      onClick={() => handleOpenDialog(asset)}
-                    >
-                      View Details
-                    </Button>
-
-                    <Grid item>
-                      <Grid
-                        item
-                        sx={{
-                          display: "flex",
-                          justifyContent: "space-between",
-                          width:"340px",
-                        }}>
-                      </Grid>
-                    </Grid>
-                  </Grid>
-                </Box>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
-
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
+        )}
         <Dialog open={openDialog} onClose={handleCloseDialog} fullWidth maxWidth="md">
           {selectedAsset && (
             <>
