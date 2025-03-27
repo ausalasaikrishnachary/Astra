@@ -56,71 +56,71 @@ const TransactionList = () => {
 
     return (
         <>
-            <InvestorHeader />
-            <Box sx={{ marginTop: 4, padding: '30px' }}>
-                <Paper sx={{ padding: '20px', maxWidth: '1300px', margin: '0 auto' }}>
-                    <Typography variant="h5" sx={{ marginBottom: 2, fontWeight: 'bold' }}>
-                        Transaction List
-                    </Typography>
-                    <TableContainer>
-                        <Table>
-                            <TableHead>
-                                <TableRow>
-                                    <TableCell>Transaction ID</TableCell>
-                                    <TableCell>Property Name</TableCell>
-                                    <TableCell>Property Value</TableCell>
-                                    {/* <TableCell>Partner Name</TableCell> */}
-                                    <TableCell>Payment Type</TableCell>
-                                    <TableCell>Purchased Units</TableCell>
-                                    <TableCell>Price Per Unit</TableCell>
-                                    <TableCell>Total Amount</TableCell>
-                                    <TableCell>Paid Amount</TableCell>
-                                    <TableCell>Remaining Amount</TableCell>
-                                    <TableCell>Payment Method</TableCell>
-                                    <TableCell>Transaction Date</TableCell>
-                                    {/* <TableCell>Action</TableCell> */}
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {transactions.map((transaction) => (
-                                    <TableRow key={transaction.transaction_id}>
-                                        <TableCell>{transaction.transaction_id}</TableCell>
-                                        {/* <TableCell>{transaction.property_name}</TableCell> */}
-                                        <TableCell>{transaction.property_value || 'N/A'}</TableCell>
-                                        <TableCell>{transaction.partner_name || 'N/A'}</TableCell>
-                                        <TableCell>{transaction.payment_type || 'N/A'}</TableCell>
-                                        <TableCell>{transaction.purchased_units}</TableCell>
-                                        <TableCell>{transaction.price_per_unit}</TableCell>
-                                        <TableCell>{transaction.total_amount}</TableCell>
-                                        <TableCell>{transaction.paid_amount}</TableCell>
-                                        <TableCell>{transaction.remaining_amount}</TableCell>
-                                        <TableCell>{transaction.payment_method}</TableCell>
-                                        <TableCell>{new Date(transaction.created_at).toLocaleDateString()}</TableCell>
-                                        {/* <TableCell>
-                                            {transaction.remaining_amount > 0 && (
-                                                <Button
-                                                    variant="contained"
-                                                    color="primary"
-                                                    onClick={() =>
-                                                        navigate(`/i-payment-form?property_id=${transaction.property_id}&transaction_id=${transaction.transaction_id}`)
-                                                    }
-                                                >
-                                                    Pay Remaining
-                                                </Button>
-                                            )}
-                                        </TableCell> */}
-                                    </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
-                    {/* Back Button */}
-                    <Box sx={{ marginTop: 3, textAlign: 'center' }}>
-                        <Button variant="outlined" onClick={() => navigate(-1)}>Back</Button>
-                    </Box>
-                </Paper>
-            </Box>
-        </>
+        <InvestorHeader />
+        <Box sx={{ marginTop: 4, padding: '50px' }}>
+          <Typography variant="h5" sx={{ marginBottom: 2, fontWeight: 'bold' }}>Transaction List</Typography>
+          <TableContainer>
+            <Table sx={{ border: '1px solid black', width: '100%' }}>
+              <TableHead>
+                <TableRow>
+                  <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>Transaction ID</TableCell>
+                  <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>Property Name</TableCell>
+                  <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>Property Value</TableCell>
+                  <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>Payment Type</TableCell>
+                  <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>Purchased Units</TableCell>
+                  <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>Price Per Unit</TableCell>
+                  <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>Total Amount</TableCell>
+                  <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>Paid Amount</TableCell>
+                  <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>Remaining Amount</TableCell>
+                  <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>Payment Method</TableCell>
+                  <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>Transaction Date</TableCell>
+                  {/* <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>Action</TableCell> */}
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {transactions.map((transaction) => (
+                  <TableRow
+                    key={transaction.transaction_id}
+                    onClick={() => navigate(`/i-transaction-details?transaction_id=${transaction.transaction_id}`)}
+                    sx={{ cursor: 'pointer', '&:hover': { backgroundColor: '#f5f5f5' } }}
+                  >
+                    <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>{transaction.transaction_id}</TableCell>
+                    <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>{transaction.property_name}</TableCell>
+                    <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>{transaction.property_value || 'N/A'}</TableCell>
+                    <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>{transaction.payment_type || 'N/A'}</TableCell>
+                    <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>{transaction.purchased_units}</TableCell>
+                    <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>{transaction.price_per_unit}</TableCell>
+                    <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>{transaction.total_amount}</TableCell>
+                    <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>{transaction.paid_amount}</TableCell>
+                    <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>{transaction.remaining_amount}</TableCell>
+                    <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>{transaction.payment_method}</TableCell>
+                    <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>{new Date(transaction.created_at).toLocaleDateString()}</TableCell>
+                    {/* <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }} onClick={(e) => e.stopPropagation()}>
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          navigate(
+                            `/i-payment-form?property_id=${transaction.property_id}&transaction_id=${transaction.transaction_id}`
+                          );
+                        }}
+                        disabled={transaction.remaining_amount <= 0}
+                      >
+                        Pay Remaining
+                      </Button>
+                    </TableCell> */}
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+          <Box sx={{ marginTop: 3, textAlign: 'center' }}>
+            <Button variant="outlined" onClick={() => navigate(-1)}>Back</Button>
+          </Box>
+        </Box>
+      </>
+      
     );
 };
 
