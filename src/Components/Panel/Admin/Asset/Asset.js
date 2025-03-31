@@ -24,6 +24,10 @@ import SearchIcon from '@mui/icons-material/Search';
 import AddIcon from '@mui/icons-material/Add';
 import Header from '../../../Shared/Navbar/Navbar';
 import { useNavigate } from "react-router-dom";
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import IconButton from '@mui/material/IconButton';
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const AssetDashboard = () => {
   const navigate = useNavigate();
@@ -56,6 +60,25 @@ const AssetDashboard = () => {
   const filteredAssets = assets.filter(asset =>
     asset.property_name.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  const handleEdit = (assetId) => {
+    navigate(`/a-edit-asset`, { state: { assetId } });
+    console.log("Edit asset with ID:", assetId);
+  };
+
+  const handleDelete = (assetId) => {
+    if (window.confirm("Are you sure you want to delete this asset?")) {
+      fetch(`http://175.29.21.7:83/property/${assetId}/`, {
+        method: "DELETE",
+      })
+        .then(() => {
+          setAssets((prevAssets) =>
+            prevAssets.filter((asset) => asset.id !== assetId)
+          );
+        })
+        .catch((error) => console.error("Error deleting asset:", error));
+    }
+  };
 
   const summaryCardsData = [
     {
@@ -141,9 +164,6 @@ const AssetDashboard = () => {
                 </Select>
               </FormControl>
             </Grid>
-
-
-
             {/* Add Asset Button */}
             <Grid item xs={12} md={3} lg={2}>
               <Button
@@ -223,16 +243,6 @@ const AssetDashboard = () => {
                     sx={{ height: 220, objectFit: 'cover' }}
                   />
 
-                  {/* <Chip
-                    label={asset.listing_status}
-                    sx={{
-                      position: 'absolute',
-                      top: 15,
-                      right: 15,
-                      backgroundColor: asset.listing_status === 'available' ? '#2ECC71' : '#E74C3C',
-                      color: 'white',
-                    }}
-                  /> */}
                 </Box>
                 <CardContent sx={{ flexGrow: 1 }}>
                   <Typography variant="h6" fontWeight="bold" mb={1}>
@@ -294,14 +304,27 @@ const AssetDashboard = () => {
                       </Typography>
                     </Grid>
                     <Grid item>
-                      <Button
-                        variant="contained"
-                        sx={{ backgroundColor: '#4A90E2', '&:hover': { backgroundColor: '#357ABD' } }}
+                      <IconButton
+                        sx={{ color: '#4A90E2', '&:hover': { color: '#357ABD' } }}
                         onClick={() => handleOpenDialog(asset)}
                       >
-                        View Details
-                      </Button>
+                        <VisibilityIcon />
+                      </IconButton>
+                      <IconButton
+                        sx={{ color: "#FFC107", "&:hover": { color: "#FF9800" } }}
+                        onClick={() => handleEdit(asset.property_id)}
+                      >
+                        <EditIcon />
+                      </IconButton>
+
+                      <IconButton
+                        sx={{ color: "#F44336", "&:hover": { color: "#D32F2F" } }}
+                        onClick={() => handleDelete(asset.property_id)}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
                     </Grid>
+
                   </Grid>
                 </Box>
               </Card>

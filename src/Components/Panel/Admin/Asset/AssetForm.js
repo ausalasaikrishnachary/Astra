@@ -105,20 +105,6 @@ const PropertyForm = () => {
   };
 
 
-
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   try {
-  //     const response = await axios.post("http://175.29.21.7:83/property/", formData);
-  //     console.log("Response:", response.data);
-  //     alert("Property added successfully!");
-  //   } catch (error) {
-  //     console.error("Error:", error);
-  //     console.error("Response Data:", error.response?.data); // Log the error details
-  //     alert(`Error adding property: ${error.response?.data?.message || "Unknown error"}`);
-  //   }
-  // };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -163,10 +149,6 @@ const PropertyForm = () => {
       alert("An error occurred while submitting the form.");
     }
   };
-
-
-
-
 
   return (
     <>
@@ -238,15 +220,13 @@ const PropertyForm = () => {
           <Grid item xs={6}>
             <Typography variant="h6">Property Image</Typography>
             <input type="file" accept="image/*" onChange={(e) => handleFileChange(e, "property_image")} />
-          </Grid>
-  
-          {previewImages.property_image && (
-            <Grid item xs={12} sm={6} md={4} sx={{ display: "flex", justifyContent: "center" }}>
-              <img src={previewImages.property_image} alt="Property Preview" style={{ width: "100px", height: "100px", objectFit: "cover", borderRadius: "8px" }} />
+            {previewImages.property_image && (
+            <Grid item xs={12} sm={6} md={4} sx={{ display: "flex", justifyContent: "center",pt:2 }}>
+              <img src={previewImages.property_image} alt="Property Preview" style={{ height: "100px", objectFit: "cover", borderRadius: "8px" }} />
             </Grid>
           )}
+          </Grid>
         </Grid>
-  
         <Grid sx={{ marginTop: 3, marginBottom: "10px", textAlign: "left" }}>
           <Button type="submit" variant="contained" sx={{ color: "white", width: "200px" }}>
             Submit Property

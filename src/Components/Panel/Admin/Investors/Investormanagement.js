@@ -25,6 +25,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import IconButton from "@mui/material/IconButton";
 import Header from "../../../Shared/Navbar/Navbar";
+import { useLocation, useNavigate } from "react-router-dom";
 
 // API Endpoint
 const API_URL = "http://175.29.21.7:83/users/role/Investor/";
@@ -37,6 +38,7 @@ const summaryCardsData = [
 ];
 
 const Tmanagement = () => {
+    const navigate = useNavigate();
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -65,6 +67,7 @@ const Tmanagement = () => {
   const getStatusColor = (status) => (status === "active" ? "green" : "red");
 
   const handleEdit = (userId) => {
+    navigate("/a-editinvestors", { state: { userId } });
     console.log("Edit user with ID:", userId);
   };
 

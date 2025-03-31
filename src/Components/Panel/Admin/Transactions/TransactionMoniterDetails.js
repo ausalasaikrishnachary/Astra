@@ -23,6 +23,7 @@ const TransactionMoniterDetails = () => {
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     const propertyId = queryParams.get("property_id");
+    const userId = queryParams.get("user_id");
     const navigate = useNavigate();
     const [transactions, setTransactions] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -30,9 +31,9 @@ const TransactionMoniterDetails = () => {
 
     useEffect(() => {
         const fetchTransactions = async () => {
-            const userId = localStorage.getItem("user_id");
+            
             try {
-                const response = await axios.get("http://175.29.21.7:83/transactions/");
+                const response = await axios.get(`http://175.29.21.7:83/transactions/user-id/${userId}/property-id/${propertyId}/`);
 
                 if (!response.data || response.data.length === 0) {
                     throw new Error("No transactions found");

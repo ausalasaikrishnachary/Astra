@@ -51,6 +51,10 @@ import TransactionDetails from "./Components/Panel/Investor/Transactions/Transac
 import EditAdmin from "./Components/Panel/SuperAdmin/ViewAdmin/EditAdmin";
 import TransactionMoniterDetails from "./Components/Panel/Admin/Transactions/TransactionMoniterDetails";
 import CommissionForm from "./Components/Panel/Admin/Transactions/CommissionForm";
+import ViewEscrowAccount from "./Components/Panel/Admin/EscroAccount/ViewEscrowAccount";
+import EditPartner from "./Components/Panel/Admin/Partners/EditPartner";
+import EditInvestor from "./Components/Panel/Admin/Investors/EditInvestor";
+import EditAsset from "./Components/Panel/Admin/Asset/EditAsset";
 
 function Layout() {
   const location = useLocation();
@@ -75,14 +79,18 @@ function Layout() {
           <Route path="/a-asset" element={<AdminAsset />} />
           <Route path="/a-addasset" element={<AdminAssetForm />} />
           <Route path="/a-investormanagement" element={<Tmanagement />} />
+          <Route path="/a-editinvestors" element={<EditInvestor />} />
           <Route path="/a-transactionmoniter" element={<Tmoniter />} />  
           <Route path="/a-partners" element={<PartnersDashboard />} />
+          <Route path="/a-editpartners" element={<EditPartner />} />
           <Route path="/a-profile" element={<AdminProfile />} />
           <Route path="/a-profiledetails" element={<AdminKyc />} />
           <Route path="/a-users" element={<Users />} />
-          <Route path="/a-escro" element={<EscroAccount />} />
+          <Route path="/a-addescrow" element={<EscroAccount />} />
+          <Route path="/a-escrow" element={<ViewEscrowAccount />} />
           <Route path="/a-transaction-details" element={<TransactionMoniterDetails />} />
           <Route path="/a-commission-form" element={<CommissionForm />} />
+          <Route path="/a-edit-asset" element={<EditAsset />} />
 
           <Route path="/i-dashboard" element={<InvestorDashboard />} />
           <Route path="/i-asset" element={<InvestorAsset />} />

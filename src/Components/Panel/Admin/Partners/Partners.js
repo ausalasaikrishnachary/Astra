@@ -25,7 +25,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import IconButton from "@mui/material/IconButton";
 import Header from "../../../Shared/Navbar/Navbar";
-
+import { useLocation, useNavigate } from "react-router-dom";
 
 // API Endpoint
 const API_URL = "http://175.29.21.7:83/users/role/Partner/";
@@ -38,6 +38,7 @@ const summaryCardsData = [
 ];
 
 const Tmanagement = () => {
+  const navigate = useNavigate();
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -63,67 +64,14 @@ const Tmanagement = () => {
     fetchUsers();
   }, []);
   
-
-  // Status Color
-  const getStatusColor = (status) => (status === "active" ? "green" : "red");
   const handleEdit = (userId) => {
+    navigate("/a-editpartners", { state: { userId } });
     console.log("Edit user with ID:", userId);
   };
 
   const handleDelete = (userId) => {
     console.log("Delete user with ID:", userId);
   };
-
-  // Columns for DataGrid
-  const columns = [
-    { field: "user_id", headerName: "User ID", flex: 1, minWidth: 100 },
-    { field: "username", headerName: "Username", flex: 1, minWidth: 150 },
-    { field: "email", headerName: "Email", flex: 1, minWidth: 250 },
-    { field: "phone_number", headerName: "Phone", flex: 1, minWidth: 150 },
-    // { field: "dob", headerName: "DOB", flex: 1, minWidth: 150 },
-    { field: "gender", headerName: "Gender", flex: 1, minWidth: 120 },
-    // { field: "password", headerName: "Password", flex: 1, minWidth: 120 },
-    { field: "kyc_status", headerName: "KYC Status", flex: 1, minWidth: 130 },
-    { field: "account_holder_name", headerName: "Bank Account Holder", flex: 1.5, minWidth: 200 },
-    { field: "bank_name", headerName: "Bank Name", flex: 1.5, minWidth: 180 },
-    { field: "ifsc_code", headerName: "IFSC Code", flex: 1, minWidth: 150 },
-    { field: "nominee_name", headerName: "Nominee", flex: 1, minWidth: 150 },
-    { field: "nominee_relationship", headerName: "Nominee Relation", flex: 1, minWidth: 150 },
-    { field: "status", headerName: "Status", flex: 1, minWidth: 150, 
-      renderCell: (params) => (
-        <Typography sx={{ color: getStatusColor(params.value) }}>
-          {params.value}
-        </Typography>
-      ),
-    },
-    {
-      field: "actions",
-      headerName: "Actions",
-      flex: 1,
-      minWidth: 150,
-      sortable: false,
-      renderCell: () => (
-        <Box sx={{ display: "flex", gap: "5px" }}>
-          <IconButton size="small" color="primary">
-            <VisibilityIcon />
-          </IconButton>
-          <IconButton size="small" color="primary">
-            <EditIcon />
-          </IconButton>
-          <IconButton size="small" color="error">
-            <DeleteIcon />
-          </IconButton>
-        </Box>
-      ),
-    },
-  ];
-
-  // Filter Users based on Search
-  const filteredUsers = users.filter((user) =>
-    Object.values(user).some((value) =>
-      value?.toString().toLowerCase().includes(searchTerm.toLowerCase())
-    )
-  );
 
   // Count Active & Inactive Users
   const totalUsers = users.length;
@@ -156,9 +104,7 @@ const Tmanagement = () => {
                   <Typography variant="h4" sx={{ color: "rgb(30,10,80)" }}>
                     {card.key === "total" ? totalUsers : card.key === "active" ? activeUsers : inactiveUsers}
                   </Typography>
-                  {/* <Typography variant="body2">
-                    {card.key === "active" ? "Currently active" : "Currently inactive"}
-                  </Typography> */}
+                  
                 </CardContent>
               </Card>
             </Grid>
