@@ -154,9 +154,9 @@ const Tmanagement = () => {
                   <Typography variant="h4" sx={{ color: "rgb(30,10,80)" }}>
                     {card.key === "total" ? totalUsers : card.key === "active" ? activeUsers : inactiveUsers}
                   </Typography>
-                  <Typography variant="body2">
+                  {/* <Typography variant="body2">
                     {card.key === "active" ? "Currently active" : "Currently inactive"}
-                  </Typography>
+                  </Typography> */}
                 </CardContent>
               </Card>
             </Grid>

@@ -7,6 +7,7 @@ import {
   TextField,
   Button,
   MenuItem,
+  FormControl
 } from "@mui/material";
 import Header from "../../../Shared/Navbar/Navbar";
 import axios from "axios";
@@ -50,35 +51,26 @@ function EditAsset() {
     setLoading(true);
     setError("");
 
-    let updatedData = { ...formData };
+    // Prepare FormData to include both text data and the image file
+    const formDataPayload = new FormData();
 
-    // Handle image upload if an image is selected
-    if (imageFile) {
-      const formDataImage = new FormData();
-      formDataImage.append("property_image", imageFile);
-
-      try {
-        const imageResponse = await axios.post(
-          "http://175.29.21.7:83/upload-image/",
-          formDataImage,
-          { headers: { "Content-Type": "multipart/form-data" } }
-        );
-        updatedData.property_image = imageResponse.data.image_url; // Ensure API returns an image URL
-      } catch (err) {
-        setError("Image upload failed.");
-        setLoading(false);
-        return;
+    // Append all asset data to FormData
+    Object.keys(formData).forEach((key) => {
+      if (formData[key]) {
+        formDataPayload.append(key, formData[key]);
       }
+    });
+
+    // Append image if a new one is selected
+    if (imageFile) {
+      formDataPayload.append("property_image", imageFile);
     }
 
-    console.log("Updated Data before sending:", updatedData); // Debugging log
-
-    // Send update request
     try {
       await axios.put(
         `http://175.29.21.7:83/property/${assetId}/`,
-        updatedData,
-        { headers: { "Content-Type": "application/json" } }
+        formDataPayload,
+        { headers: { "Content-Type": "multipart/form-data" } }
       );
       navigate("/a-asset"); // Redirect on success
     } catch (err) {
@@ -89,6 +81,7 @@ function EditAsset() {
     setLoading(false);
   };
 
+  const excludedFields = ["created_at", "updated_at", "sold_units","property_image",];
 
   return (
     <>
@@ -105,32 +98,37 @@ function EditAsset() {
         ) : (
           <form onSubmit={handleSubmit}>
             <Grid container spacing={2}>
-              {Object.keys(formData).map(
-                (key) =>
-                  key !== "property_image" && ( // Exclude property_image from text fields
-                    <Grid item xs={12} md={4} key={key}>
-                      <TextField
-                        fullWidth
-                        label={key.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase())}
-                        name={key}
-                        type="text"
-                        value={formData[key] || ""}
-                        onChange={handleChange}
-                      />
-                    </Grid>
-                  )
-              )}
-              <Grid item xs={12} md={4}>
-                <Typography>Property Image:</Typography>
-                <input type="file" onChange={handleFileChange} />
-                {formData.property_image && (
-                  <img
-                    src={`http://175.29.21.7:83${formData.property_image}`} // Adjust based on API response
-                    alt="Current Property"
-                    width={100}
-                    style={{ marginTop: 10 }}
+              {Object.keys(formData)
+                .filter((key) => !excludedFields.includes(key)) // Exclude specific fields
+                .map((key) => (
+                  <Grid item xs={12} md={4} key={key}>
+                    <TextField
+                      fullWidth
+                      label={key.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase())}
+                      name={key}
+                      type="text"
+                      value={formData[key] || ""}
+                      onChange={handleChange}
+                    />
+                  </Grid>
+                ))}
+              <Grid item xs={12} md={4} >
+                <FormControl fullWidth>
+                  <TextField
+                    fullWidth
+                    label="Property Image"
+                    type="file"
+                    name="Property Image"
+                    onChange={handleFileChange}
+                    inputProps={{
+                      accept: "image" ? "image/*" : ".pdf,.jpg,.jpeg,.png",
+                    }}
+                    InputLabelProps={{ shrink: true }}
                   />
-                )}
+                  <a href={`http://175.29.21.7:83${formData.property_image}`} target="_blank" rel="noopener noreferrer">
+                    View Image
+                  </a>
+                </FormControl>
               </Grid>
             </Grid>
             <Button sx={{ mt: 3 }} type="submit" variant="contained" color="primary">

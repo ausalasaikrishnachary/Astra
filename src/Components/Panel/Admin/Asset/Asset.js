@@ -35,12 +35,19 @@ const AssetDashboard = () => {
   const [openDialog, setOpenDialog] = useState(false);
   const [selectedAsset, setSelectedAsset] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
+  const [counts, setCounts] = useState({});
 
   useEffect(() => {
     fetch("http://175.29.21.7:83/property/")
       .then(response => response.json())
       .then(data => setAssets(data))
       .catch(error => console.error("Error fetching data:", error));
+
+    // Fetch the counts data
+    fetch("http://175.29.21.7:83/counts/")
+      .then(response => response.json())
+      .then(data => setCounts(data))
+      .catch(error => console.error("Error fetching counts:", error));
   }, []);
 
   const handleOpenDialog = (asset) => {
@@ -71,30 +78,30 @@ const AssetDashboard = () => {
       fetch(`http://175.29.21.7:83/property/${assetId}/`, {
         method: "DELETE",
       })
-        .then(() => {
-          setAssets((prevAssets) =>
-            prevAssets.filter((asset) => asset.id !== assetId)
-          );
+        .then((response) => {
+          if (response.ok) {
+            window.location.reload(); // Reloads the page after successful deletion
+          } else {
+            throw new Error("Failed to delete asset");
+          }
         })
         .catch((error) => console.error("Error deleting asset:", error));
     }
   };
+  
 
   const summaryCardsData = [
     {
       title: "Total Assets",
-      value: "12",
-      // subtext: "Last 7 Days",
+      value: counts.total_properties || "Loading...", // Dynamic value
     },
     {
       title: "Total Value",
-      value: "8.5cr",
-      // subtext: "+2.3% from last week",
+      value: counts.total_properties_value ? `₹${counts.total_properties_value}` : "Loading...", // Dynamic value
     },
     {
       title: "Active Units",
-      value: "450",
-      // subtext: "+12% increase",
+      value: counts.total_properties_available_units || "Loading...", // Dynamic value
     },
   ];
 
