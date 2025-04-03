@@ -74,55 +74,11 @@ const Tmanagement = () => {
   const handleDelete = (userId) => {
     console.log("Delete user with ID:", userId);
   };
-
-  // Columns for DataGrid
-  const columns = [
-    { field: "user_id", headerName: "User ID", flex: 1, minWidth: 100 },
-    { field: "username", headerName: "Username", flex: 1, minWidth: 150 },
-    { field: "email", headerName: "Email", flex: 1, minWidth: 250 },
-    { field: "phone_number", headerName: "Phone", flex: 1, minWidth: 150 },
-    // { field: "dob", headerName: "DOB", flex: 1, minWidth: 150 },
-    { field: "gender", headerName: "Gender", flex: 1, minWidth: 120 },
-    // { field: "password", headerName: "Password", flex: 1, minWidth: 120 },
-    { field: "kyc_status", headerName: "KYC Status", flex: 1, minWidth: 130 },
-    { field: "account_holder_name", headerName: "Bank Account Holder", flex: 1.5, minWidth: 200 },
-    { field: "bank_name", headerName: "Bank Name", flex: 1.5, minWidth: 180 },
-    { field: "ifsc_code", headerName: "IFSC Code", flex: 1, minWidth: 150 },
-    { field: "nominee_name", headerName: "Nominee", flex: 1, minWidth: 150 },
-    { field: "nominee_relationship", headerName: "Nominee Relation", flex: 1, minWidth: 150 },
-    { field: "status", headerName: "Status", flex: 1, minWidth: 150, 
-      renderCell: (params) => (
-        <Typography sx={{ color: getStatusColor(params.value) }}>
-          {params.value}
-        </Typography>
-      ),
-    },
-    {
-      field: "actions",
-      headerName: "Actions",
-      flex: 1,
-      minWidth: 150,
-      sortable: false,
-      renderCell: () => (
-        <Box sx={{ display: "flex", gap: "5px" }}>
-          <IconButton size="small" color="primary">
-            <VisibilityIcon />
-          </IconButton>
-          <IconButton size="small" color="primary">
-            <EditIcon />
-          </IconButton>
-          <IconButton size="small" color="error">
-            <DeleteIcon />
-          </IconButton>
-        </Box>
-      ),
-    },
-  ];
-
   // Filter Users based on Search
+
   const filteredUsers = users.filter((user) =>
-    Object.values(user).some((value) =>
-      value?.toString().toLowerCase().includes(searchTerm.toLowerCase())
+    ["user_id", "username", "email", "phone_number", "status"].some((key) =>
+      user[key]?.toString().toLowerCase().includes(searchTerm.toLowerCase())
     )
   );
 
@@ -175,7 +131,7 @@ const Tmanagement = () => {
             sx={{ width: "250px" }}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
-          <FormControl size="small" sx={{ width: "120px" }}>
+          {/* <FormControl size="small" sx={{ width: "120px" }}>
             <Select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
               <MenuItem value="Latest">Latest</MenuItem>
               <MenuItem value="Oldest">Oldest</MenuItem>
@@ -195,10 +151,10 @@ const Tmanagement = () => {
             }}
           >
             Filters
-          </Button>
+          </Button> */}
         </Box>
 
-        <Box sx={{ marginTop: 4, padding: "50px" }}>
+        <Box >
         {loading ? (
           <CircularProgress />
         ) : error ? (
@@ -228,7 +184,7 @@ const Tmanagement = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {users.map((user) => (
+              {filteredUsers.map((user) => (
                 <TableRow
                   key={user.user_id}
                   

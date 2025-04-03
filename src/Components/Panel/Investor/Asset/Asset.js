@@ -32,7 +32,7 @@ const AssetDashboard = () => {
   const [openDialog, setOpenDialog] = useState(false);
   const [selectedAsset, setSelectedAsset] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
-
+    const [sortBy, setSortBy] = useState("latest");
   const [counts, setCounts] = useState({});
 
   useEffect(() => {
@@ -62,9 +62,6 @@ const AssetDashboard = () => {
     navigate('/a-addasset');
   };
 
-  const filteredAssets = assets.filter(asset =>
-    asset.property_name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
 
   const summaryCardsData = [
     {
@@ -81,26 +78,46 @@ const AssetDashboard = () => {
     },
   ];
 
+  const filteredAssets = assets.filter(asset =>
+    ["property_name", "description", "city", "state"].some(field =>
+      asset[field]?.toString().toLowerCase().includes(searchTerm.toLowerCase())
+    ) ||
+    asset.property_value?.toString().includes(searchTerm) // Search by property value
+  );
+
+  const sortedAssets = [...filteredAssets].sort((a, b) => {
+    if (sortBy === "latest") return new Date(b.date) - new Date(a.date);
+    if (sortBy === "oldest") return new Date(a.date) - new Date(b.date);
+    if (sortBy === "price-high") return b.property_value - a.property_value;
+    if (sortBy === "price-low") return a.property_value - b.property_value;
+    return 0;
+  });
+
   return (
     <>
       <InvestorHeader />
       <Container sx={{ py: 4 }}>
-        <Box
+      <Box
           sx={{
             backgroundColor: 'white',
             p: 2.5,
             borderRadius: 2,
             boxShadow: '0 2px 10px rgba(0,0,0,0.05)',
-            mb: 4
+            mb: 4,
+            display:"flex",
+            flexDirection:"row",
+            alignItems:"center"
           }}
         >
           <Grid container spacing={2} alignItems="center">
             {/* Search Input */}
             <Grid item xs={12} md={6} lg={7}>
               <TextField
-                placeholder="Search assets..."
+                placeholder="Search by name or value..."
                 fullWidth
                 variant="outlined"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
@@ -126,27 +143,45 @@ const AssetDashboard = () => {
                   }
                 }}
               />
+
             </Grid>
 
             {/* Filter Select */}
             <Grid item xs={12} md={3} lg={3}>
               <FormControl fullWidth>
                 <Select
-                  defaultValue="latest"
-                  sx={{
-                    borderRadius: '8px',
-                    fontSize: '15px',
-                    backgroundColor: 'white',
-                    border: '1px solid #E0E0E0'
-                  }}
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value)}
+                  sx={{ borderRadius: "8px", fontSize: "15px" }}
                 >
                   <MenuItem value="latest">Latest</MenuItem>
-                  <MenuItem value="oldest">Oldest</MenuItem>
                   <MenuItem value="price-high">Price: High to Low</MenuItem>
                   <MenuItem value="price-low">Price: Low to High</MenuItem>
                 </Select>
               </FormControl>
             </Grid>
+            {/* Add Asset Button */}
+            {/* <Grid item xs={12} md={3} lg={2}>
+              <Button
+                onClick={handleClick}
+                variant="contained"
+                fullWidth
+                startIcon={<AddIcon />}
+                sx={{
+                  padding: '12px 24px',
+                  borderRadius: '8px',
+                  backgroundColor: '#2ECC71',
+                  textTransform: 'none',
+                  fontWeight: 500,
+                  '&:hover': {
+                    backgroundColor: '#27AE60',
+                    transform: 'translateY(-1px)'
+                  }
+                }}
+              >
+                Add Asset
+              </Button>
+            </Grid> */}
           </Grid>
         </Box>
         {/* Stats Cards */}
@@ -176,7 +211,7 @@ const AssetDashboard = () => {
           ))}
         </Grid>
         <Grid container spacing={2}>
-          {filteredAssets.map((asset, index) => (
+          {sortedAssets.map((asset, index) => (
             <Grid item xs={12} md={6} lg={4} key={index} sx={{ display: 'flex' }}>
               <Card
                 sx={{

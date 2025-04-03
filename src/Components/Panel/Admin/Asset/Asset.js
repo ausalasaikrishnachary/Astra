@@ -36,6 +36,7 @@ const AssetDashboard = () => {
   const [selectedAsset, setSelectedAsset] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [counts, setCounts] = useState({});
+  const [sortBy, setSortBy] = useState("latest");
 
   useEffect(() => {
     fetch("http://175.29.21.7:83/property/")
@@ -65,8 +66,12 @@ const AssetDashboard = () => {
   };
 
   const filteredAssets = assets.filter(asset =>
-    asset.property_name.toLowerCase().includes(searchTerm.toLowerCase())
+    ["property_name", "description", "city", "state"].some(field =>
+      asset[field]?.toString().toLowerCase().includes(searchTerm.toLowerCase())
+    ) ||
+    asset.property_value?.toString().includes(searchTerm) // Search by property value
   );
+  
 
   const handleEdit = (assetId) => {
     navigate(`/a-edit-asset`, { state: { assetId } });
@@ -88,7 +93,7 @@ const AssetDashboard = () => {
         .catch((error) => console.error("Error deleting asset:", error));
     }
   };
-  
+
 
   const summaryCardsData = [
     {
@@ -104,6 +109,16 @@ const AssetDashboard = () => {
       value: counts.total_properties_available_units || "Loading...", // Dynamic value
     },
   ];
+
+
+
+  const sortedAssets = [...filteredAssets].sort((a, b) => {
+    if (sortBy === "latest") return new Date(b.date) - new Date(a.date);
+    if (sortBy === "oldest") return new Date(a.date) - new Date(b.date);
+    if (sortBy === "price-high") return b.property_value - a.property_value;
+    if (sortBy === "price-low") return a.property_value - b.property_value;
+    return 0;
+  });
 
   return (
     <>
@@ -122,9 +137,11 @@ const AssetDashboard = () => {
             {/* Search Input */}
             <Grid item xs={12} md={6} lg={7}>
               <TextField
-                placeholder="Search assets..."
+                placeholder="Search by name or value..."
                 fullWidth
                 variant="outlined"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
@@ -150,22 +167,18 @@ const AssetDashboard = () => {
                   }
                 }}
               />
+
             </Grid>
 
             {/* Filter Select */}
             <Grid item xs={12} md={3} lg={3}>
               <FormControl fullWidth>
                 <Select
-                  defaultValue="latest"
-                  sx={{
-                    borderRadius: '8px',
-                    fontSize: '15px',
-                    backgroundColor: 'white',
-                    border: '1px solid #E0E0E0'
-                  }}
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value)}
+                  sx={{ borderRadius: "8px", fontSize: "15px" }}
                 >
                   <MenuItem value="latest">Latest</MenuItem>
-                  <MenuItem value="oldest">Oldest</MenuItem>
                   <MenuItem value="price-high">Price: High to Low</MenuItem>
                   <MenuItem value="price-low">Price: Low to High</MenuItem>
                 </Select>
@@ -222,7 +235,7 @@ const AssetDashboard = () => {
           ))}
         </Grid>
         <Grid container spacing={2}>
-          {filteredAssets.map((asset, index) => (
+          {sortedAssets.map((asset, index) => (
             <Grid item xs={12} md={6} lg={4} key={index} sx={{ display: 'flex' }}>
               <Card
                 sx={{

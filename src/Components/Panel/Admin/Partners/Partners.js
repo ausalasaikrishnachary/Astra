@@ -73,6 +73,12 @@ const Tmanagement = () => {
     console.log("Delete user with ID:", userId);
   };
 
+  const filteredUsers = users.filter((user) =>
+    ["user_id", "username", "email", "phone_number", "status"].some((key) =>
+      user[key]?.toString().toLowerCase().includes(searchTerm.toLowerCase())
+    )
+  );
+
   // Count Active & Inactive Users
   const totalUsers = users.length;
   const activeUsers = users.filter((user) => user.status === "active").length;
@@ -119,31 +125,10 @@ const Tmanagement = () => {
             size="small"
             sx={{ width: "250px" }}
             onChange={(e) => setSearchTerm(e.target.value)}
-          />
-          <FormControl size="small" sx={{ width: "120px" }}>
-            <Select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
-              <MenuItem value="Latest">Latest</MenuItem>
-              <MenuItem value="Oldest">Oldest</MenuItem>
-            </Select>
-          </FormControl>
-          <Button
-            variant="outlined"
-            sx={{
-              width: "120px",
-              fontSize: "14px",
-              padding: "5px",
-              backgroundColor: "white",
-              border: "1px solid #ced4da",
-              color: "black",
-              textTransform: "none",
-              "&:hover": { backgroundColor: "#f8f9fa" },
-            }}
-          >
-            Filters
-          </Button>
+          /> 
         </Box>
 
-        <Box sx={{ marginTop: 4, padding: "50px" }}>
+        <Box >
         {loading ? (
           <CircularProgress />
         ) : error ? (
@@ -173,7 +158,7 @@ const Tmanagement = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {users.map((user) => (
+              {filteredUsers.map((user) => (
                 <TableRow
                   key={user.user_id}
                   
