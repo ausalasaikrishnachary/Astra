@@ -83,7 +83,7 @@ function ViewAdmin() {
             Add Admin
           </Button>
         </Grid>
-        <TableContainer component={Paper}>
+        <TableContainer >
           <Table>
             <TableHead>
               <TableRow>

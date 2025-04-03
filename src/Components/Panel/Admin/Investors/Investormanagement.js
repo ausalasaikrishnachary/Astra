@@ -71,11 +71,29 @@ const Tmanagement = () => {
     console.log("Edit user with ID:", userId);
   };
 
-  const handleDelete = (userId) => {
-    console.log("Delete user with ID:", userId);
+  const handleDelete = async (userId) => {
+    if (!window.confirm("Are you sure you want to delete this user?")) return;
+  
+    try {
+      const response = await fetch(`http://175.29.21.7:83/users/${userId}/`, {
+        method: "DELETE",
+      });
+  
+      if (!response.ok) throw new Error("Failed to delete user");
+  
+      // Remove deleted user from the state
+      setUsers((prevUsers) => prevUsers.filter((user) => user.user_id !== userId));
+  
+      alert("User deleted successfully!");
+    } catch (error) {
+      console.error("Error deleting user:", error);
+      alert("Failed to delete user. Please try again.");
+    }
   };
-  // Filter Users based on Search
+  
 
+
+  // Filter Users based on Search
   const filteredUsers = users.filter((user) =>
     ["user_id", "username", "email", "phone_number", "status"].some((key) =>
       user[key]?.toString().toLowerCase().includes(searchTerm.toLowerCase())
@@ -198,9 +216,9 @@ const Tmanagement = () => {
                     {user.status}
                   </TableCell>
                   <TableCell sx={{ textAlign: "center", border: "1px solid #000"  }}>
-                      <IconButton size="small" color="primary">
+                      {/* <IconButton size="small" color="primary">
                         <VisibilityIcon />
-                      </IconButton>
+                      </IconButton> */}
                       <IconButton size="small" color="primary" onClick={() => handleEdit(user.user_id)}>
                         <EditIcon />
                       </IconButton>
