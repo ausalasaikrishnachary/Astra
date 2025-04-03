@@ -543,7 +543,7 @@ import { Check, AArrowDown as Add, Move as Remove } from 'lucide-react';
 import CheckIcon from '@mui/icons-material/Check';
 import img11 from './../../../Images/gettyimage1.jpg'
 import img22 from './../../../Images/image2.jpg'
-import img33 from './../../../Images/images3.avif'
+import img33 from './../../../Images/images.jpeg'
 
 import img2 from './../../../Images/images.jpeg';
 import { faker } from '@faker-js/faker';
@@ -884,7 +884,7 @@ const Home = () => {
       </Box>
 
       <Box>
-        <Container sx={{ my: 8, py: 6, backgroundColor: "#f9fafb", borderRadius: 4 }} maxWidth="lg">
+        <Container sx={{ my: 8, py: 6, borderRadius: 4 }} maxWidth="lg">
           {/* Section Heading with underline */}
           <Box sx={{ textAlign: "center", mb: 6 }}>
             <Typography variant="h4" fontWeight="bold">

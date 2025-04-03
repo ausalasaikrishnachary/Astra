@@ -35,7 +35,7 @@ const ApiForm = () => {
     status: "",
     pan_number: "",
     aadhaar_number: "",
-    kyc_status: "",
+    kyc_status: "Pending",
     account_holder_name: "",
     bank_name: "",
     branch_name: "",

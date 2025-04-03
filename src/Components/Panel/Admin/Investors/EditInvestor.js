@@ -239,6 +239,7 @@ const EditInvestor = () => {
     bank_name: "",
     branch_name: "",
     account_number: "",
+    kyc_status:"",
     account_type: "",
     ifsc_code: "",
     nominee_reference_to: "",
