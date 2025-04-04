@@ -13,7 +13,7 @@ function EscrowAccount() {
         bank_name: "",
         branch_name: "",
         ifsc_code: "",
-        deposit_amount: "",
+        deposit_amount: "0",
         status: "",
     });
 
@@ -131,7 +131,7 @@ function EscrowAccount() {
                     </Grid>
     
                     <Grid item xs={12} sm={6} md={4}>
-                        <TextField fullWidth label="Deposit Amount" name="deposit_amount" value={formData.deposit_amount} onChange={handleChange} variant="outlined" />
+                        <TextField fullWidth label="Deposit Amount" name="deposit_amount" value={formData.deposit_amount} onChange={handleChange} variant="outlined" InputProps={{ readOnly: true }} />
                     </Grid>
     
                     <Grid item xs={12} sm={6} md={4}>

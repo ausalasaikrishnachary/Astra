@@ -306,6 +306,12 @@ function PaymentForm() {
                           "price_per_unit",
                           "total_value",
                           "remaining_amount",
+                          "escrow_id",
+                          "partner_name",
+                          "transaction_type",
+                          "no_of_units_purchased",
+                          "paid_amount",
+                          
                         ].includes(key),
                       }}
                     />

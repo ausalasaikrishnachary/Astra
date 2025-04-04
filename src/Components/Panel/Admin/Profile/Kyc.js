@@ -101,10 +101,10 @@ const ApiForm = () => {
       formDataToSend.append(key, formData[key]);
     });
 
-     // Append files ONLY if they are selected
-  if (pancard) formDataToSend.append("pan", pancard);
-  if (aadhar) formDataToSend.append("aadhaar", aadhar);
-  if (image) formDataToSend.append("image", image);
+    // Append files ONLY if they are selected
+    if (pancard) formDataToSend.append("pan", pancard);
+    if (aadhar) formDataToSend.append("aadhaar", aadhar);
+    if (image) formDataToSend.append("image", image);
 
     try {
       const response = await fetch("http://175.29.21.7:83/users/", {
@@ -125,44 +125,44 @@ const ApiForm = () => {
     }
   };
 
-    // Role Dialog States
-    const [openRoleDialog, setOpenRoleDialog] = useState(false);
-    const [newRole, setNewRole] = useState("");
+  // Role Dialog States
+  const [openRoleDialog, setOpenRoleDialog] = useState(false);
+  const [newRole, setNewRole] = useState("");
 
-    // Handle role addition popup
-    const handleOpenRoleDialog = () => setOpenRoleDialog(true);
-    const handleCloseRoleDialog = () => {
-      setNewRole("");
-      setOpenRoleDialog(false);
-    };
+  // Handle role addition popup
+  const handleOpenRoleDialog = () => setOpenRoleDialog(true);
+  const handleCloseRoleDialog = () => {
+    setNewRole("");
+    setOpenRoleDialog(false);
+  };
 
-    // Submit new role
-    const handleAddRole = async () => {
-      if (!newRole.trim()) {
-        alert("Role name cannot be empty");
-        return;
+  // Submit new role
+  const handleAddRole = async () => {
+    if (!newRole.trim()) {
+      alert("Role name cannot be empty");
+      return;
+    }
+
+    try {
+      const response = await fetch("http://175.29.21.7:83/roles/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ role_name: newRole }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to add role");
       }
-  
-      try {
-        const response = await fetch("http://175.29.21.7:83/roles/", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ role_name: newRole }),
-        });
-  
-        if (!response.ok) {
-          throw new Error("Failed to add role");
-        }
-  
-        const addedRole = await response.json();
-        setRoles([...roles, addedRole]); // Update roles list
-        handleCloseRoleDialog(); // Close dialog
-        alert("Role added successfully!");
-      } catch (error) {
-        console.error("Error adding role:", error);
-        alert("Failed to add role");
-      }
-    };
+
+      const addedRole = await response.json();
+      setRoles([...roles, addedRole]); // Update roles list
+      handleCloseRoleDialog(); // Close dialog
+      alert("Role added successfully!");
+    } catch (error) {
+      console.error("Error adding role:", error);
+      alert("Failed to add role");
+    }
+  };
 
   return (
     <>
@@ -170,7 +170,7 @@ const ApiForm = () => {
       <Grid container justifyContent="center" alignItems="center" style={{ minHeight: "100vh" }}>
         <Box style={{ padding: 20, maxWidth: 1200, margin: "auto", marginTop: 20, marginBottom: 50 }}>
 
-          <Typography variant="h4" component="h2"  gutterBottom align="center" marginBottom={5}>
+          <Typography variant="h4" component="h2" gutterBottom align="center" marginBottom={5}>
             User Registration
           </Typography>
           <form onSubmit={handleSubmit} encType="multipart/form-data">
@@ -187,17 +187,12 @@ const ApiForm = () => {
                         name={key}
                         value={formData[key]}
                         onChange={handleChange}
-                        required
                         type={key.includes("password") ? "password" : key.includes("date") ? "date" : "text"}
                         InputLabelProps={key.includes("date") ? { shrink: true } : {}}
                       />
                     </Grid>
                   )
               )}
-
-
-
-
               <Grid item xs={10} sm={3}>
                 <TextField
                   select
@@ -216,8 +211,8 @@ const ApiForm = () => {
                 </TextField>
               </Grid>
 
-             {/* Add Role Button */}
-             <Grid item xs={2} sm={1}>
+              {/* Add Role Button */}
+              <Grid item xs={2} sm={1}>
                 <IconButton color="primary" onClick={handleOpenRoleDialog}>
                   <AddIcon />
                 </IconButton>
@@ -233,6 +228,7 @@ const ApiForm = () => {
                     label="Role Name"
                     type="text"
                     fullWidth
+                    required
                     value={newRole}
                     onChange={(e) => setNewRole(e.target.value)}
                   />
@@ -272,7 +268,7 @@ const ApiForm = () => {
               <Box display="flex" justifyContent="center" alignItems="flex-start" gap={2} marginTop={3} marginBottom={3}>
                 {/* Pancard Upload */}
                 <Box display="flex" flexDirection="column" alignItems="center" mx={2}>
-                  <Button variant="outlined" component="label">
+                  <Button  variant="outlined" component="label">
                     Upload Pancard (PDF Only)
                     <input type="file" accept=".pdf" hidden onChange={(e) => handleFileChange(e, setPancard, setPancardName)} />
                   </Button>

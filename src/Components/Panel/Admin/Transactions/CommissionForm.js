@@ -244,6 +244,11 @@ function CommissionForm() {
                           "price_per_unit",
                           "total_value",
                           "remaining_amount",
+                          "transaction_id",
+                          "partner_name",
+                          "commission_percentage",
+                          "commission_amount",
+                          "property_id",
                         ].includes(key),
                       }}
                     />

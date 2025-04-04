@@ -42,8 +42,20 @@ const PropertyForm = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+  
+    if (name === "no_of_investors") {
+      const investors = parseInt(value, 10) || 0;
+      const calculatedUnits = investors; // Or multiply by X if needed
+      setFormData((prev) => ({
+        ...prev,
+        [name]: value,
+        total_units: calculatedUnits.toString(),
+      }));
+    } else {
+      setFormData((prev) => ({ ...prev, [name]: value }));
+    }
   };
+  
 
   const handleCheckboxChange = (e, key) => {
     const { value, checked } = e.target;
@@ -206,7 +218,7 @@ const PropertyForm = () => {
           </Grid>
   
           <Grid item xs={12} md={6}>
-            <TextField fullWidth label="Total Units" name="total_units" value={formData.total_units} onChange={handleChange} type="number" />
+            <TextField fullWidth label="Total Units" name="total_units" value={formData.total_units} onChange={handleChange} type="number" InputProps={{ readOnly: true }}/>
           </Grid>
   
           <Grid item xs={12} md={6}>

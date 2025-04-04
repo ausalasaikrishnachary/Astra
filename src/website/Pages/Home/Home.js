@@ -598,7 +598,7 @@ const Home = () => {
   const cards = [
     { title: "Tech Park Hub", location: "Electronic City, Bangalore", img: img11 },
     { title: "Logistics Center", location: "Navi Mumbai", img: img22 },
-    { title: "Manufacturing Unit", location: "Chennai Industrial Area", img: img33 }
+    { title: "Manufacturing Unit", location: "Chennai Industrial Area", img: "https://eu-images.contentstack.com/v3/assets/blt8eb3cdfc1fce5194/blt29d49d9dc2394b9c/66210a507963b40fc4ceec07/google_20data_20center_20cooling_20pipes.jpg?width=1280&auto=webp&quality=95&format=jpg&disable=upscale" }
   ];
 
   const investmentOptions = [

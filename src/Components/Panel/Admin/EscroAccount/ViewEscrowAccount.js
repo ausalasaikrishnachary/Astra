@@ -101,9 +101,9 @@ function ViewEscrowAccount() {
                   <TableCell sx={{ textAlign: "center", border: "1px solid #000" }}>{new Date(account.created_at).toLocaleDateString('en-IN')}</TableCell>
                   <TableCell sx={{ textAlign: "center", border: "1px solid #000" }}>{new Date(account.updated_at).toLocaleDateString('en-IN')}</TableCell>
                   <TableCell sx={{ textAlign: "center", border: "1px solid #000" }}>
-                    <IconButton size="small" color="primary">
+                    {/* <IconButton size="small" color="primary">
                       <EditIcon />
-                    </IconButton>
+                    </IconButton> */}
                     <IconButton size="small" color="error">
                       <DeleteIcon />
                     </IconButton>

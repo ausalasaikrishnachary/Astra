@@ -168,6 +168,24 @@ const InvestmentForm = () => {
           partner_name: selectedPartner ? selectedPartner.username : "", // Assign partner_name
         };
       }
+
+      // Clear dependent fields if no_of_units_to_be_purchased is cleared
+    if (name === "no_of_units_to_be_purchased") {
+      if (value === "") {
+        return {
+          ...prevData,
+          no_of_units_to_be_purchased: "",
+          total_value: "",
+          advance_payment: "",
+        };
+      } else {
+        return {
+          ...prevData,
+          [name]: value,
+        };
+      }
+    }
+
   
       return {
         ...prevData,
@@ -225,27 +243,6 @@ const InvestmentForm = () => {
         const result = await response.json();
         alert("Success: Transaction submitted successfully!");
         console.log("Transaction Success:", result);
-
-        // Step 2: Submit advance payment
-        // const advancePaymentData = {
-        //   user_id: result.investor || 1, // Replace with dynamic user ID if available
-        //   property_id: propertyId,
-        //   escrow_id: formData.escrow_id || "", // Default or fetched escrow ID
-        //   paid_amount: formData.advance_payment || "0.00",
-        //   pending_amount: (Number(formData.total_value) - Number(formData.advance_payment)).toFixed(2),
-        // };
-
-        // const advancePaymentResponse = await fetch("http://175.29.21.7:83/advance/payments/", {
-        //   method: "POST",
-        //   headers: { "Content-Type": "application/json" },
-        //   body: JSON.stringify(advancePaymentData),
-        // });
-
-        // if (advancePaymentResponse.ok) {
-        //   console.log("Advance Payment Successfully Stored:", await advancePaymentResponse.json());
-        // } else {
-        //   console.error("Failed to store advance payment", await advancePaymentResponse.json());
-        // }
 
         // Step 3: Update available units
         if (propertyId) {
@@ -335,7 +332,7 @@ const InvestmentForm = () => {
                 >
                   {partners.map((partner) => (
                     <MenuItem key={partner.user_id} value={partner.user_id}>
-                      {partner.username}
+                      {partner.username}-{partner.user_id}
                     </MenuItem>
                   ))}
                 </Select>
@@ -366,7 +363,7 @@ const InvestmentForm = () => {
                       onChange={handleChange}
                       variant="outlined"
                       InputProps={{
-                        readOnly: ["property_name", "property_type", "property_value", "total_units", "available_units", "price_per_unit", "total_value"].includes(
+                        readOnly: ["property_name", "escrow_id", "total_value", "advance_payment", "deposit_amount", "no_of_investors", "property_type", "property_value", "total_units", "available_units", "price_per_unit", "total_value"].includes(
                           key
                         ),
                       }}
