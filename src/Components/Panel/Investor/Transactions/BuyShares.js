@@ -37,6 +37,11 @@ const BuyShares = () => {
   const navigate = useNavigate();
   const [remainingAmount, setRemainingAmount] = useState([]);
 
+  const [filterDate, setFilterDate] = useState('');
+  const [filterAmount, setFilterAmount] = useState('');
+  const [filterPaymentType, setFilterPaymentType] = useState('');
+
+
   useEffect(() => {
     const fetchTransactions = async () => {
       try {
@@ -160,12 +165,26 @@ const BuyShares = () => {
     navigate(`/i-payment-form/${transactionId}`);
   };
 
-  // Filter transactions based on search query
-  const filteredTransactions = transactions.filter(
-    (transaction) =>
+  const filteredTransactions = transactions.filter((transaction) => {
+    const matchSearch =
       transaction.property_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      transaction.transaction_type.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+      transaction.transaction_type.toLowerCase().includes(searchQuery.toLowerCase());
+
+    const matchDate = filterDate
+      ? new Date(transaction.created_at).toISOString().slice(0, 10) === filterDate
+      : true;
+
+    const matchAmount = filterAmount
+      ? parseFloat(transaction.total_paid_amount) === parseFloat(filterAmount)
+      : true;
+
+    const matchPaymentType = filterPaymentType
+      ? transaction.payment_type === filterPaymentType
+      : true;
+
+    return matchSearch && matchDate && matchAmount && matchPaymentType;
+  });
+
 
   // Sort the transactions
   const sortedTransactions = [...filteredTransactions].sort((a, b) => {
@@ -184,105 +203,157 @@ const BuyShares = () => {
   );
 
   return (
-<>
-  <InvestorHeader />
-  <Box sx={{ marginTop: 4, padding: '50px' }}>
-    {loading ? (
-      <CircularProgress />
-    ) : (
-      <>
-        <Table sx={{ border: '1px solid black', width: '100%' }}>
-          <TableHead>
-            <TableRow>
-              <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>
-                Property Name
-              </TableCell>
-              <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>
-                Property Value
-              </TableCell>
-              <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>
-                Purchased Units
-              </TableCell>
-              <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>
-                Payment Type
-              </TableCell>
-              <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>
-                Total Paid Amount
-              </TableCell>
-              <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>
-                Remaining Amount
-              </TableCell>
-              <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>
-                Transaction Date
-              </TableCell>
-              <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>
-                Action
-              </TableCell>
-            </TableRow>
-          </TableHead>
+    <>
+      <InvestorHeader />
+      <Box sx={{ marginTop: 4, padding: '50px' }}>
+        <Grid container spacing={2} mb={3}>
+          <Grid item xs={12} sm={4}>
+            <TextField
+              fullWidth
+              type="date"
+              label="Filter by Transaction Date"
+              InputLabelProps={{ shrink: true }}
+              value={filterDate}
+              onChange={(e) => setFilterDate(e.target.value)}
+            />
+          </Grid>
+          <Grid item xs={12} sm={4}>
+            <TextField
+              fullWidth
+              label="Filter by Total Paid Amount"
+              type="number"
+              value={filterAmount}
+              onChange={(e) => setFilterAmount(e.target.value)}
+            />
+          </Grid>
+          <Grid item xs={12} sm={4}>
+            <FormControl fullWidth>
+              <InputLabel>Payment Type</InputLabel>
+              <Select
+                value={filterPaymentType}
+                onChange={(e) => setFilterPaymentType(e.target.value)}
+                label="Payment Type"
+              >
+                <MenuItem value="">All</MenuItem>
+                <MenuItem value="Full-Payment">Full-Payment</MenuItem>
+                <MenuItem value="Advance-Payment">Advance-Payment</MenuItem>
+              </Select>
+            </FormControl>
+          </Grid>
+          <Grid item xs={12} sm={12}>
+            <Box display="flex" justifyContent="flex-end">
+              <Button
+                variant="outlined"
+                onClick={() => {
+                  setFilterDate('');
+                  setFilterAmount('');
+                  setFilterPaymentType('');
+                  setSearchQuery('');
+                }}
+              >
+                Clear Filters
+              </Button>
+            </Box>
+          </Grid>
 
-          <TableBody>
-            {paginatedTransactions.length > 0 ? (
-              paginatedTransactions.map((transaction) => (
-                <TableRow
-                  key={transaction.property_id}
-                  onClick={() => navigate(`/i-transaction-details?property_id=${transaction.property_id}`)}
-                  sx={{ cursor: 'pointer', '&:hover': { backgroundColor: '#f5f5f5' } }}
-                >
-                  <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>
-                    {transaction.property_name}
+        </Grid>
+
+        {loading ? (
+          <CircularProgress />
+        ) : (
+          <>
+            <Table sx={{ border: '1px solid black', width: '100%' }}>
+              <TableHead>
+                <TableRow>
+                  <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>
+                    Property Name
                   </TableCell>
-                  <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>
-                    {transaction.property_value}
+                  <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>
+                    Property Value
                   </TableCell>
-                  <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>
-                    {transaction.purchased_units}
+                  <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>
+                    Purchased Units
                   </TableCell>
-                  <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>
-                    {transaction.payment_type}
+                  <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>
+                    Payment Type
                   </TableCell>
-                  <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>
-                    {transaction.total_paid_amount}
+                  <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>
+                    Total Paid Amount
                   </TableCell>
-                  <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>
-                    {transaction.remaining_amount}
+                  <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>
+                    Remaining Amount
                   </TableCell>
-                  <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>
-                    {new Date(transaction.created_at).toLocaleDateString('en-IN')}
+                  <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>
+                    Transaction Date
                   </TableCell>
-                  <TableCell
-                    sx={{ textAlign: 'center', border: '1px solid #000' }}
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        navigate(
-                          `/i-payment-form?property_id=${transaction.property_id}&transaction_id=${transaction.transaction_id}`
-                        );
-                      }}
-                      disabled={transaction.remaining_amount <= 0}
-                    >
-                      Pay Remaining
-                    </Button>
+                  <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>
+                    Action
                   </TableCell>
                 </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell colSpan={8} sx={{ textAlign: 'center', border: '1px solid #000', padding: 2 }}>
-                  No Data Found
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </>
-    )}
-  </Box>
-</>
+              </TableHead>
+
+              <TableBody>
+                {paginatedTransactions.length > 0 ? (
+                  paginatedTransactions.map((transaction) => (
+                    <TableRow
+                      key={transaction.property_id}
+                      onClick={() => navigate(`/i-transaction-details?property_id=${transaction.property_id}`)}
+                      sx={{ cursor: 'pointer', '&:hover': { backgroundColor: '#f5f5f5' } }}
+                    >
+                      <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>
+                        {transaction.property_name}
+                      </TableCell>
+                      <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>
+                        {transaction.property_value}
+                      </TableCell>
+                      <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>
+                        {transaction.purchased_units}
+                      </TableCell>
+                      <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>
+                        {transaction.payment_type}
+                      </TableCell>
+                      <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>
+                        {transaction.total_paid_amount}
+                      </TableCell>
+                      <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>
+                        {transaction.remaining_amount}
+                      </TableCell>
+                      <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>
+                        {new Date(transaction.created_at).toLocaleDateString('en-IN')}
+                      </TableCell>
+                      <TableCell
+                        sx={{ textAlign: 'center', border: '1px solid #000' }}
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            navigate(
+                              `/i-payment-form?property_id=${transaction.property_id}&transaction_id=${transaction.transaction_id}`
+                            );
+                          }}
+                          disabled={transaction.remaining_amount <= 0}
+                        >
+                          Pay Remaining
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))
+                ) : (
+                  <TableRow>
+                    <TableCell colSpan={8} sx={{ textAlign: 'center', border: '1px solid #000', padding: 2 }}>
+                      No Data Found
+                    </TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </>
+        )}
+      </Box>
+    </>
 
 
   );

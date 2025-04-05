@@ -12,6 +12,7 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
+  FormControl
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import Header from "../../../Shared/Navbar/Navbar";
@@ -265,8 +266,8 @@ const ApiForm = () => {
                 </TextField>
               </Grid>
 
-              <Box display="flex" justifyContent="center" alignItems="flex-start" gap={2} marginTop={3} marginBottom={3}>
-                {/* Pancard Upload */}
+              {/* <Box display="flex" justifyContent="center" alignItems="flex-start" gap={2} marginTop={3} marginBottom={3}>
+                
                 <Box display="flex" flexDirection="column" alignItems="center" mx={2}>
                   <Button  variant="outlined" component="label">
                     Upload Pancard (PDF Only)
@@ -275,7 +276,7 @@ const ApiForm = () => {
                   {pancardName && <Typography variant="body2" color="textSecondary">{pancardName}</Typography>}
                 </Box>
 
-                {/* Aadhar Upload */}
+               
                 <Box display="flex" flexDirection="column" alignItems="center" mx={2}>
                   <Button variant="outlined" component="label">
                     Upload Aadhar Card (PDF Only)
@@ -284,7 +285,7 @@ const ApiForm = () => {
                   {aadharName && <Typography variant="body2" color="textSecondary">{aadharName}</Typography>}
                 </Box>
 
-                {/* Image Upload */}
+              
                 <Box display="flex" flexDirection="column" alignItems="center" mx={2}>
                   <Button variant="outlined" component="label">
                     Upload Image
@@ -292,7 +293,65 @@ const ApiForm = () => {
                   </Button>
                   {imageName && <Typography variant="body2" color="textSecondary">{imageName}</Typography>}
                 </Box>
+              </Box> */}
+
+              <Box  display="flex" justifyContent="center" alignItems="flex-start" gap={2} marginTop={3} marginBottom={3}>
+                {/* Pancard Upload */}
+                <FormControl fullWidth>
+                  <TextField
+                    fullWidth
+                    label="Pan Card"
+                    type="file"
+                    onChange={(e) => handleFileChange(e, setPancard, setPancardName)}
+                    inputProps={{ accept: ".pdf" }}
+                    InputLabelProps={{ shrink: true }}
+                    required
+                  />
+                  {pancardName && (
+                    <Typography variant="body2" color="textSecondary" sx={{ mt: 1 }}>
+                      {pancardName}
+                    </Typography>
+                  )}
+                </FormControl>
+
+                {/* Aadhar Upload */}
+                <FormControl fullWidth>
+                  <TextField
+                    fullWidth
+                    label="Aadhar Card"
+                    type="file"
+                    onChange={(e) => handleFileChange(e, setAadhar, setAadharName)}
+                    inputProps={{ accept: ".pdf" }}
+                    InputLabelProps={{ shrink: true }}
+                    required
+                  />
+                  {aadharName && (
+                    <Typography variant="body2" color="textSecondary" sx={{ mt: 1 }}>
+                      {aadharName}
+                    </Typography>
+                  )}
+                </FormControl>
+
+                {/* Image Upload */}
+                <FormControl fullWidth>
+                  <TextField
+                    fullWidth
+                    label="Image"
+                    type="file"
+                    onChange={(e) => handleFileChange(e, setImage, setImageName)}
+                    inputProps={{ accept: "image/*" }}
+                    InputLabelProps={{ shrink: true }}
+                   required
+                  />
+                  {imageName && (
+                    <Typography variant="body2" color="textSecondary" sx={{ mt: 1 }}>
+                      {imageName}
+                    </Typography>
+                  )}
+                </FormControl>
               </Box>
+
+
             </Grid>
             <Grid container justifyContent="center" style={{ marginTop: 20 }}>
               <Button type="submit" variant="contained" color="primary" size="small">

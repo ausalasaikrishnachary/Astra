@@ -157,7 +157,7 @@ const EditPartner = () => {
               {Object.keys(formData)
                 .filter(
                   (key) =>
-                    !["user_id", "created_at", "updated_at", "password", "role_ids", "roles", "image", "pan", "aadhaar", "referral_id"].includes(
+                    !["user_id", "created_at", "updated_at", "password", "role_ids", "roles", "image", "pan", "aadhaar", ].includes(
                       key
                     )
                 )

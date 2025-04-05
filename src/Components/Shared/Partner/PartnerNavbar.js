@@ -295,8 +295,8 @@ export default function PartnerHeader() {
                 </Select>
               </FormControl> */}
               <Typography variant="h6">
-                  {username ? `${username} (Partner)` : "Partner"}
-                </Typography>
+                {username ? `${username} (Partner)` : "Partner"}
+              </Typography>
               <Avatar
                 onClick={handleAvatarClick}
                 sx={{ width: 40, height: 40, cursor: 'pointer' }}
@@ -335,7 +335,7 @@ export default function PartnerHeader() {
         >
           Profile
         </MenuItem>
-        <MenuItem
+        {/* <MenuItem
           onClick={() => {
             handleProfileMenuClose();
             navigate('/p-profiledetails');
@@ -343,7 +343,7 @@ export default function PartnerHeader() {
           sx={{ fontWeight: 'bold' }}
         >
           KYC
-        </MenuItem>
+        </MenuItem> */}
         <MenuItem
           onClick={() => {
             localStorage.removeItem("user_id");

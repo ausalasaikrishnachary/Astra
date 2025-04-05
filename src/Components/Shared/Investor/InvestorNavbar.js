@@ -345,8 +345,8 @@ export default function InvestorHeader() {
               </Select>
             </FormControl> */}
               <Typography variant="h6">
-                  {username ? `${username} (Investor)` : "Investor"}
-                </Typography>
+                {username ? `${username} (Investor)` : "Investor"}
+              </Typography>
               <Avatar
                 onClick={handleAvatarClick}
                 sx={{ width: 40, height: 40, cursor: 'pointer' }}
@@ -385,7 +385,7 @@ export default function InvestorHeader() {
         >
           Profile
         </MenuItem>
-        <MenuItem
+        {/* <MenuItem
           onClick={() => {
             handleProfileMenuClose();
             navigate('/i-profiledetails');
@@ -393,7 +393,7 @@ export default function InvestorHeader() {
           sx={{ fontWeight: 'bold', fontSize: '16px' }}
         >
           KYC
-        </MenuItem>
+        </MenuItem> */}
         <MenuItem
           onClick={() => {
             localStorage.removeItem("user_id");

@@ -217,9 +217,9 @@ const Tmanagement = () => {
           <TableCell sx={{ fontWeight: "bold", textAlign: "center", border: "1px solid #000" }}>
             Status
           </TableCell>
-          <TableCell sx={{ fontWeight: "bold", textAlign: "center", border: "1px solid #000" }}>
+          {/* <TableCell sx={{ fontWeight: "bold", textAlign: "center", border: "1px solid #000" }}>
             Actions
-          </TableCell>
+          </TableCell> */}
         </TableRow>
       </TableHead>
       <TableBody>
@@ -242,7 +242,7 @@ const Tmanagement = () => {
               >
                 {user.status}
               </TableCell>
-              <TableCell sx={{ textAlign: "center", border: "1px solid #000" }}>
+              {/* <TableCell sx={{ textAlign: "center", border: "1px solid #000" }}>
                 <IconButton size="small" color="primary">
                   <VisibilityIcon />
                 </IconButton>
@@ -252,7 +252,7 @@ const Tmanagement = () => {
                 <IconButton size="small" color="error" onClick={() => handleDelete(user.user_id)}>
                   <DeleteIcon />
                 </IconButton>
-              </TableCell>
+              </TableCell> */}
             </TableRow>
           ))
         ) : (
