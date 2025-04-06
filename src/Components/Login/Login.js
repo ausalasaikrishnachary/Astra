@@ -156,6 +156,7 @@ const Login = () => {
         backgroundImage: "url(https://cdn.pixabay.com/photo/2018/11/22/23/57/london-3833039_1280.jpg)",
         backgroundSize: "cover",
         backgroundPosition: "center",
+        marginTop:"-85px"
       }}
     >
       <Paper elevation={4} sx={{ display: "flex", width: "90%", maxWidth: 900, borderRadius: 2, overflow: "hidden" }}>
