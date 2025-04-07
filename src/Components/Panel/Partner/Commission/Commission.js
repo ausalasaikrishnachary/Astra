@@ -98,7 +98,7 @@ const Commission = () => {
             Transaction ID
           </TableCell>
           <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>
-            Proverty Value
+            Property Value
           </TableCell>
           <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>
             Commission Percentage

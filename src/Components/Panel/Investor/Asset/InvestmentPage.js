@@ -20,8 +20,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 const InvestmentForm = () => {
   const [formData, setFormData] = useState({
     investor: "",
-    partner_id:"",
-    partner_name:"",
+    partner_id: "",
+    partner_name: "",
     escrow_id: "",
     property_name: "",
     property_type: "",
@@ -37,15 +37,22 @@ const InvestmentForm = () => {
     investment_period: "",
     total_value: "",
     advance_payment: "",
-    total_paid_amount:""
+    total_paid_amount: ""
   });
   const navigate = useNavigate();
 
   const hiddenFields = [
     "investor",
     "agent",
+    "property_type",
     "partner_id",
+    "partner_name",
+    "escrow_id",
+    "no_of_investors",
+    "total_units",
+    "available_units",
     "transaction_type",
+    "deposit_amount",
     "transaction_reference",
     "commission_paid_date",
     "approval_date",
@@ -74,7 +81,7 @@ const InvestmentForm = () => {
   console.log("Extracted Property ID:", propertyId);
   const [partners, setPartners] = useState([]);
 
-   // Fetch Partners (Role: Partner)
+  // Fetch Partners (Role: Partner)
   useEffect(() => {
     fetch("http://175.29.21.7:83/users/role/Partner/")
       .then((response) => response.json())
@@ -158,7 +165,7 @@ const InvestmentForm = () => {
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-  
+
     setFormData((prevData) => {
       if (name === "partner_id") {
         const selectedPartner = partners.find((partner) => partner.user_id === value);
@@ -170,30 +177,30 @@ const InvestmentForm = () => {
       }
 
       // Clear dependent fields if no_of_units_to_be_purchased is cleared
-    if (name === "no_of_units_to_be_purchased") {
-      if (value === "") {
-        return {
-          ...prevData,
-          no_of_units_to_be_purchased: "",
-          total_value: "",
-          advance_payment: "",
-        };
-      } else {
-        return {
-          ...prevData,
-          [name]: value,
-        };
+      if (name === "no_of_units_to_be_purchased") {
+        if (value === "") {
+          return {
+            ...prevData,
+            no_of_units_to_be_purchased: "",
+            total_value: "",
+            advance_payment: "",
+          };
+        } else {
+          return {
+            ...prevData,
+            [name]: value,
+          };
+        }
       }
-    }
 
-  
+
       return {
         ...prevData,
         [name]: type === "checkbox" ? checked : value,
       };
     });
   };
-  
+
 
   // Form submission handler
   const handleSubmit = async (e) => {
@@ -204,8 +211,8 @@ const InvestmentForm = () => {
     const sanitizedData = {
       ...formData,
       property_id: propertyId,
-      partner_name:formData.partner_name || null,
-      partner_id:Number(formData.partner_id) || 0,
+      partner_name: formData.partner_name || null,
+      partner_id: Number(formData.partner_id) || 0,
       available_units: Number(formData.available_units) || 0,
       price_per_unit: Number(formData.price_per_unit) || 0,
       property_value: Number(formData.property_value) || 0,
@@ -222,13 +229,13 @@ const InvestmentForm = () => {
       commission_paid_date: formData.commission_paid_date || null,
       no_of_investors: formData.no_of_investors || null,
       user_id: userId || null, // Replace with dynamic user ID if available
-      user_name:userName || null,
+      user_name: userName || null,
       escrow_id: formData.escrow_id || "", // Default or fetched escrow ID
       paid_amount: formData.advance_payment || "0.00",
-      total_paid_amount:formData.advance_payment || "0.00",
+      total_paid_amount: formData.advance_payment || "0.00",
       remaining_amount: (Number(formData.total_value) - Number(formData.advance_payment)).toFixed(2),
-      payment_type:"Advance-Payment",
-      payment_method:"Cash",
+      payment_type: "Advance-Payment",
+      payment_method: "Cash",
     };
 
     try {
@@ -304,7 +311,28 @@ const InvestmentForm = () => {
   };
 
 
-
+  const fieldLabels = {
+    property_name: "Property Name",
+    property_type: "Property Type",
+    property_value: "Property Value (₹)",
+    no_of_units_to_be_purchased: "Units to Buy",
+    investment_period: "Investment Period (Months)",
+    price_per_unit: "Price per Unit (₹)",
+    total_value: "Total Investment (₹)",
+    advance_payment: "Token Amount (₹)",
+    total_paid_amount: "Total Paid Amount (₹)",
+    available_units: "Available Units",
+    total_units: "Total Units",
+    no_of_investors: "No. of Investors",
+    partner_id: "Partner",
+    partner_name: "Partner Name",
+    escrow_id: "Escrow ID",
+    agent_name: "Agent Name",
+    transaction_type: "Transaction Type",
+    agent: "Agent ID",
+    // Add more mappings as needed...
+  };
+  
 
 
 
@@ -322,8 +350,8 @@ const InvestmentForm = () => {
               <FormControl fullWidth>
                 <InputLabel id="partner_id">Select Partner</InputLabel>
                 <Select
-                labelId="partner_id"
-                id="partner_id"
+                  labelId="partner_id"
+                  id="partner_id"
                   name="partner_id"
                   value={formData.partner_id}
                   onChange={handleChange}
@@ -357,7 +385,7 @@ const InvestmentForm = () => {
                   ) : (
                     <TextField
                       fullWidth
-                      label={key.replace(/_/g, " ")}
+                      label={fieldLabels[key] || key.replace(/_/g, " ")}
                       name={key}
                       value={formData[key] || ""}
                       onChange={handleChange}

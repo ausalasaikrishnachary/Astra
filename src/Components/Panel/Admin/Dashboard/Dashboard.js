@@ -58,7 +58,7 @@ function Dashboard() {
 
   // Data and options for the pie chart (Distribution)
   const distributionData = {
-    labels: ['Apartments', 'Villas', 'Commercial Spaces'],
+    labels: ['Industry 1', 'Industry 1', 'Industry 1'],
     datasets: [
       {
         data: [45, 30, 25],
@@ -179,7 +179,7 @@ function Dashboard() {
                 }}
               >
                 <Typography sx={{ fontSize: '16px', color: '#666', mb: 2 }}>
-                  Luxury apartment (ABC) Performance
+                  Performance
                 </Typography>
                 <Box sx={{ height: 300 }}>
                   <Line data={priceData} options={priceOptions} />
@@ -199,7 +199,7 @@ function Dashboard() {
                 }}
               >
                 <Typography sx={{ fontSize: '16px', color: '#666', mb: 2 }}>
-                  Commercial Space (ABC) Performance
+                  Performance
                 </Typography>
                 <Box sx={{ height: 300 }}>
                   <Pie data={distributionData} options={distributionOptions} />

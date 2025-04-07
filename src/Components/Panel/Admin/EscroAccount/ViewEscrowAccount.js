@@ -94,7 +94,7 @@ function ViewEscrowAccount() {
                   <TableCell sx={{ textAlign: "center", border: "1px solid #000" }}>{account.ifsc_code}</TableCell>
                   <TableCell sx={{ textAlign: "center", border: "1px solid #000" }}>{account.deposit_amount}</TableCell>
                   <TableCell
-                    sx={{ textAlign: "center", border: "1px solid #000", color: account.status === "active" ? "green" : "red" }}
+                    sx={{ textAlign: "center", border: "1px solid #000", color: account.status === "Active" ? "green" : "red" }}
                   >
                     {account.status}
                   </TableCell>

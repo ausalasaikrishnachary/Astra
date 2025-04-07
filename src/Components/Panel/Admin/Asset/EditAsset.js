@@ -19,7 +19,7 @@ function EditAsset() {
   const [formData, setFormData] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [imageFile, setImageFile] = useState(null);
+  const [imageFile, setImageFile] = useState();
 
   useEffect(() => {
     const fetchAssetDetails = async () => {
@@ -43,45 +43,59 @@ function EditAsset() {
   };
 
   const handleFileChange = (e) => {
-    setImageFile(e.target.files[0]);
+    if (e.target.files && e.target.files[0]) {
+      setImageFile(e.target.files[0]);
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError("");
-
-    // Prepare FormData to include both text data and the image file
+  
     const formDataPayload = new FormData();
-
-    // Append all asset data to FormData
-    Object.keys(formData).forEach((key) => {
-      if (formData[key]) {
-        formDataPayload.append(key, formData[key]);
+  
+    Object.entries(formData).forEach(([key, value]) => {
+      // Skip sending property_image as string (we'll handle that below)
+      if (key === "property_image") return;
+  
+      // Skip empty values if necessary
+      if (value !== null && value !== undefined && value !== "") {
+        formDataPayload.append(key, value);
       }
     });
-
-    // Append image if a new one is selected
+  
+    // Only append property_image if it's a new file
     if (imageFile) {
       formDataPayload.append("property_image", imageFile);
     }
-
+  
     try {
       await axios.put(
         `http://175.29.21.7:83/property/${assetId}/`,
         formDataPayload,
-        { headers: { "Content-Type": "multipart/form-data" } }
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
       );
-      navigate("/a-asset"); // Redirect on success
+      navigate("/a-asset"); // Success
     } catch (err) {
       console.error("Error Response:", err.response?.data || err.message);
-      setError(err.response?.data?.message || "Failed to update asset.");
+      setError(
+        err.response?.data?.message ||
+          JSON.stringify(err.response?.data) ||
+          "Failed to update asset."
+      );
+    } finally {
+      setLoading(false);
     }
-
-    setLoading(false);
   };
+  
+  
 
-  const excludedFields = ["created_at", "updated_at", "sold_units","property_image",];
+  const excludedFields = ["created_at", "updated_at", "sold_units", "property_image",];
 
   return (
     <>
@@ -112,24 +126,31 @@ function EditAsset() {
                     />
                   </Grid>
                 ))}
-              <Grid item xs={12} md={4} >
+              <Grid item xs={12} md={4}>
                 <FormControl fullWidth>
                   <TextField
                     fullWidth
                     label="Property Image"
                     type="file"
-                    name="Property Image"
+                    name="property_image" // ✅ This should match the backend's expected key
                     onChange={handleFileChange}
                     inputProps={{
-                      accept: "image" ? "image/*" : ".pdf,.jpg,.jpeg,.png",
+                      accept: "image/*",
                     }}
                     InputLabelProps={{ shrink: true }}
                   />
-                  <a href={`http://175.29.21.7:83${formData.property_image}`} target="_blank" rel="noopener noreferrer">
-                    View Image
-                  </a>
+                  {formData.property_image && (
+                    <a
+                      href={`http://175.29.21.7:83${formData.property_image}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      View Image
+                    </a>
+                  )}
                 </FormControl>
               </Grid>
+
             </Grid>
             <Button sx={{ mt: 3 }} type="submit" variant="contained" color="primary">
               Update Asset
