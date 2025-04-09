@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 import { useLocation, useNavigate  } from "react-router-dom";
 import Header from "../../../Shared/Navbar/Navbar";
+import Swal from 'sweetalert2';
 
 function CommissionForm() {
   const navigate = useNavigate();
@@ -196,11 +197,20 @@ function CommissionForm() {
 
       console.log("Commission data saved successfully");
 
-      alert("commission data saved successfully!");
+      
+    await Swal.fire({
+      icon: 'success',
+      title: 'Success',
+      text: 'Commission data saved successfully!',
+    });
       navigate("/a-transactionmoniter")
     } catch (error) {
       console.error("Error:", error);
-      alert("An error occurred, please try again.");
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'An error occurred, please try again.',
+      });
     }
   };
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Container, Grid, Card, CardContent, Typography, Box } from '@mui/material';
 import { Line, Pie } from 'react-chartjs-2';
 import {
@@ -27,82 +27,76 @@ ChartJS.register(
 );
 
 function Dashboard() {
-  // Data and options for the line chart (Price Trend)
-  const priceData = {
-    labels: ['2023-01', '2023-02', '2023-03', '2023-04'],
-    datasets: [
-      {
-        label: 'Price Trend',
-        data: [200000, 210000, 220000, 240000],
-        borderColor: '#ffa500',
-        backgroundColor: 'rgba(255, 165, 0, 0.1)',
-        fill: true,
-        tension: 0.4,
-      },
-    ],
-  };
+      const [counts, setCounts] = useState({});
+  
+      useEffect(() => {
+        // Fetch the counts data
+        fetch("http://175.29.21.7:83/counts/")
+          .then(response => response.json())
+          .then(data => setCounts(data))
+          .catch(error => console.error("Error fetching counts:", error));
+      }, []);
 
-  const priceOptions = {
-    responsive: true,
-    plugins: {
-      legend: {
-        position: 'top',
-      },
-    },
-    scales: {
-      y: {
-        beginAtZero: false,
-      },
-    },
-  };
-
-  // Data and options for the pie chart (Distribution)
-  const distributionData = {
-    labels: ['Industry 1', 'Industry 1', 'Industry 1'],
-    datasets: [
-      {
-        data: [45, 30, 25],
-        backgroundColor: ['#0066cc', '#ffa500', '#00cc88'],
-      },
-    ],
-  };
-
-  const distributionOptions = {
-    responsive: true,
-    plugins: {
-      legend: {
-        position: 'top',
-      },
-    },
-  };
-
+    const priceData = {
+        labels: ['2023-01', '2023-02', '2023-03', '2023-04'],
+        datasets: [
+          {
+            label: 'Price Trend',
+            data: [200000, 210000, 220000, 240000],
+            borderColor: '#ffa500',
+            backgroundColor: 'rgba(255, 165, 0, 0.1)',
+            fill: true,
+            tension: 0.4,
+          },
+        ],
+      };
+    
+      const priceOptions = {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'top',
+          },
+        },
+        scales: {
+          y: {
+            beginAtZero: false,
+          },
+        },
+      };
+    
+      // Data and options for the pie chart (Distribution)
+      const distributionData = {
+        labels: ['Industry 1', 'Industry 2', 'Industry 3'],
+        datasets: [
+          {
+            data: [45, 30, 25],
+            backgroundColor: ['#0066cc', '#ffa500', '#00cc88'],
+          },
+        ],
+      };
+    
+      const distributionOptions = {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'top',
+          },
+        },
+      };
+    
   const summaryCardsData = [
     {
-      title: "Total Portfolio Value",
-      value: "4.5 Cr",
-      // subtext: "Last 7 Days",
+      title: "Total Assets",
+      value: counts.total_properties || "Loading...", // Dynamic value
     },
     {
-      title: "Total Performance",
-      value: "22.30%",
-      // subtext: "+2.3% from last week",
+      title: "Total Value",
+      value: counts.total_properties_value ? `₹${counts.total_properties_value}` : "Loading...", // Dynamic value
     },
     {
-      title: "Total amount Invested",
-      value: "10.5L",
-      // subtext: "+12% increase",
-    },
-    ,
-    {
-      title: "Number of Assets",
-      value: "2",
-      // subtext: "+12% increase",
-    },
-    ,
-    {
-      title: "Total Interest",
-      value: "10%",
-      // subtext: "+12% increase",
+      title: "Active Units",
+      value: counts.total_properties_available_units || "Loading...", // Dynamic value
     },
   ];
 

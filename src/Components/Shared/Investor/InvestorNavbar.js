@@ -37,6 +37,7 @@ export default function InvestorHeader() {
     { label: 'Buy Assets', path: '/i-asset' },
     { label: 'Transactions', path: '/i-buyunits' },
     { label: 'Purchased Assets', path: '/i-purchasedasset' },
+    // { label: 'KYC', path: '/i-profiledetails' },
   ];
 
   // Responsive helper.

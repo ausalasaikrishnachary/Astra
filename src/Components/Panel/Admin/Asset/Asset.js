@@ -95,20 +95,20 @@ const AssetDashboard = () => {
   };
 
 
-  const summaryCardsData = [
-    {
-      title: "Total Assets",
-      value: counts.total_properties || "Loading...", // Dynamic value
-    },
-    {
-      title: "Total Value",
-      value: counts.total_properties_value ? `₹${counts.total_properties_value}` : "Loading...", // Dynamic value
-    },
-    {
-      title: "Active Units",
-      value: counts.total_properties_available_units || "Loading...", // Dynamic value
-    },
-  ];
+  // const summaryCardsData = [
+  //   {
+  //     title: "Total Assets",
+  //     value: counts.total_properties || "Loading...", // Dynamic value
+  //   },
+  //   {
+  //     title: "Total Value",
+  //     value: counts.total_properties_value ? `₹${counts.total_properties_value}` : "Loading...", // Dynamic value
+  //   },
+  //   {
+  //     title: "Active Units",
+  //     value: counts.total_properties_available_units || "Loading...", // Dynamic value
+  //   },
+  // ];
 
 
 
@@ -209,7 +209,7 @@ const AssetDashboard = () => {
           </Grid>
         </Box>
         {/* Stats Cards */}
-        <Grid container spacing={2} sx={{ mb: 4 }}>
+        {/* <Grid container spacing={2} sx={{ mb: 4 }}>
           {summaryCardsData.map((card, index) => (
             <Grid item xs={12} md={4} key={index}>
               <Card
@@ -233,7 +233,7 @@ const AssetDashboard = () => {
               </Card>
             </Grid>
           ))}
-        </Grid>
+        </Grid> */}
         <Grid container spacing={2}>
           {sortedAssets.map((asset, index) => (
             <Grid item xs={12} md={6} lg={4} key={index} sx={{ display: 'flex' }}>

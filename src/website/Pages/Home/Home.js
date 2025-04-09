@@ -796,7 +796,7 @@ const Home = () => {
   {cards.map((card, index) => (
     <Grid item xs={12} sm={6} md={4} key={index}>
       <Card sx={{ maxWidth: 500, bgcolor: "white", color: "black", borderRadius: 2 }}>
-        <Box sx={{ bgcolor: "success.main", py: 1, px: 2, color: "white" }}>
+        <Box sx={{ bgcolor: "#2d1656", py: 1, px: 2, color: "white" }}>
           <Typography variant="body1" fontWeight="bold">Fully Funded</Typography>
         </Box>
         <CardContent>
@@ -824,8 +824,8 @@ const Home = () => {
               </Box>
 
               <Box sx={{ mt: 2 }}>
-                <LinearProgress variant="determinate" value={100} sx={{ height: 6, borderRadius: 1 }} color="success" />
-                <Typography variant="caption" color="success.main" sx={{ display: "block", mt: 0.5 }}>
+                <LinearProgress variant="determinate" value={100} sx={{ height: 6, borderRadius: 1, color:"#2d1656" }}  />
+                <Typography variant="caption"  sx={{ display: "block", mt: 0.5,color:"#2d1656" }}>
                   100% Funded
                 </Typography>
               </Box>

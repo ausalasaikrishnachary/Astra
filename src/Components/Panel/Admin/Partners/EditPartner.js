@@ -11,6 +11,7 @@ import {
 } from "@mui/material";
 import Header from "../../../Shared/Navbar/Navbar";
 import { useLocation, useNavigate } from "react-router-dom";
+import Swal from 'sweetalert2';
 
 const API_BASE_URL = "http://175.29.21.7:83/users/";
 
@@ -131,10 +132,18 @@ const EditPartner = () => {
         throw new Error(errorData.message || "Failed to update user");
       }
 
-      alert("User updated successfully!");
+      await Swal.fire({
+        icon: 'success',
+        title: 'Success',
+        text: 'User updated successfully!',
+      });
       navigate("/a-partners");
     } catch (err) {
-      alert("Error updating user: " + err.message);
+      Swal.fire({
+        icon: 'error',
+        title: 'Update Failed',
+        text: `Error updating user: ${err.message}`,
+      });
     }
   };
 

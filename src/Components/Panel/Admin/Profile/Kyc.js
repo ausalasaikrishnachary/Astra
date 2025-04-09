@@ -16,6 +16,7 @@ import {
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import Header from "../../../Shared/Navbar/Navbar";
+import Swal from 'sweetalert2';
 
 const ApiForm = () => {
   const [formData, setFormData] = useState({
@@ -114,15 +115,27 @@ const ApiForm = () => {
       });
       const responseData = await response.json();
       if (response.ok) {
-        alert("User registered successfully!");
+        await Swal.fire({
+          icon: 'success',
+          title: 'Success',
+          text: 'User registered successfully!',
+        });
         setUsers([...users, responseData]);
       } else {
         console.error("Server Error:", responseData);
-        alert(`Failed to register user: ${JSON.stringify(responseData)}`);
+        Swal.fire({
+          icon: 'error',
+          title: 'Registration Failed',
+          text: `Failed to register user: ${JSON.stringify(responseData)}`,
+        });
       }
     } catch (error) {
       console.error("Error submitting form:", error);
-      alert("An error occurred while submitting the form.");
+      Swal.fire({
+        icon: 'error',
+        title: 'Submission Error',
+        text: 'An error occurred while submitting the form.',
+      });
     }
   };
 
@@ -140,7 +153,11 @@ const ApiForm = () => {
   // Submit new role
   const handleAddRole = async () => {
     if (!newRole.trim()) {
-      alert("Role name cannot be empty");
+      Swal.fire({
+        icon: 'warning',
+        title: 'Validation Error',
+        text: 'Role name cannot be empty',
+      });
       return;
     }
 
@@ -158,10 +175,18 @@ const ApiForm = () => {
       const addedRole = await response.json();
       setRoles([...roles, addedRole]); // Update roles list
       handleCloseRoleDialog(); // Close dialog
-      alert("Role added successfully!");
+      await Swal.fire({
+        icon: 'success',
+        title: 'Success',
+        text: 'Role added successfully!',
+      });
     } catch (error) {
       console.error("Error adding role:", error);
-      alert("Failed to add role");
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Failed to add role',
+      });
     }
   };
 

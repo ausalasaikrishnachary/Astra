@@ -5,6 +5,7 @@ import {
 } from "@mui/material";
 import { Edit, Delete, Visibility } from "@mui/icons-material"; // Icons
 import Header from "../../../Shared/Navbar/Navbar";
+import Swal from 'sweetalert2';
 
 const roleOptions = ["Admin", "Partner-(IFA)", "Partner-(REC)", "Investor"];
 
@@ -76,11 +77,19 @@ const Users = () => {
       })
       .then((data) => {
         console.log(`Role assigned successfully:`, data);
-        alert(`Role "${newRole}" assigned to user ${userId} successfully!`);
+        Swal.fire({
+          icon: 'success',
+          title: 'Success',
+          text: `Role "${newRole}" assigned to user ${userId} successfully!`,
+        });
       })
       .catch((error) => {
         console.error("Error assigning role:", error);
-        alert("Error assigning role. Please try again.");
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Error assigning role. Please try again.',
+        });
       });
   };
 

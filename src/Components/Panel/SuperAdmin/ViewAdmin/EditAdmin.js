@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { TextField, Button, Container, Typography, Grid, Paper } from "@mui/material";
 import SuperAdmin from "../../../Shared/SuperAdmin/SuperAdmin";
+import Swal from 'sweetalert2';
 
 const EditAdmin = () => {
   const location = useLocation();
@@ -45,33 +46,41 @@ const EditAdmin = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     const { password, role_ids, ...updatedData } = formData;
-  
+
     try {
       const response = await fetch(API_URL, {
         method: "PUT", // If PUT fails, try "PATCH"
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(updatedData),
       });
-  
+
       const responseData = await response.json(); // Parse response JSON
-  
+
       console.log("Response Status:", response.status);
       console.log("Response Data:", responseData);
-  
+
       if (!response.ok) {
         throw new Error(responseData.message || "Failed to update admin");
       }
-  
-      alert("Admin updated successfully!");
+      Swal.fire({
+        icon: 'success',
+        title: 'Success',
+        text: 'Admin updated successfully!',
+      });
+
       navigate("/s-viewadmins");
     } catch (error) {
       console.error("Error updating admin:", error);
-      alert("Error updating admin: " + error.message);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: `Error updating admin: ${error.message}`,
+      });
     }
   };
-  
+
 
   const hiddenFields = ["password", "referral_id", "role_ids"];
 

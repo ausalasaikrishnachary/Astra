@@ -16,6 +16,7 @@ import {
 } from "@mui/material";
 import InvestorHeader from "../../../Shared/Investor/InvestorNavbar";
 import { useLocation, useNavigate } from "react-router-dom";
+import Swal from 'sweetalert2';
 
 const InvestmentForm = () => {
   const [formData, setFormData] = useState({
@@ -248,7 +249,11 @@ const InvestmentForm = () => {
 
       if (response.ok) {
         const result = await response.json();
-        alert("Success: Transaction submitted successfully!");
+        await Swal.fire({
+          icon: 'success',
+          title: 'Success',
+          text: 'Transaction submitted successfully!',
+        });
         console.log("Transaction Success:", result);
 
         // Step 3: Update available units
@@ -301,11 +306,19 @@ const InvestmentForm = () => {
         navigate("/i-buyunits");
       } else {
         const errorData = await response.json();
-        alert(`Failed: ${errorData.message || "Unable to submit the transaction."}`);
+        await Swal.fire({
+          icon: 'error',
+          title: 'Failed',
+          text: errorData.message || "Unable to submit the transaction.",
+        });
         console.error("Transaction Error:", errorData);
       }
     } catch (error) {
-      alert("Error: Something went wrong. Please try again.");
+      await Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Something went wrong. Please try again.',
+      });
       console.error("Error:", error);
     }
   };
