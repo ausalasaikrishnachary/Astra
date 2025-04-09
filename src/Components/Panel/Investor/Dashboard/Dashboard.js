@@ -177,7 +177,7 @@ function Dashboard() {
                   '&:hover': { bgcolor: '#f0f0f0' }, // optional hover styling
                 }}
               >
-                Complete your KYC
+                Update your KYC
               </Button>
             </Link>
           </Box>

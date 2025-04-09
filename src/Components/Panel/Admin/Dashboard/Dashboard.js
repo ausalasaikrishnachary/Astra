@@ -105,10 +105,9 @@ function Dashboard() {
       <Header />
       <Box
         sx={{
-          backgroundImage:
-            "url('https://img.freepik.com/free-photo/contemporary-building-blur_23-2147694747.jpg')",
-          minHeight: '100vh',
-          backgroundSize: 'cover',
+        
+      
+      
           backgroundPosition: 'center',
           display: 'flex',
           alignItems: 'center',
@@ -152,16 +151,15 @@ function Dashboard() {
             ))}
           </Grid>
 
-          {/* Analytics Section */}
-          <Typography
+        
+          {/* <Typography
             variant="h5"
             sx={{ color: '#100f0f', fontSize: '28px', fontWeight: 700, mt: 4, mb: 3, pl: 2, textAlign: "center" }}
           >
             Analytics
-          </Typography>
+          </Typography> */}
 
-          <Grid container spacing={3}>
-            {/* Line Chart Card */}
+          {/* <Grid container spacing={3}>
             <Grid item xs={12} md={6}>
               <Box
                 sx={{
@@ -181,7 +179,7 @@ function Dashboard() {
               </Box>
             </Grid>
 
-            {/* Pie Chart Card */}
+           
             <Grid item xs={12} md={6}>
               <Box
                 sx={{
@@ -200,7 +198,7 @@ function Dashboard() {
                 </Box>
               </Box>
             </Grid>
-          </Grid>
+          </Grid> */}
         </Container>
       </Box>
     </>

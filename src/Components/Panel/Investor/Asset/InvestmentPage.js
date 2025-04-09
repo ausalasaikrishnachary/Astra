@@ -235,7 +235,7 @@ const InvestmentForm = () => {
       paid_amount: formData.advance_payment || "0.00",
       total_paid_amount: formData.advance_payment || "0.00",
       remaining_amount: (Number(formData.total_value) - Number(formData.advance_payment)).toFixed(2),
-      payment_type: "Advance-Payment",
+      payment_type: "Token-Payment",
       payment_method: "Cash",
     };
 

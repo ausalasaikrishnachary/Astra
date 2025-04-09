@@ -75,7 +75,7 @@ const BuyShares = () => {
           if (fullPayment) {
             return fullPayment;
           }
-          return transactions.find((t) => t.payment_type === "Advance-Payment");
+          return transactions.find((t) => t.payment_type === "Token-Payment");
         });
 
         setTransactions(filteredTransactions);
@@ -236,7 +236,7 @@ const BuyShares = () => {
               >
                 <MenuItem value="">All</MenuItem>
                 <MenuItem value="Full-Payment">Full-Payment</MenuItem>
-                <MenuItem value="Advance-Payment">Advance-Payment</MenuItem>
+                <MenuItem value="Token-Payment">Token-Payment</MenuItem>
               </Select>
             </FormControl>
           </Grid>

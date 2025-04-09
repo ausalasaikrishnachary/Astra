@@ -646,7 +646,7 @@ const Home = () => {
           sx={{
             display: 'block',
             mx: 'auto', // centers the logo horizontally
-            mb: 2,      // adds spacing below the logo
+               // adds spacing below the logo
             height: "100px",
             transform: 'scale(2.5)',
           }}
@@ -654,7 +654,7 @@ const Home = () => {
         <Container maxWidth="lg">
           <Box className="home-hero-content">
             <Container maxWidth="lg">
-              <Box className="home-hero-content" sx={{ textAlign: 'center', mt: 8 }}>
+              <Box className="home-hero-content" sx={{ textAlign: 'center',  }}>
                 {/* Logo added above the heading */}
                 <Typography variant="h4" align="center" fontWeight="bold" gutterBottom >
                   Astra revolutionizes the real estate industry with impactful innovation.
@@ -678,175 +678,61 @@ const Home = () => {
               </Typography>
             </Box>
 
-            {/* <Card sx={{ maxWidth: 500, bgcolor: 'white', color: 'black', borderRadius: 2, mt: 4 }}>
-              <Box sx={{ bgcolor: 'success.main', py: 1, px: 2, color: 'white' }}>
-                <Typography variant="body1" fontWeight="bold">Fully Funded</Typography>
-              </Box>
-              <CardContent>
-                <Grid container spacing={2}>
-                  <Grid item xs={3}>
-                    <Box
-                      component="img"
-                      src={img1}
-                      alt="Healthcare Property"
-                      sx={{ width: '100%', borderRadius: 1 }}
-                    />
-                  </Grid>
-                  <Grid item xs={9}>
-                    <Typography sx={{ color: '#636363',}} variant="h6" fontWeight="bold">Greenmark Villa</Typography>
-                    <Typography variant="body2" color="text.secondary">Hosur</Typography>
-
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2 }}>
-                      <Box>
-                        <Typography variant="caption">Gross Entry Yield</Typography>
-                        <Typography variant="body2" fontWeight="bold">9.02%</Typography>
-                      </Box>
-                      <Box>
-                        <Typography variant="caption">Asset Value</Typography>
-                        <Typography variant="body2" fontWeight="bold">₹45,00,00,000</Typography>
-                      </Box>
-                      <Box>
-                        <Typography variant="caption">Target IRR</Typography>
-                        <Typography variant="body2" fontWeight="bold">13.4%</Typography>
-                      </Box>
+            <Grid container spacing={3} sx={{ mt: 4 }}>
+              {cards.map((card, index) => (
+                <Grid item xs={12} sm={6} md={4} key={index}>
+                  <Card sx={{ maxWidth: 500, bgcolor: "white", color: "black", borderRadius: 2 }}>
+                    <Box sx={{ bgcolor: "#2d1656", py: 1, px: 2, color: "white" }}>
+                      <Typography variant="body1" fontWeight="bold">Fully Funded</Typography>
                     </Box>
+                    <CardContent>
+                      <Grid container spacing={2}>
+                        <Grid item xs={3}>
+                          <Box component="img" src={card.img} alt="Industry" sx={{ width: "100%", borderRadius: 1 }} />
+                        </Grid>
+                        <Grid item xs={9}>
+                          <Typography variant="h5" sx={{ color: '#636363' }} fontWeight="bold">{card.title}</Typography>
+                          <Typography variant="body2" color="text.secondary">{card.location}</Typography>
 
-                    <Box sx={{ mt: 2 }}>
-                      <LinearProgress
-                        variant="determinate"
-                        value={100}
-                        sx={{ height: 6, borderRadius: 1 }}
-                        color="success"
-                      />
-                      <Typography variant="caption" color="success.main" sx={{ display: 'block', mt: 0.5 }}>
-                        100% Funded
-                      </Typography>
-                    </Box>
+                          <Box sx={{ display: "flex", justifyContent: "space-between", mt: 2 }}>
+                            <Box>
+                              <Typography variant="caption">Gross Entry Yield</Typography>
+                              <Typography variant="body2" fontWeight="bold">10.5%</Typography>
+                            </Box>
+                            <Box>
+                              <Typography variant="caption">Asset Value</Typography>
+                              <Typography variant="body2" fontWeight="bold">₹75,00,00,000</Typography>
+                            </Box>
+                            <Box>
+                              <Typography variant="caption">Target IRR</Typography>
+                              <Typography variant="body2" fontWeight="bold">15.2%</Typography>
+                            </Box>
+                          </Box>
 
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2 }}>
-                      <Button variant="contained" size="small" sx={{ bgcolor: '#333', '&:hover': { bgcolor: '#222' } }}>
-                        Invest Now
-                      </Button>
-                      <Button variant="outlined" size="small" sx={{ color: '#333', borderColor: '#ccc' }}>
-                        View Details
-                      </Button>
-                    </Box>
-                  </Grid>
+                          <Box sx={{ mt: 2 }}>
+                            <LinearProgress variant="determinate" value={100} sx={{ height: 6, borderRadius: 1, color: "#2d1656" }} />
+                            <Typography variant="caption" sx={{ display: "block", mt: 0.5, color: "#2d1656" }}>
+                              100% Funded
+                            </Typography>
+                          </Box>
+
+                          <Box sx={{ display: "flex", justifyContent: "space-between", mt: 2 }}>
+                            <Button variant="contained" disableRipple disableElevation
+                              size="small" sx={{ bgcolor: "#333", "&:hover": { bgcolor: "#222" } }}>
+                              Invest Now
+                            </Button>
+                            <Button variant="outlined" disableRipple disableElevation
+                              size="small" sx={{ color: "#333", borderColor: "#ccc" }}>
+                              View Details
+                            </Button>
+                          </Box>
+                        </Grid>
+                      </Grid>
+                    </CardContent>
+                  </Card>
                 </Grid>
-              </CardContent>
-            </Card> */}
-{/* 
- <Grid container spacing={3} sx={{ mt: 4 }}>
-      {cards.map((card, index) => (
-        <Grid item xs={12} sm={6} md={4} key={index}>
-          <Card sx={{ maxWidth: 500, bgcolor: "white", color: "black", borderRadius: 2 }}>
-            <Box sx={{ bgcolor: "success.main", py: 1, px: 2, color: "white" }}>
-              <Typography variant="body1" fontWeight="bold">Fully Funded</Typography>
-            </Box>
-            <CardContent>
-              <Grid container spacing={2}>
-                <Grid item xs={3}>
-                  <Box component="img" src={card.img} alt="Property" sx={{ width: "100%", borderRadius: 1 }} />
-                </Grid>
-                <Grid item xs={9}>
-                  <Typography variant="h5"   sx={{ color: '#636363'}} fontWeight="bold">{card.title}</Typography>
-                  <Typography variant="body2" color="text.secondary">{card.location}</Typography>
-
-                  <Box sx={{ display: "flex", justifyContent: "space-between", mt: 2 }}>
-                    <Box>
-                      <Typography variant="caption">Gross Entry Yield</Typography>
-                      <Typography variant="body2" fontWeight="bold">9.02%</Typography>
-                    </Box>
-                    <Box>
-                      <Typography variant="caption">Asset Value</Typography>
-                      <Typography variant="body2" fontWeight="bold">₹45,00,00,000</Typography>
-                    </Box>
-                    <Box>
-                      <Typography variant="caption">Target IRR</Typography>
-                      <Typography variant="body2" fontWeight="bold">13.4%</Typography>
-                    </Box>
-                  </Box>
-
-                  <Box sx={{ mt: 2 }}>
-                    <LinearProgress variant="determinate" value={100} sx={{ height: 6, borderRadius: 1 }} color="success" />
-                    <Typography variant="caption" color="success.main" sx={{ display: "block", mt: 0.5 }}>
-                      100% Funded
-                    </Typography>
-                  </Box>
-
-                  <Box sx={{ display: "flex", justifyContent: "space-between", mt: 2 }}>
-                    <Button variant="contained"   disableRipple 
-                disableElevation 
-                    size="small" sx={{ bgcolor: "#333", "&:hover": { bgcolor: "#222" } }}>
-                      Invest Now
-                    </Button>
-                    <Button variant="outlined"  disableRipple  disableElevation   size="small" sx={{ color: "#333", borderColor: "#ccc" }}>
-                      View Details
-                    </Button>
-                  </Box>
-                </Grid>
-              </Grid>
-            </CardContent>
-          </Card>
-        </Grid>
-      ))}
-    </Grid> */}
-
-<Grid container spacing={3} sx={{ mt: 4 }}>
-  {cards.map((card, index) => (
-    <Grid item xs={12} sm={6} md={4} key={index}>
-      <Card sx={{ maxWidth: 500, bgcolor: "white", color: "black", borderRadius: 2 }}>
-        <Box sx={{ bgcolor: "#2d1656", py: 1, px: 2, color: "white" }}>
-          <Typography variant="body1" fontWeight="bold">Fully Funded</Typography>
-        </Box>
-        <CardContent>
-          <Grid container spacing={2}>
-            <Grid item xs={3}>
-              <Box component="img" src={card.img} alt="Industry" sx={{ width: "100%", borderRadius: 1 }} />
+              ))}
             </Grid>
-            <Grid item xs={9}>
-              <Typography variant="h5" sx={{ color: '#636363' }} fontWeight="bold">{card.title}</Typography>
-              <Typography variant="body2" color="text.secondary">{card.location}</Typography>
-
-              <Box sx={{ display: "flex", justifyContent: "space-between", mt: 2 }}>
-                <Box>
-                  <Typography variant="caption">Gross Entry Yield</Typography>
-                  <Typography variant="body2" fontWeight="bold">10.5%</Typography>
-                </Box>
-                <Box>
-                  <Typography variant="caption">Asset Value</Typography>
-                  <Typography variant="body2" fontWeight="bold">₹75,00,00,000</Typography>
-                </Box>
-                <Box>
-                  <Typography variant="caption">Target IRR</Typography>
-                  <Typography variant="body2" fontWeight="bold">15.2%</Typography>
-                </Box>
-              </Box>
-
-              <Box sx={{ mt: 2 }}>
-                <LinearProgress variant="determinate" value={100} sx={{ height: 6, borderRadius: 1, color:"#2d1656" }}  />
-                <Typography variant="caption"  sx={{ display: "block", mt: 0.5,color:"#2d1656" }}>
-                  100% Funded
-                </Typography>
-              </Box>
-
-              <Box sx={{ display: "flex", justifyContent: "space-between", mt: 2 }}>
-                <Button variant="contained" disableRipple disableElevation 
-                  size="small" sx={{ bgcolor: "#333", "&:hover": { bgcolor: "#222" } }}>
-                  Invest Now
-                </Button>
-                <Button variant="outlined" disableRipple disableElevation 
-                  size="small" sx={{ color: "#333", borderColor: "#ccc" }}>
-                  View Details
-                </Button>
-              </Box>
-            </Grid>
-          </Grid>
-        </CardContent>
-      </Card>
-    </Grid>
-  ))}
-</Grid>
 
             <a href="/properties" style={{ textDecoration: "none" }}>
               <Button
