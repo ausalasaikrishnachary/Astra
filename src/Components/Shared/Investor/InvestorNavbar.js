@@ -399,7 +399,7 @@ export default function InvestorHeader() {
           onClick={() => {
             localStorage.removeItem("user_id");
             handleProfileMenuClose();
-            navigate('/login');
+            navigate('/signin');
           }}
           sx={{
             fontSize: '16px',
