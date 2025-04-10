@@ -259,7 +259,7 @@ const Tmanagement = () => {
                     <TableCell sx={{ textAlign: "center", border: "1px solid #000" }}>{user.username}</TableCell>
                     <TableCell sx={{ textAlign: "center", border: "1px solid #000" }}>{user.email}</TableCell>
                     <TableCell sx={{ textAlign: "center", border: "1px solid #000" }}>{user.phone_number}</TableCell>
-                    <TableCell sx={{ textAlign: "center", border: "1px solid #000", color: user.status === "Active" ? "green" : "red" }}>
+                    <TableCell sx={{ textAlign: "center", border: "1px solid #000", color: user.status === "active" ? "green" : "red" }}>
                       {user.status}
                     </TableCell>
                     <TableCell sx={{ textAlign: "center", border: "1px solid #000" }}>

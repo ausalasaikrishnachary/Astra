@@ -253,6 +253,8 @@ const InvestmentForm = () => {
           icon: 'success',
           title: 'Success',
           text: 'Transaction submitted successfully!',
+        }).then(() => {
+          navigate("/i-buyunits");
         });
         console.log("Transaction Success:", result);
 
@@ -303,7 +305,7 @@ const InvestmentForm = () => {
           console.error("Failed to fetch escrow details.");
         }
 
-        navigate("/i-buyunits");
+
       } else {
         const errorData = await response.json();
         await Swal.fire({
@@ -345,7 +347,7 @@ const InvestmentForm = () => {
     agent: "Agent ID",
     // Add more mappings as needed...
   };
-  
+
 
 
 

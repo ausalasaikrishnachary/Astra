@@ -24,7 +24,7 @@ const StatsSection = () => {
     { value: 55000, suffix: " Cr", prefix: "₹", label: "Assets Under Management", duration: 3 },
     { value: 18, suffix: "%", prefix: "", label: "Annualized Returns Delivered", duration: 3 },
     { value: 1200, suffix: "+", prefix: "", label: "Number of Investors", duration: 3 },
-    { value: 25, suffix: " Million", prefix: "", label: "Sq. Ft. of Commercial Space", duration: 3 }
+    { value: 25, suffix: " Million", prefix: "", label: "Sq. Ft. of Industrial Space", duration: 3 }
   ];
 
   return (

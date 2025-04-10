@@ -928,27 +928,27 @@ const Home = () => {
                 }}>
                   {[
                     {
-                      title: "Residential Properties",
+                      title: "Industrial Properties",
                       position: "top-left",
                       bg: "#fff",
                       fontWeight: "bold",
                     },
                     {
-                      title: "Commercial Real Estate",
+                      title: "Large Warehouse",
                       position: "top-right",
                       bg: "#f5d7a1",
                       fontWeight: "bold",
                       desc: "High stability with strong returns"
                     },
                     {
-                      title: "Gold",
+                      title: "Logistic Hub",
                       position: "bottom-left",
                       bg: "#fff",
                       fontWeight: "bold",
                       desc: "Stable store of value, lower growth"
                     },
                     {
-                      title: "Stocks & Mutual Funds",
+                      title: "Data Center",
                       position: "bottom-right",
                       bg: "#fff",
                       fontWeight: "bold",

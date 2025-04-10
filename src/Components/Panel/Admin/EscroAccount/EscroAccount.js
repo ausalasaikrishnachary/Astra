@@ -5,6 +5,7 @@ import {
 } from "@mui/material";
 import Header from "../../../Shared/Navbar/Navbar";
 import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
 
 function EscrowAccount() {
     const [formData, setFormData] = useState({
@@ -17,6 +18,7 @@ function EscrowAccount() {
         deposit_amount: "0",
         status: "",
     });
+    const navigate = useNavigate();
 
     const [properties, setProperties] = useState([]); // State for property list
 
@@ -57,19 +59,20 @@ function EscrowAccount() {
                     icon: 'success',
                     title: 'Success!',
                     text: 'Data stored successfully!',
+                }).then(() => {
+                    setFormData({
+                        property: "",
+                        account_number: "",
+                        account_type: "",
+                        bank_name: "",
+                        branch_name: "",
+                        ifsc_code: "",
+                        deposit_amount: "",
+                        status: "",
+                    });
+                    navigate('/a-escrow');
                 });
-                // Reset form after successful submission
-                setFormData({
-                    property: "",
-                    account_number: "",
-                    account_type: "",
-                    bank_name: "",
-                    branch_name: "",
-                    ifsc_code: "",
-                    deposit_amount: "",
-                    status: "",
-                });
-            } else {
+            }  else {
                 Swal.fire({
                     icon: 'error',
                     title: 'Error',
