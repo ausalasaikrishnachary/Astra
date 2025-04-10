@@ -219,14 +219,14 @@ const AssetDashboard = () => {
                   display: 'flex',
                   flexDirection: 'column',
                   borderRadius: 2,
-                  boxShadow: '0 4px 5px rgba(0, 0, 0, 0.749)',
+                  
                   transition: 'all 0.3s ease',
                   position: 'relative',
                   backgroundColor: 'white',
                   overflow: 'visible',
                   '&:hover': {
                     transform: 'translateY(-5px)',
-                    boxShadow: '0 8px 25px rgba(0,0,0,0.1)'
+                    boxShadow: '0 4px 5px rgba(0, 0, 0, 0.749)',
                   }
                 }}
               >
