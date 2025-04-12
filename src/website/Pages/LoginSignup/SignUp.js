@@ -106,7 +106,7 @@ const SignUp = () => {
           title: 'Registration Failed',
           text: errorData.message || 'Unknown error',
         });
-  
+
         setIsSubmitting(false);
         return;
       }
@@ -211,7 +211,7 @@ const SignUp = () => {
       }}
     >
       <Typography variant="h3" sx={{ pb: 5, textAlign: "center" }}>
-        Create a Profile
+        SignUp as Investor
       </Typography>
       <Grid container spacing={2}>
         {!otpSent && (
@@ -301,7 +301,7 @@ const SignUp = () => {
                 )}
               </FormControl>
             </Grid>
-            <Grid item xs={12}>
+            {/* <Grid item xs={12}>
               <TextField
                 label="Referral Code"
                 name="referralCode"
@@ -309,20 +309,17 @@ const SignUp = () => {
                 value={formData.referralCode}
                 onChange={handleChange}
               />
-            </Grid>
+            </Grid> */}
             <Grid item xs={12}>
-              <FormControlLabel
-                control={
-                  <Checkbox name="agreed" checked={formData.agreed} onChange={handleChange} />
-                }
-                label={
-                  <Typography variant="body2">
-                    By continuing, you’re agreeing to our{' '}
-                    <a href="#" style={{ color: '#2d1656' }}>Terms of Service</a> and{' '}
-                    <a href="#" style={{ color: '#2d1656' }}>Privacy Policy</a>.
-                  </Typography>
-                }
-              />
+
+
+              <Typography variant="body2" textAlign="center">
+                By continuing, you’re agreeing to our{' '}
+                <a href="#" style={{ color: '#2d1656' }}>Terms of Service</a> and{' '}
+                <a href="#" style={{ color: '#2d1656' }}>Privacy Policy</a>.
+              </Typography>
+
+
             </Grid>
             <Grid item xs={12}>
               <Box display="flex" justifyContent="center">

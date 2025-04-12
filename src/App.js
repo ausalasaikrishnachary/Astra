@@ -55,6 +55,7 @@ import ViewEscrowAccount from "./Components/Panel/Admin/EscroAccount/ViewEscrowA
 import EditPartner from "./Components/Panel/Admin/Partners/EditPartner";
 import EditInvestor from "./Components/Panel/Admin/Investors/EditInvestor";
 import EditAsset from "./Components/Panel/Admin/Asset/EditAsset";
+import ScheduleCall from "./Components/Panel/Admin/Asset/SheduleMeeting";
 
 function Layout() {
   const location = useLocation();
@@ -91,6 +92,7 @@ function Layout() {
           <Route path="/a-transaction-details" element={<TransactionMoniterDetails />} />
           <Route path="/a-commission-form" element={<CommissionForm />} />
           <Route path="/a-edit-asset" element={<EditAsset />} />
+          <Route path="/a-shedulemeeting" element={<ScheduleCall />} />
 
           <Route path="/i-dashboard" element={<InvestorDashboard />} />
           <Route path="/i-asset" element={<InvestorAsset />} />
