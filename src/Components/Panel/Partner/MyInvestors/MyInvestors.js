@@ -13,6 +13,11 @@ import {
   Select,
   CircularProgress,
   Alert,
+  Table,
+  TableHead,
+  TableBody,
+  TableRow,
+  TableCell,
 } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import VisibilityIcon from "@mui/icons-material/Visibility";
@@ -22,8 +27,10 @@ import IconButton from "@mui/material/IconButton";
 import Header from "../../../Shared/Navbar/Navbar";
 import PartnerHeader from "../../../Shared/Partner/PartnerNavbar";
 
+const userId = localStorage.getItem("user_id");
+
 // API Endpoint
-const API_URL = "http://175.29.21.7:83/users/";
+const API_URL = `http://175.29.21.7:83/users/referral-id/${userId}/`;
 
 // Summary Cards Data
 const summaryCardsData = [
@@ -59,20 +66,27 @@ const Tmanagement = () => {
 
   // Status Color
   const getStatusColor = (status) => (status === "active" ? "green" : "red");
+  const handleEdit = (userId) => {
+    console.log("Edit user with ID:", userId);
+  };
+
+  const handleDelete = (userId) => {
+    console.log("Delete user with ID:", userId);
+  };
 
   // Columns for DataGrid
   const columns = [
     { field: "user_id", headerName: "User ID", flex: 1, minWidth: 100 },
-    { field: "username", headerName: "Username", flex: 1, minWidth: 150 },
+    { field: "first_name", headerName: "Name", flex: 1, minWidth: 150 },
     { field: "email", headerName: "Email", flex: 1, minWidth: 250 },
-    { field: "phone", headerName: "Phone", flex: 1, minWidth: 150 },
-    { field: "dob", headerName: "DOB", flex: 1, minWidth: 150 },
+    { field: "phone_number", headerName: "Phone", flex: 1, minWidth: 150 },
+    // { field: "dob", headerName: "DOB", flex: 1, minWidth: 150 },
     { field: "gender", headerName: "Gender", flex: 1, minWidth: 120 },
     { field: "kyc_status", headerName: "KYC Status", flex: 1, minWidth: 130 },
-    { field: "account_holder_name", headerName: "Bank Account Holder", flex: 1.5, minWidth: 200 },
-    { field: "bank_name", headerName: "Bank Name", flex: 1.5, minWidth: 180 },
-    { field: "ifsc_code", headerName: "IFSC Code", flex: 1, minWidth: 150 },
-    { field: "reference_to", headerName: "Reference To", flex: 1, minWidth: 150 },
+    // { field: "account_holder_name", headerName: "Bank Account Holder", flex: 1.5, minWidth: 200 },
+    // { field: "bank_name", headerName: "Bank Name", flex: 1.5, minWidth: 180 },
+    // { field: "ifsc_code", headerName: "IFSC Code", flex: 1, minWidth: 150 },
+    { field: "referral_id", headerName: "Reference To", flex: 1, minWidth: 150 },
     { field: "status", headerName: "Status", flex: 1, minWidth: 150, 
       renderCell: (params) => (
         <Typography sx={{ color: getStatusColor(params.value) }}>
@@ -91,12 +105,12 @@ const Tmanagement = () => {
           <IconButton size="small" color="primary">
             <VisibilityIcon />
           </IconButton>
-          <IconButton size="small" color="primary">
+          {/* <IconButton size="small" color="primary">
             <EditIcon />
           </IconButton>
           <IconButton size="small" color="error">
             <DeleteIcon />
-          </IconButton>
+          </IconButton> */}
         </Box>
       ),
     },
@@ -140,9 +154,9 @@ const Tmanagement = () => {
                   <Typography variant="h4" sx={{ color: "rgb(30,10,80)" }}>
                     {card.key === "total" ? totalUsers : card.key === "active" ? activeUsers : inactiveUsers}
                   </Typography>
-                  <Typography variant="body2">
+                  {/* <Typography variant="body2">
                     {card.key === "active" ? "Currently active" : "Currently inactive"}
-                  </Typography>
+                  </Typography> */}
                 </CardContent>
               </Card>
             </Grid>
@@ -150,7 +164,7 @@ const Tmanagement = () => {
         </Grid>
 
         {/* Search & Sort */}
-        <Box sx={{ display: "flex", justifyContent: "end", alignItems: "center", gap: "10px", mt: 3, mb: 2 }}>
+        {/* <Box sx={{ display: "flex", justifyContent: "end", alignItems: "center", gap: "10px", mt: 3, mb: 2 }}>
           <TextField
             placeholder="Search..."
             variant="outlined"
@@ -179,27 +193,80 @@ const Tmanagement = () => {
           >
             Filters
           </Button>
-        </Box>
+        </Box> */}
 
-        {/* DataGrid Table */}
-        <Box sx={{ height: 400, width: "100%" }}>
-          {loading ? (
-            <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100%" }}>
-              <CircularProgress />
-            </Box>
-          ) : error ? (
-            <Alert severity="error">{error}</Alert>
-          ) : (
-            <DataGrid
-              rows={filteredUsers.map((user) => ({ ...user, id: user.user_id }))}
-              columns={columns}
-              pageSize={5}
-              rowsPerPageOptions={[5]}
-              autoHeight
-              disableSelectionOnClick
-            />
-          )}
-        </Box>
+        <Box sx={{ marginTop: 4, padding: "50px" }}>
+  {loading ? (
+    <CircularProgress />
+  ) : (
+    <Table sx={{ border: "1px solid black" }}>
+      <TableHead>
+        <TableRow>
+          <TableCell sx={{ fontWeight: "bold", textAlign: "center", border: "1px solid #000" }}>
+            User ID
+          </TableCell>
+          <TableCell sx={{ fontWeight: "bold", textAlign: "center", border: "1px solid #000" }}>
+            Username
+          </TableCell>
+          <TableCell sx={{ fontWeight: "bold", textAlign: "center", border: "1px solid #000" }}>
+            Email
+          </TableCell>
+          <TableCell sx={{ fontWeight: "bold", textAlign: "center", border: "1px solid #000" }}>
+            Phone
+          </TableCell>
+          <TableCell sx={{ fontWeight: "bold", textAlign: "center", border: "1px solid #000" }}>
+            Status
+          </TableCell>
+          {/* <TableCell sx={{ fontWeight: "bold", textAlign: "center", border: "1px solid #000" }}>
+            Actions
+          </TableCell> */}
+        </TableRow>
+      </TableHead>
+      <TableBody>
+        {users.length > 0 ? (
+          users.map((user) => (
+            <TableRow
+              key={user.user_id}
+              sx={{ cursor: "pointer", "&:hover": { backgroundColor: "#f5f5f5" } }}
+            >
+              <TableCell sx={{ textAlign: "center", border: "1px solid #000" }}>{user.user_id}</TableCell>
+              <TableCell sx={{ textAlign: "center", border: "1px solid #000" }}>{user.username}</TableCell>
+              <TableCell sx={{ textAlign: "center", border: "1px solid #000" }}>{user.email}</TableCell>
+              <TableCell sx={{ textAlign: "center", border: "1px solid #000" }}>{user.phone_number}</TableCell>
+              <TableCell
+                sx={{
+                  textAlign: "center",
+                  border: "1px solid #000",
+                  color: user.status === "active" ? "green" : "red",
+                }}
+              >
+                {user.status}
+              </TableCell>
+              {/* <TableCell sx={{ textAlign: "center", border: "1px solid #000" }}>
+                <IconButton size="small" color="primary">
+                  <VisibilityIcon />
+                </IconButton>
+                <IconButton size="small" color="primary" onClick={() => handleEdit(user.user_id)}>
+                  <EditIcon />
+                </IconButton>
+                <IconButton size="small" color="error" onClick={() => handleDelete(user.user_id)}>
+                  <DeleteIcon />
+                </IconButton>
+              </TableCell> */}
+            </TableRow>
+          ))
+        ) : (
+          <TableRow>
+            <TableCell colSpan={6} sx={{ textAlign: "center", border: "1px solid #000", padding: 2 }}>
+              No data found
+            </TableCell>
+          </TableRow>
+        )}
+      </TableBody>
+    </Table>
+  )}
+</Box>
+
       </Container>
     </>
   );

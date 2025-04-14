@@ -1,202 +1,392 @@
-import React, { useEffect, useState } from "react";
-import "./../Transactions/TransactionMoniter.css"
+import React, { useState, useEffect } from 'react';
 import {
   Container,
-  Box,
-  Grid,
-  Card,
-  CardContent,
   Typography,
   TextField,
-  FormControl,
-  Select,
   MenuItem,
+  FormControl,
+  InputLabel,
+  Select,
   Button,
+  Grid,
+  Box,
+  Table,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableBody,
+  CircularProgress,
   IconButton,
-} from "@mui/material";
-import { DataGrid } from "@mui/x-data-grid";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
+  ButtonGroup,
+} from '@mui/material';
+import InvestorHeader from '../../../Shared/Investor/InvestorNavbar';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 import Header from "../../../Shared/Navbar/Navbar";
-import axios from "axios";
 
-const Tmoniter = () => {
-  const [properties, setProperties] = useState([]);
+const TransactionMoniter = () => {
+  const [transactions, setTransactions] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [search, setSearch] = useState("");
+  const [error, setError] = useState(null);
+  const [sortBy, setSortBy] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [currentPage, setCurrentPage] = useState(0);
+  const rowsPerPage = 5;
+  const [expandedRows, setExpandedRows] = useState({});
+  const [commissionStatuses, setCommissionStatuses] = useState([]);
+
+  const navigate = useNavigate();
+  const [remainingAmount, setRemainingAmount] = useState([]);
+  const [filterDate, setFilterDate] = useState('');
+  const [filterAmount, setFilterAmount] = useState('');
+  const [filterPaymentType, setFilterPaymentType] = useState('');
+
 
   useEffect(() => {
-    axios
-      .get("http://175.29.21.7:83/property/")
-      .then((response) => {
-        setProperties(response.data);
+    const fetchTransactions = async () => {
+      try {
+        const userId = localStorage.getItem("user_id");
+
+        if (!userId) {
+          setError("User ID not found");
+          setLoading(false);
+          return;
+        }
+
+        const response = await axios.get("http://175.29.21.7:83/transactions/");
+        let transactionsData = response.data;
+
+        if (!Array.isArray(transactionsData)) {
+          throw new Error("Invalid response format");
+        }
+
+        // Group transactions by property_id
+        const groupedTransactions = transactionsData.reduce((acc, transaction) => {
+          if (!acc[transaction.property_id]) {
+            acc[transaction.property_id] = [];
+          }
+          acc[transaction.property_id].push(transaction);
+          return acc;
+        }, {});
+
+        // Filter transactions based on the given logic
+        const filteredTransactions = Object.values(groupedTransactions).map((transactions) => {
+          const fullPayment = transactions.find((t) => t.payment_type === "Full-Payment");
+          if (fullPayment) {
+            return fullPayment;
+          }
+          return transactions.find((t) => t.payment_type === "Advance-Payment");
+        });
+
+        setTransactions(filteredTransactions);
+      } catch (err) {
+        setError("Failed to fetch transactions");
+      } finally {
         setLoading(false);
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-        setLoading(false);
-      });
+      }
+    };
+
+    fetchTransactions();
   }, []);
 
-  const summaryCardsData = [
-    {
-      title: "Total Transactions",
-      value: "1274",
-      subtext: "Last 7 Days",
-    },
-    {
-      title: "Success Rate",
-      value: "99.5%",
-      subtext: "+2.3% from last week",
-    },
-    {
-      title: "Total Volume",
-      value: "2cr",
-      subtext: "+12% increase",
-    },
-  ];
+  useEffect(() => {
+    const fetchRemainingAmount = async () => {
+      const userId = localStorage.getItem("user_id");
 
-  const filteredProperties = properties.filter((property) =>
-    property.property_name.toLowerCase().includes(search.toLowerCase())
+      if (!transactions || transactions.length === 0) return; // Ensure transactions exist
+
+      try {
+        let allRemainingAmounts = [];
+
+        for (const transaction of transactions) {
+          const response = await fetch(
+            `http://175.29.21.7:83/transactions/user-id/${transaction.user_id}/property-id/${transaction.property_id}/`
+          );
+
+          if (!response.ok) {
+            throw new Error("Failed to fetch data");
+          }
+
+          const data = await response.json();
+
+          if (Array.isArray(data) && data.length > 0) {
+            const amounts = data.map((item) => parseFloat(item.remaining_amount));
+            allRemainingAmounts = [...allRemainingAmounts, ...amounts];
+          }
+        }
+
+        setRemainingAmount(allRemainingAmounts); // Store all remaining amounts in state
+        console.log("remainingAmounts", allRemainingAmounts);
+      } catch (error) {
+        console.error("Error fetching remaining amount:", error);
+      }
+    };
+
+    fetchRemainingAmount();
+  }, [transactions]);
+
+
+  useEffect(() => {
+    const fetchCommissionTransactions = async () => {
+      try {
+        const statusMap = {};
+        for (const transaction of transactions) {
+          try {
+            const response = await axios.get(
+              `http://175.29.21.7:83/commissions/transaction-id/${transaction.transaction_id}/`
+            );
+            const statuses = response.data.map((item) => item.commission_payment_status);
+
+            // Store status only if transaction exists
+            statusMap[transaction.transaction_id] = statuses.includes("Paid") ? "Paid" : "Unpaid";
+          } catch (error) {
+            if (error.response && error.response.status === 404) {
+              console.warn(`Transaction ID ${transaction.transaction_id} not found in commissions.`);
+              // If transaction is not found, treat it as "Unpaid" (enabled button)
+              statusMap[transaction.transaction_id] = "Unpaid";
+            } else {
+              console.error("Error fetching commission transaction statuses:", error);
+            }
+          }
+        }
+        setCommissionStatuses(statusMap);
+      } catch (error) {
+        console.error("Error in fetchCommissionTransactions:", error);
+      }
+    };
+
+    fetchCommissionTransactions();
+  }, [transactions]);
+
+
+
+
+  // Get the last element of the remainingAmount array
+  const highestIndexValue = remainingAmount.length > 0 ? remainingAmount[remainingAmount.length - 1] : null;
+
+
+  const handleToggleExpand = (transactionId) => {
+    setExpandedRows((prev) => ({
+      ...prev,
+      [transactionId]: !prev[transactionId],
+    }));
+  };
+
+
+  const handleClick = () => {
+    navigate('/i-asset');
+  };
+
+  const handleSortChange = (event) => {
+    setSortBy(event.target.value);
+    setCurrentPage(0);
+  };
+
+  const handleSearchChange = (event) => {
+    setSearchQuery(event.target.value);
+    setCurrentPage(0);
+  };
+
+  const handlePrevPage = () => {
+    setCurrentPage((prev) => Math.max(prev - 1, 0));
+  };
+
+  const handleNextPage = () => {
+    setCurrentPage((prev) => prev + 1);
+  };
+
+  const handleRemainingPaymentClick = (transactionId) => {
+    navigate(`/i-payment-form/${transactionId}`);
+  };
+
+  const filteredTransactions = transactions.filter((transaction) => {
+    const matchSearch =
+      transaction.property_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      transaction.transaction_type.toLowerCase().includes(searchQuery.toLowerCase());
+  
+    const matchDate = filterDate
+      ? new Date(transaction.created_at).toISOString().slice(0, 10) === filterDate
+      : true;
+  
+    const matchAmount = filterAmount
+      ? parseFloat(transaction.total_paid_amount) === parseFloat(filterAmount)
+      : true;
+  
+    const matchPaymentType = filterPaymentType
+      ? transaction.payment_type === filterPaymentType
+      : true;
+  
+    return matchSearch && matchDate && matchAmount && matchPaymentType;
+  });
+  
+
+  // Sort the transactions
+  const sortedTransactions = [...filteredTransactions].sort((a, b) => {
+    if (sortBy === 'name') {
+      return a.property_name.localeCompare(b.property_name);
+    } else if (sortBy === 'date') {
+      return new Date(a.created_at) - new Date(b.created_at);
+    }
+    return 0;
+  });
+
+  const totalPages = Math.ceil(sortedTransactions.length / rowsPerPage);
+  const paginatedTransactions = sortedTransactions.slice(
+    currentPage * rowsPerPage,
+    (currentPage + 1) * rowsPerPage
   );
 
-  const columns = [
-    // { field: "property_id", headerName: "Property ID", width: 120 },
-    // { field: "agent_name", headerName: "Agent Name", width: 150 },
-    // { field: "user_role", headerName: "User Role", width: 150 },
-    // { field: "user_id", headerName: "User Id", width: 150 },
-    { field: "property_name", headerName: "Property Name", width: 200 },
-    { field: "property_type", headerName: "Type", width: 150 },
-    {
-      field: "description",
-      headerName: "Description",
-      width: 250,
-      renderCell: (params) => (
-        <Typography
-          sx={{
-            whiteSpace: "normal",
-            wordWrap: "break-word",
-            overflowWrap: "break-word",
-          }}
-        >
-          {params.value}
-        </Typography>
-      ),
-    },
-    {
-      field: "address",
-      headerName: "Address",
-      width: 250,
-      renderCell: (params) => (
-        <Typography
-          sx={{
-            whiteSpace: "normal",
-            wordWrap: "break-word",
-            overflowWrap: "break-word",
-          }}
-        >
-          {params.value}
-        </Typography>
-      ),
-    },
-
-    { field: "city", headerName: "City", width: 100 },
-    { field: "state", headerName: "State", width: 100 },
-    { field: "country", headerName: "Country", width: 100 },
-    { field: "pin_code", headerName: "Pin code", width: 100 },
-    { field: "latitude", headerName: "Latitude", width: 100 },
-    { field: "longitude", headerName: "Longitude", width: 100 },
-    { field: "total_units", headerName: "Total Units", width: 120 },
-    { field: "available_units", headerName: "Available Units", width: 150 },
-    { field: "property_value", headerName: "Property Value", width: 150 },
-    { field: "ownership_type", headerName: "Ownership type", width: 150 },
-    { field: "property_image", headerName: "property image", width: 150 },
-    { field: "created_at", headerName: "created_at", width: 150 },
-    { field: "updated_at", headerName: "updated_at", width: 150 },
-
-    {
-      field: "actions",
-      headerName: "Actions",
-      width: 150,
-      renderCell: () => (
-        <Box sx={{ display: "flex", gap: "8px" }}>
-          <IconButton size="small">
-            <VisibilityIcon />
-          </IconButton>
-          <IconButton size="small">
-            <EditIcon />
-          </IconButton>
-          <IconButton size="small" sx={{ color: "red" }}>
-            <DeleteIcon />
-          </IconButton>
-        </Box>
-      ),
-    },
-  ];
+  
 
   return (
     <>
       <Header />
-      <Container sx={{ pt: 3 }}>
-        <Typography variant="h4" component="h2" sx={{ mb: 3, textAlign: "center" }}>
-          Transaction Monitor
-        </Typography>
+      <Box sx={{ marginTop: 4, padding: '50px' }}>
+      <Grid container spacing={2} mb={3}>
+  <Grid item xs={12} sm={4}>
+    <TextField
+      fullWidth
+      type="date"
+      label="Filter by Transaction Date"
+      InputLabelProps={{ shrink: true }}
+      value={filterDate}
+      onChange={(e) => setFilterDate(e.target.value)}
+    />
+  </Grid>
+  <Grid item xs={12} sm={4}>
+    <TextField
+      fullWidth
+      label="Filter by Total Paid Amount"
+      type="number"
+      value={filterAmount}
+      onChange={(e) => setFilterAmount(e.target.value)}
+    />
+  </Grid>
+  <Grid item xs={12} sm={4}>
+    <FormControl fullWidth>
+      <InputLabel>Payment Type</InputLabel>
+      <Select
+        value={filterPaymentType}
+        onChange={(e) => setFilterPaymentType(e.target.value)}
+        label="Payment Type"
+      >
+        <MenuItem value="">All</MenuItem>
+        <MenuItem value="Full-Payment">Full-Payment</MenuItem>
+        <MenuItem value="Advance-Payment">Advance-Payment</MenuItem>
+      </Select>
+    </FormControl>
+  </Grid>
+</Grid>
 
-        <Grid container spacing={2}>
-          {summaryCardsData.map((card, index) => (
-            <Grid item xs={12} md={4} key={index}>
-              <Card sx={{ backgroundColor: "#f8f9fa", textAlign: "center", p: 2, borderRadius: 2 }}>
-                <CardContent>
-                  <Typography variant="h6" gutterBottom>
-                    {card.title}
-                  </Typography>
-                  <Typography variant="h4" sx={{ color: "rgb(30,10,80)" }}>
-                    {card.value}
-                  </Typography>
-                  <Typography variant="body2">{card.subtext}</Typography>
-                </CardContent>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
+        {loading ? (
+          <CircularProgress />
+        ) : (
+          <Table sx={{ border: '1px solid black', width: '100%' }}>
+            <TableHead>
+              <TableRow>
+                <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>
+                  Investor Id
+                </TableCell>
+                <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>
+                  Partner Name
+                </TableCell>
+                <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>
+                  Property Name
+                </TableCell>
+                <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>
+                  Property Value
+                </TableCell>
+                <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>
+                  Purchased Units
+                </TableCell>
+                <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>
+                  Payment Type
+                </TableCell>
+                <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>
+                  Total Paid Amount
+                </TableCell>
+                <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>
+                  Remaining Amount
+                </TableCell>
+                <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>
+                  Transaction Date
+                </TableCell>
+                <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>
+                  Action
+                </TableCell>
+              </TableRow>
+            </TableHead>
 
-        <Box sx={{ display: "flex", justifyContent: "end", gap: "10px", mt: 3, mb: 2 }}>
-          <TextField
-            placeholder="Search..."
-            variant="outlined"
-            size="small"
-            sx={{ width: "250px" }}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-          <FormControl size="small" sx={{ width: "120px" }}>
-            <Select defaultValue="Latest">
-              <MenuItem value="Latest">Latest</MenuItem>
-              <MenuItem value="Oldest">Oldest</MenuItem>
-            </Select>
-          </FormControl>
-          <Button variant="outlined" sx={{ width: "120px", fontSize: "14px", textTransform: "none" }}>
-            Filters
-          </Button>
-        </Box>
-
-        <Box sx={{ height: 400, width: "100%", mt: 3 }}>
-          <DataGrid
-            rows={filteredProperties}
-            columns={columns}
-            pageSizeOptions={[5, 10, 20]}
-            pagination
-            paginationMode="client"
-            autoHeight
-            disableSelectionOnClick
-            loading={loading}
-            getRowId={(row) => row.property_id}
-          />
-
-        </Box>
-      </Container>
+            <TableBody>
+              {paginatedTransactions.length > 0 ? (
+                paginatedTransactions.map((transaction) => (
+                  <TableRow
+                    key={transaction.property_id}
+                    onClick={() => navigate(`/a-transaction-details?property_id=${transaction.property_id}&user_id=${transaction.user_id}`)}
+                    sx={{ cursor: 'pointer', '&:hover': { backgroundColor: '#f5f5f5' } }}
+                  >
+                    <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>
+                      {transaction.user_id}
+                    </TableCell>
+                    <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>
+                      {transaction.partner_name}
+                    </TableCell>
+                    <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>
+                      {transaction.property_name}
+                    </TableCell>
+                    <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>
+                      {transaction.property_value}
+                    </TableCell>
+                    <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>
+                      {transaction.purchased_units}
+                    </TableCell>
+                    <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>
+                      {transaction.payment_type}
+                    </TableCell>
+                    <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>
+                      {transaction.total_paid_amount}
+                    </TableCell>
+                    <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>
+                      {transaction.remaining_amount}
+                    </TableCell>
+                    <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>
+                      {new Date(transaction.created_at).toLocaleDateString('en-IN')}
+                    </TableCell>
+                    <TableCell
+                      sx={{ textAlign: "center", border: "1px solid #000" }}
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          navigate(
+                            `/a-commission-form?property_id=${transaction.property_id}&transaction_id=${transaction.transaction_id}`
+                          );
+                        }}
+                        disabled={transaction.remaining_amount !== 0 && commissionStatuses[transaction.transaction_id] === "Paid"}
+                      >
+                        Pay Commission
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={10} sx={{ textAlign: 'center', border: '1px solid #000', padding: 2 }}>
+                    No data found
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
+        )}
+      </Box>
     </>
+
   );
 };
 
-export default Tmoniter;
+export default TransactionMoniter;

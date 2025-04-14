@@ -1,397 +1,288 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
-  Box,
-  Card,
-  CardHeader,
-  CardContent,
-  CardActions,
+  Container,
+  Typography,
   Grid,
   TextField,
   Button,
-  Checkbox,
-  FormControlLabel,
-  Divider,
-  Typography,
+  MenuItem,
+  FormControl,
+  Tabs,
+  Tab,
+  Box,
 } from "@mui/material";
 import InvestorHeader from "../../../Shared/Investor/InvestorNavbar";
+import { useNavigate } from "react-router-dom";
+import Swal from 'sweetalert2';
+
+const API_BASE_URL = "http://175.29.21.7:83/users/";
 
 const Kyc = () => {
+  const navigate = useNavigate();
+  const userId = localStorage.getItem("user_id");
+
+  const [formData, setFormData] = useState({
+    user_id: "",
+    role_ids: [],
+    username: "",
+    first_name: "",
+    last_name: "",
+    email: "",
+    phone_number: "",
+    date_of_birth: "",
+    gender: "",
+    address: "",
+    city: "",
+    state: "",
+    country: "",
+    pin_code: "",
+    pan_number: "",
+    aadhaar_number: "",
+    account_holder_name: "",
+    bank_name: "",
+    branch_name: "",
+    account_number: "",
+    account_type: "",
+    ifsc_code: "",
+    image: null,
+    pan: null,
+    aadhaar: null,
+  });
+
+  const [preview, setPreview] = useState({ image: "", pan: "", aadhaar: "" });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [activeTab, setActiveTab] = useState(0);
+
+  const handleTabChange = (event, newValue) => setActiveTab(newValue);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await fetch(`${API_BASE_URL}${userId}/`);
+        if (!response.ok) throw new Error("Failed to fetch user data");
+        const data = await response.json();
+
+        setFormData({
+          ...data,
+          role_ids: data.roles.map((role) => role.role_id),
+          pan: null,
+          aadhaar: null,
+          image: null,
+        });
+
+        setPreview({
+          image: data.image || "",
+          pan: data.pan || "",
+          aadhaar: data.aadhaar || "",
+        });
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUserData();
+  }, [userId]);
+
+  const handleChange = (e) => {
+    const { name, type } = e.target;
+    if (type === "file") {
+      const file = e.target.files[0];
+      if (file) {
+        setFormData((prev) => ({ ...prev, [name]: file }));
+        setPreview((prev) => ({
+          ...prev,
+          [name]: URL.createObjectURL(file),
+        }));
+      }
+    } else {
+      setFormData((prev) => ({ ...prev, [name]: e.target.value }));
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const formDataToSend = new FormData();
+
+    Object.keys(formData).forEach((key) => {
+      if (formData[key] !== null && formData[key] !== "") {
+        formDataToSend.append(key, formData[key]);
+      }
+    });
+
+    try {
+      const response = await fetch(`${API_BASE_URL}${userId}/`, {
+        method: "PUT",
+        body: formDataToSend,
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Failed to update user");
+      }
+      await Swal.fire({
+        icon: 'success',
+        title: 'Success',
+        text: 'User updated successfully!',
+      });
+
+    } catch (err) {
+      alert("Error updating user: " + err.message);
+    }
+  };
+
+  const renderFields = (fields) => (
+    <Grid container spacing={2}>
+      {fields.map((key) => (
+        <Grid item xs={12} md={4} key={key}>
+          {key === "gender" ? (
+            <TextField select fullWidth label="Gender" name="gender" value={formData.gender} onChange={handleChange}>
+              <MenuItem value="Male">Male</MenuItem>
+              <MenuItem value="Female">Female</MenuItem>
+              <MenuItem value="Other">Other</MenuItem>
+            </TextField>
+          ) : key === "date_of_birth" ? (
+            <TextField
+              fullWidth
+              label="Date of Birth"
+              name="date_of_birth"
+              type="date"
+              value={formData.date_of_birth || ""}
+              onChange={handleChange}
+              InputLabelProps={{ shrink: true }}
+            />
+          ) : (
+            <TextField
+              fullWidth
+              label={key.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase())}
+              name={key}
+              value={formData[key] || ""}
+              onChange={handleChange}
+            />
+          )}
+        </Grid>
+      ))}
+    </Grid>
+  );
+
   return (
     <>
-    <InvestorHeader/>
-    <Box
-      sx={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "flex-start",
-        height: "100vh",
-        // backgroundColor: "#f8f9fa",
-        // paddingTop: "40px",
-      }}
-    >
-      <Card
-        sx={{
-          width: 800,
-          padding: "20px",
-          borderRadius: "12px",
-          boxShadow: "0px 6px 12px rgba(0, 0, 0, 0.2)",
-          marginTop: "10px",
-        }}
-      >
-        {/* Header */}
-        <CardHeader
-          title="Investor Registration"
-          sx={{
-            backgroundColor: "rgb(30, 10, 80)",
-            color: "white",
-            textAlign: "center",
-            padding: "15px",
-            fontSize: "20px",
-            borderTopLeftRadius: "12px",
-            borderTopRightRadius: "12px",
-          }}
-        />
-
-        {/* Form Content */}
-        <CardContent>
-          {/* Basic Information */}
-          <Typography
-            variant="h6"
-            sx={{
-              fontWeight: "bold",
-              color: "rgb(30, 10, 80)",
-              marginTop: "15px",
-            }}
-          >
-            Basic Information
-          </Typography>
-          <Grid container spacing={2}>
-            <Grid item xs={12} sm={4}>
-              <TextField
-                fullWidth
-                placeholder="Full Name"
-                variant="outlined"
-                size="small"
-              />
-            </Grid>
-            <Grid item xs={12} sm={4}>
-              <TextField
-                fullWidth
-                placeholder="Email"
-                variant="outlined"
-                size="small"
-                type="email"
-              />
-            </Grid>
-            <Grid item xs={12} sm={4}>
-              <TextField
-                fullWidth
-                placeholder="Mobile Number"
-                variant="outlined"
-                size="small"
-                type="tel"
-              />
-            </Grid>
-            <Grid item xs={12} sm={4}>
-              <TextField
-                fullWidth
-                placeholder="Date of Birth"
-                variant="outlined"
-                size="small"
-                type="date"
-                InputLabelProps={{ shrink: true }}
-              />
-            </Grid>
-            <Grid item xs={12} sm={4}>
-              <TextField
-                fullWidth
-                placeholder="Gender"
-                variant="outlined"
-                size="small"
-              />
-            </Grid>
-          </Grid>
-          <Divider sx={{ my: "10px", borderWidth: "0.5px" }} />
-
-          {/* Address Details */}
-          <Typography
-            variant="h6"
-            sx={{
-              fontWeight: "bold",
-              color: "rgb(30, 10, 80)",
-              marginTop: "15px",
-            }}
-          >
-            Address Details
-          </Typography>
-          <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                fullWidth
-                placeholder="Address"
-                variant="outlined"
-                size="small"
-              />
-            </Grid>
-            <Grid item xs={12} sm={3}>
-              <TextField
-                fullWidth
-                placeholder="Country"
-                variant="outlined"
-                size="small"
-              />
-            </Grid>
-            <Grid item xs={12} sm={3}>
-              <TextField
-                fullWidth
-                placeholder="State"
-                variant="outlined"
-                size="small"
-              />
-            </Grid>
-            <Grid item xs={12} sm={3}>
-              <TextField
-                fullWidth
-                placeholder="City"
-                variant="outlined"
-                size="small"
-              />
-            </Grid>
-            <Grid item xs={12} sm={3}>
-              <TextField
-                fullWidth
-                placeholder="ZIP Code"
-                variant="outlined"
-                size="small"
-              />
-            </Grid>
-          </Grid>
-          <Divider sx={{ my: "10px", borderWidth: "0.5px" }} />
-
-          {/* Banking Details */}
-          <Typography
-            variant="h6"
-            sx={{
-              fontWeight: "bold",
-              color: "rgb(30, 10, 80)",
-              marginTop: "15px",
-            }}
-          >
-            Banking Details
-          </Typography>
-          <Grid container spacing={2}>
-            <Grid item xs={12} sm={4}>
-              <TextField
-                fullWidth
-                placeholder="PAN Number"
-                variant="outlined"
-                size="small"
-              />
-            </Grid>
-            <Grid item xs={12} sm={4}>
-              <TextField
-                fullWidth
-                placeholder="Aadhar Number"
-                variant="outlined"
-                size="small"
-              />
-            </Grid>
-            <Grid item xs={12} sm={4}>
-              <TextField
-                fullWidth
-                placeholder="Bank Name"
-                variant="outlined"
-                size="small"
-              />
-            </Grid>
-            <Grid item xs={12} sm={4}>
-              <TextField
-                fullWidth
-                placeholder="Account Number"
-                variant="outlined"
-                size="small"
-              />
-            </Grid>
-            <Grid item xs={12} sm={4}>
-              <TextField
-                fullWidth
-                placeholder="IFSC Code"
-                variant="outlined"
-                size="small"
-              />
-            </Grid>
-            <Grid item xs={12} sm={4}>
-              <TextField
-                fullWidth
-                placeholder="Bank Branch"
-                variant="outlined"
-                size="small"
-              />
-            </Grid>
-          </Grid>
-          <Divider sx={{ my: "10px", borderWidth: "0.5px" }} />
-
-          {/* Investment Details */}
-          <Typography
-            variant="h6"
-            sx={{
-              fontWeight: "bold",
-              color: "rgb(30, 10, 80)",
-              marginTop: "15px",
-            }}
-          >
-            Investment Details
-          </Typography>
-          <Grid container spacing={2}>
-            <Grid item xs={12} sm={4}>
-              <TextField
-                fullWidth
-                placeholder="Investment Type"
-                variant="outlined"
-                size="small"
-              />
-            </Grid>
-            <Grid item xs={12} sm={4}>
-              <TextField
-                fullWidth
-                placeholder="Risk Profile"
-                variant="outlined"
-                size="small"
-              />
-            </Grid>
-            <Grid item xs={12} sm={4}>
-              <TextField
-                fullWidth
-                placeholder="Expected Investment Amount"
-                variant="outlined"
-                size="small"
-              />
-            </Grid>
-          </Grid>
-          <Divider sx={{ my: "10px", borderWidth: "0.5px" }} />
-
-          {/* Nominee Details */}
-          <Typography
-            variant="h6"
-            sx={{
-              fontWeight: "bold",
-              color: "rgb(30, 10, 80)",
-              marginTop: "15px",
-            }}
-          >
-            Nominee Details
-          </Typography>
-          <Grid container spacing={2}>
-            <Grid item xs={12} sm={4}>
-              <TextField
-                fullWidth
-                placeholder="Nominee Name"
-                variant="outlined"
-                size="small"
-              />
-            </Grid>
-            <Grid item xs={12} sm={4}>
-              <TextField
-                fullWidth
-                placeholder="Nominee Relationship"
-                variant="outlined"
-                size="small"
-              />
-            </Grid>
-            <Grid item xs={12} sm={4}>
-              <TextField
-                fullWidth
-                placeholder="Nominee Date of Birth"
-                variant="outlined"
-                size="small"
-                type="date"
-                InputLabelProps={{ shrink: true }}
-              />
-            </Grid>
-          </Grid>
-          <Divider sx={{ my: "10px", borderWidth: "0.5px" }} />
-
-          {/* KYC Verification */}
-          <Typography
-            variant="h6"
-            sx={{
-              fontWeight: "bold",
-              color: "rgb(30, 10, 80)",
-              marginTop: "15px",
-            }}
-          >
-            KYC Verification
-          </Typography>
-          <Grid container spacing={2} alignItems="center">
-            <Grid
-              item
-              xs={12}
-              sm={6}
-              sx={{ display: "flex", alignItems: "center" }}
-            >
-              <Button
-                variant="outlined"
-                component="label"
-                sx={{ flex: 1, marginRight: "10px" }}
-              >
-                Upload File
-                <input type="file" hidden />
-              </Button>
-              <Button
-                variant="contained"
-                sx={{
-                  backgroundColor: "green",
-                  "&:hover": { backgroundColor: "darkred" },
-                }}
-              >
-                KYC
-              </Button>
-            </Grid>
-          </Grid>
-          <Divider sx={{ my: "10px", borderWidth: "0.5px" }} />
-
-          {/* Terms & Conditions */}
-          <Grid
-            container
-            justifyContent="center"
-            alignItems="center"
-            sx={{ marginTop: "10px", whiteSpace: "nowrap" }}
-          >
-            <Grid item>
-              <FormControlLabel
-                control={<Checkbox />}
-                label={
-                  <Typography
-                    variant="body2"
-                    sx={{
-                      fontWeight: "bold",
-                      color: "rgb(30, 10, 80)",
-                    }}
+      <InvestorHeader />
+      <Container maxWidth="lg" sx={{ pt: 4 }}>
+        <Typography variant="h4" gutterBottom align="center" marginBottom={2}>
+          Complete Investor's KYC
+        </Typography>
+  
+        {loading ? (
+          <Typography>Loading...</Typography>
+        ) : error ? (
+          <Typography color="error">{error}</Typography>
+        ) : (
+          <>
+            <Tabs value={activeTab} onChange={handleTabChange} centered sx={{ mb: 3 }}>
+              <Tab label="Personal Info" />
+              <Tab label="Address Details" />
+              <Tab label="Bank Details" />
+              <Tab label="PAN Details" />
+            </Tabs>
+  
+            <Box hidden={activeTab !== 0}>
+              {renderFields(["username", "email", "phone_number", "date_of_birth", "gender"])}
+            </Box>
+  
+            <Box hidden={activeTab !== 1}>
+              {renderFields(["address", "city", "state", "country", "pin_code"])}
+            </Box>
+  
+            <Box hidden={activeTab !== 2}>
+              {renderFields([
+                "account_holder_name",
+                "bank_name",
+                "branch_name",
+                "account_number",
+                "account_type",
+                "ifsc_code",
+              ])}
+            </Box>
+  
+            {/* Only wrap final tab in a form */}
+            {activeTab === 3 && (
+              <form onSubmit={handleSubmit} encType="multipart/form-data">
+                <Box>
+                  {renderFields(["pan_number", "aadhaar_number"])}
+  
+                  <Grid container spacing={2}>
+                    {["image", "pan", "aadhaar"].map((key) => (
+                      <Grid item xs={4} mt={4} key={key}>
+                        <FormControl fullWidth>
+                          <TextField
+                            fullWidth
+                            label={key.toUpperCase()}
+                            type="file"
+                            name={key}
+                            onChange={handleChange}
+                            inputProps={{
+                              accept: key === "image" ? "image/*" : ".pdf,.jpg,.jpeg,.png",
+                            }}
+                            InputLabelProps={{ shrink: true }}
+                          />
+                          {preview[key] && (
+                            <a
+                              href={`http://175.29.21.7:83${preview[key]}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                            >
+                              View {key.toUpperCase()}
+                            </a>
+                          )}
+                        </FormControl>
+                      </Grid>
+                    ))}
+                  </Grid>
+                </Box>
+  
+                <Box display="flex" justifyContent="space-between" mt={4}>
+                  <Button
+                    variant="outlined"
+                    onClick={() => setActiveTab((prev) => prev - 1)}
                   >
-                    I agree to the Terms & Conditions
-                  </Typography>
-                }
-              />
-            </Grid>
-          </Grid>
-        </CardContent>
-
-        {/* Footer with Submit Button */}
-        <CardActions sx={{ justifyContent: "center" }}>
-          <Button
-            variant="contained"
-            sx={{
-              backgroundColor: "rgb(20, 5, 60)",
-              "&:hover": { backgroundColor: "rgb(15, 4, 50)" },
-            }}
-          >
-            Submit
-          </Button>
-        </CardActions>
-      </Card>
-    </Box>
+                    Back
+                  </Button>
+  
+                  <Button type="submit" variant="contained" color="primary">
+                    Save
+                  </Button>
+                </Box>
+              </form>
+            )}
+  
+            {/* Navigation buttons for earlier tabs */}
+            {activeTab < 3 && (
+              <Box display="flex" justifyContent="space-between" mt={4}>
+                <Button
+                  variant="outlined"
+                  disabled={activeTab === 0}
+                  onClick={() => setActiveTab((prev) => prev - 1)}
+                >
+                  Back
+                </Button>
+  
+                <Button
+                  variant="contained"
+                  onClick={() => setActiveTab((prev) => prev + 1)}
+                >
+                  Next
+                </Button>
+              </Box>
+            )}
+          </>
+        )}
+      </Container>
     </>
   );
+  
 };
 
 export default Kyc;

@@ -24,6 +24,10 @@ import SearchIcon from '@mui/icons-material/Search';
 import AddIcon from '@mui/icons-material/Add';
 import Header from '../../../Shared/Navbar/Navbar';
 import { useNavigate } from "react-router-dom";
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import IconButton from '@mui/material/IconButton';
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const AssetDashboard = () => {
   const navigate = useNavigate();
@@ -31,12 +35,20 @@ const AssetDashboard = () => {
   const [openDialog, setOpenDialog] = useState(false);
   const [selectedAsset, setSelectedAsset] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
+  const [counts, setCounts] = useState({});
+  const [sortBy, setSortBy] = useState("latest");
 
   useEffect(() => {
     fetch("http://175.29.21.7:83/property/")
       .then(response => response.json())
       .then(data => setAssets(data))
       .catch(error => console.error("Error fetching data:", error));
+
+    // Fetch the counts data
+    fetch("http://175.29.21.7:83/counts/")
+      .then(response => response.json())
+      .then(data => setCounts(data))
+      .catch(error => console.error("Error fetching counts:", error));
   }, []);
 
   const handleOpenDialog = (asset) => {
@@ -54,26 +66,59 @@ const AssetDashboard = () => {
   };
 
   const filteredAssets = assets.filter(asset =>
-    asset.property_name.toLowerCase().includes(searchTerm.toLowerCase())
+    ["property_name", "description", "city", "state"].some(field =>
+      asset[field]?.toString().toLowerCase().includes(searchTerm.toLowerCase())
+    ) ||
+    asset.property_value?.toString().includes(searchTerm) // Search by property value
   );
+  
 
-  const summaryCardsData = [
-    {
-      title: "Total Assets",
-      value: "12",
-      // subtext: "Last 7 Days",
-    },
-    {
-      title: "Total Value",
-      value: "8.5cr",
-      // subtext: "+2.3% from last week",
-    },
-    {
-      title: "Active Units",
-      value: "450",
-      // subtext: "+12% increase",
-    },
-  ];
+  const handleEdit = (assetId) => {
+    navigate(`/a-edit-asset`, { state: { assetId } });
+    console.log("Edit asset with ID:", assetId);
+  };
+
+  const handleDelete = (assetId) => {
+    if (window.confirm("Are you sure you want to delete this asset?")) {
+      fetch(`http://175.29.21.7:83/property/${assetId}/`, {
+        method: "DELETE",
+      })
+        .then((response) => {
+          if (response.ok) {
+            window.location.reload(); // Reloads the page after successful deletion
+          } else {
+            throw new Error("Failed to delete asset");
+          }
+        })
+        .catch((error) => console.error("Error deleting asset:", error));
+    }
+  };
+
+
+  // const summaryCardsData = [
+  //   {
+  //     title: "Total Assets",
+  //     value: counts.total_properties || "Loading...", // Dynamic value
+  //   },
+  //   {
+  //     title: "Total Value",
+  //     value: counts.total_properties_value ? `₹${counts.total_properties_value}` : "Loading...", // Dynamic value
+  //   },
+  //   {
+  //     title: "Active Units",
+  //     value: counts.total_properties_available_units || "Loading...", // Dynamic value
+  //   },
+  // ];
+
+
+
+  const sortedAssets = [...filteredAssets].sort((a, b) => {
+    if (sortBy === "latest") return new Date(b.date) - new Date(a.date);
+    if (sortBy === "oldest") return new Date(a.date) - new Date(b.date);
+    if (sortBy === "price-high") return b.property_value - a.property_value;
+    if (sortBy === "price-low") return a.property_value - b.property_value;
+    return 0;
+  });
 
   return (
     <>
@@ -92,9 +137,11 @@ const AssetDashboard = () => {
             {/* Search Input */}
             <Grid item xs={12} md={6} lg={7}>
               <TextField
-                placeholder="Search assets..."
+                placeholder="Search by name or value..."
                 fullWidth
                 variant="outlined"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
@@ -120,30 +167,23 @@ const AssetDashboard = () => {
                   }
                 }}
               />
+
             </Grid>
 
             {/* Filter Select */}
             <Grid item xs={12} md={3} lg={3}>
               <FormControl fullWidth>
                 <Select
-                  defaultValue="latest"
-                  sx={{
-                    borderRadius: '8px',
-                    fontSize: '15px',
-                    backgroundColor: 'white',
-                    border: '1px solid #E0E0E0'
-                  }}
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value)}
+                  sx={{ borderRadius: "8px", fontSize: "15px" }}
                 >
                   <MenuItem value="latest">Latest</MenuItem>
-                  <MenuItem value="oldest">Oldest</MenuItem>
                   <MenuItem value="price-high">Price: High to Low</MenuItem>
                   <MenuItem value="price-low">Price: Low to High</MenuItem>
                 </Select>
               </FormControl>
             </Grid>
-
-
-
             {/* Add Asset Button */}
             <Grid item xs={12} md={3} lg={2}>
               <Button
@@ -169,7 +209,7 @@ const AssetDashboard = () => {
           </Grid>
         </Box>
         {/* Stats Cards */}
-        <Grid container spacing={2} sx={{ mb: 4 }}>
+        {/* <Grid container spacing={2} sx={{ mb: 4 }}>
           {summaryCardsData.map((card, index) => (
             <Grid item xs={12} md={4} key={index}>
               <Card
@@ -193,9 +233,9 @@ const AssetDashboard = () => {
               </Card>
             </Grid>
           ))}
-        </Grid>
+        </Grid> */}
         <Grid container spacing={2}>
-          {filteredAssets.map((asset, index) => (
+          {sortedAssets.map((asset, index) => (
             <Grid item xs={12} md={6} lg={4} key={index} sx={{ display: 'flex' }}>
               <Card
                 sx={{
@@ -223,16 +263,6 @@ const AssetDashboard = () => {
                     sx={{ height: 220, objectFit: 'cover' }}
                   />
 
-                  {/* <Chip
-                    label={asset.listing_status}
-                    sx={{
-                      position: 'absolute',
-                      top: 15,
-                      right: 15,
-                      backgroundColor: asset.listing_status === 'available' ? '#2ECC71' : '#E74C3C',
-                      color: 'white',
-                    }}
-                  /> */}
                 </Box>
                 <CardContent sx={{ flexGrow: 1 }}>
                   <Typography variant="h6" fontWeight="bold" mb={1}>
@@ -294,14 +324,27 @@ const AssetDashboard = () => {
                       </Typography>
                     </Grid>
                     <Grid item>
-                      <Button
-                        variant="contained"
-                        sx={{ backgroundColor: '#4A90E2', '&:hover': { backgroundColor: '#357ABD' } }}
+                      <IconButton
+                        sx={{ color: '#4A90E2', '&:hover': { color: '#357ABD' } }}
                         onClick={() => handleOpenDialog(asset)}
                       >
-                        View Details
-                      </Button>
+                        <VisibilityIcon />
+                      </IconButton>
+                      <IconButton
+                        sx={{ color: "#FFC107", "&:hover": { color: "#FF9800" } }}
+                        onClick={() => handleEdit(asset.property_id)}
+                      >
+                        <EditIcon />
+                      </IconButton>
+
+                      <IconButton
+                        sx={{ color: "#F44336", "&:hover": { color: "#D32F2F" } }}
+                        onClick={() => handleDelete(asset.property_id)}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
                     </Grid>
+
                   </Grid>
                 </Box>
               </Card>

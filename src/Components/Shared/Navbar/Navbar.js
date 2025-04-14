@@ -34,7 +34,7 @@ export default function Header() {
   const navItems = [
     { label: 'Dashboard', path: '/a-dashboard' },
     { label: 'Assets', path: '/a-asset' },
-    { label: 'Escrow Account', path: '/a-escro' },
+    { label: 'Escrow Account', path: '/a-escrow' },
     { label: 'Transactions', path: '/a-transactionmoniter' },
     { label: 'Investors', path: '/a-investormanagement' },
     { label: 'Partners', path: '/a-partners' },

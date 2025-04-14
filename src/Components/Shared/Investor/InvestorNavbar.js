@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Logo from '../../Images/Logo File.png';
 import LogoutIcon from '@mui/icons-material/Logout';
 import {
@@ -27,7 +27,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
-import axios from 'axios'; 
+import axios from 'axios';
 
 export default function InvestorHeader() {
   // Define nav items with navigation paths.
@@ -35,19 +35,30 @@ export default function InvestorHeader() {
   const navItems = [
     { label: 'Dashboard', path: '/i-dashboard' },
     { label: 'Buy Assets', path: '/i-asset' },
-    {
-      label: 'Transactions',
-      submenu: [
-        { label: 'Advance Payments', path: '/i-buyunits' },
-        { label: 'Full Payments', path: '/i-fullpayments' },
-      ],
-    },
+    { label: 'Transactions', path: '/i-buyunits' },
     { label: 'Purchased Assets', path: '/i-purchasedasset' },
+    // { label: 'KYC', path: '/i-profiledetails' },
   ];
 
   // Responsive helper.
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+
+  const [username, setUsername] = useState("");
+  const userId = localStorage.getItem("user_id");
+
+  useEffect(() => {
+    if (userId) {
+      fetch(`http://175.29.21.7:83/users/${userId}/`)
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.username) {
+            setUsername(data.username.trim() || "Investor");
+          }
+        })
+        .catch((error) => console.error("Error fetching user data:", error));
+    }
+  }, [userId]);
 
   // Navigation hooks.
   const navigate = useNavigate();
@@ -183,14 +194,14 @@ export default function InvestorHeader() {
   const handleRoleChange = (event) => {
     const role = event.target.value;
     setSelectedRole(role);
-  
+
     // Define role-based navigation
     const rolePaths = {
       Admin: '/a-dashboard',
       Partner: '/p-dashboard',
       Investor: '/i-dashboard',
     };
-  
+
     // Navigate to the corresponding dashboard if role exists
     if (rolePaths[role]) {
       navigate(rolePaths[role]);
@@ -204,7 +215,7 @@ export default function InvestorHeader() {
         sx={{
           backgroundColor: 'white', // Adjust color as needed.
           color: '#000',
-          boxShadow:"-moz-initial"
+          boxShadow: "-moz-initial"
         }}
       >
         <Toolbar>
@@ -253,9 +264,9 @@ export default function InvestorHeader() {
                   ))}
                 </Select>
               </FormControl> */}
-            <Typography variant='h6'>
-              Investor
-            </Typography>
+                <Typography variant="h6">
+                  {username ? `${username} (Investor)` : "Investor"}
+                </Typography>
                 <Avatar
                   onClick={handleAvatarClick}
                   sx={{ width: 40, height: 40, cursor: 'pointer' }}
@@ -334,9 +345,9 @@ export default function InvestorHeader() {
                 ))}
               </Select>
             </FormControl> */}
-            <Typography variant='h6'>
-              Investor
-            </Typography>
+              <Typography variant="h6">
+                {username ? `${username} (Investor)` : "Investor"}
+              </Typography>
               <Avatar
                 onClick={handleAvatarClick}
                 sx={{ width: 40, height: 40, cursor: 'pointer' }}
@@ -375,7 +386,7 @@ export default function InvestorHeader() {
         >
           Profile
         </MenuItem>
-        <MenuItem
+        {/* <MenuItem
           onClick={() => {
             handleProfileMenuClose();
             navigate('/i-profiledetails');
@@ -383,12 +394,12 @@ export default function InvestorHeader() {
           sx={{ fontWeight: 'bold', fontSize: '16px' }}
         >
           KYC
-        </MenuItem>
+        </MenuItem> */}
         <MenuItem
           onClick={() => {
             localStorage.removeItem("user_id");
             handleProfileMenuClose();
-            navigate('/login');
+            navigate('/signin');
           }}
           sx={{
             fontSize: '16px',
@@ -403,7 +414,7 @@ export default function InvestorHeader() {
       </Menu>
 
       {/* Transactions Dropdown Menu for Desktop */}
-      <Menu
+      {/* <Menu
         anchorEl={transAnchorEl}
         open={transMenuOpen}
         onClose={handleTransClose}
@@ -428,7 +439,7 @@ export default function InvestorHeader() {
               {subitem.label}
             </MenuItem>
           ))}
-      </Menu>
+      </Menu> */}
     </>
   );
 }

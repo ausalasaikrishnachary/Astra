@@ -1,5 +1,5 @@
-import React from 'react';
-import { Container, Grid, Card, CardContent, Typography, Box } from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import { Container, Grid, Card, CardContent, Typography, Box, Button } from '@mui/material';
 import { Line, Pie } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -12,6 +12,7 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
+import { Link } from 'react-router-dom';
 import InvestorHeader from '../../../Shared/Investor/InvestorNavbar';
 
 // Register required ChartJS components
@@ -27,6 +28,18 @@ ChartJS.register(
 );
 
 function Dashboard() {
+  const [counts, setCounts] = useState({});
+  const userId = localStorage.getItem("user_id");
+
+  useEffect(() => {
+    // Fetch the counts data
+    fetch(`http://175.29.21.7:83/transaction-summary/${userId}/Full-Payment/`)
+      .then(response => response.json())
+      .then(data => setCounts(data))
+      .catch(error => console.error("Error fetching counts:", error));
+  }, []);
+
+
   // Data and options for the line chart (Price Trend)
   const priceData = {
     labels: ['2023-01', '2023-02', '2023-03', '2023-04'],
@@ -58,7 +71,7 @@ function Dashboard() {
 
   // Data and options for the pie chart (Distribution)
   const distributionData = {
-    labels: ['Apartments', 'Villas', 'Commercial Spaces'],
+    labels: ['Industry 1', 'Industry 1', 'Industry 1'],
     datasets: [
       {
         data: [45, 30, 25],
@@ -78,31 +91,16 @@ function Dashboard() {
 
   const summaryCardsData = [
     {
-      title: "Total Portfolio Value",
-      value: "4.5 Cr",
-      // subtext: "Last 7 Days",
+      title: "Total Purchased Assets",
+      value: counts.total_properties_purchased || "0", // Dynamic value
     },
     {
-      title: "Total Performance",
-      value: "22.30%",
-      // subtext: "+2.3% from last week",
+      title: "Total Amount Invested",
+      value: counts.total_paid_amount ? `₹${counts.total_paid_amount}` : "0", // Dynamic value
     },
     {
-      title: "Total amount Invested",
-      value: "10.5L",
-      // subtext: "+12% increase",
-    },
-    ,
-    {
-      title: "Number of Assets",
-      value: "2",
-      // subtext: "+12% increase",
-    },
-    ,
-    {
-      title: "Total Interest",
-      value: "10%",
-      // subtext: "+12% increase",
+      title: "Total Purchased Units",
+      value: counts.total_purchased_units || "0", // Dynamic value
     },
   ];
 
@@ -111,10 +109,7 @@ function Dashboard() {
       <InvestorHeader />
       <Box
         sx={{
-          backgroundImage:
-            "url('https://img.freepik.com/free-photo/contemporary-building-blur_23-2147694747.jpg')",
-          minHeight: '100vh',
-          backgroundSize: 'cover',
+
           backgroundPosition: 'center',
           display: 'flex',
           alignItems: 'center',
@@ -158,55 +153,35 @@ function Dashboard() {
             ))}
           </Grid>
 
-          {/* Analytics Section */}
-          <Typography
-            variant="h5"
-            sx={{ color: '#100f0f', fontSize: '28px', fontWeight: 700, mb: 3, mt:3, pl: 2,textAlign:"center" }}
-          >
-            Analytics
-          </Typography>
-
-          <Grid container spacing={3}>
-            {/* Line Chart Card */}
-            <Grid item xs={12} md={6}>
-              <Box
+          <Box mt={3} borderRadius={2} p={3} sx={{ bgcolor: '#1a5ca3', color: 'white' }}>
+            <Typography variant="h6" gutterBottom>
+              Finish your KYC to start investing
+            </Typography>
+            <Typography mb={3}>
+              Make sure you complete all the sections to submit your KYC details for review. Please keep scanned images of your Address proof, ID proof and a cancelled cheque/bank statement ready.
+            </Typography>
+            <Box display="flex" flexWrap="wrap" mb={3}>
+              {['Personal Info', 'Address', 'PAN', 'Bank Account'].map((item, idx) => (
+                <Typography key={idx} mr={4} mb={1}>
+                  {item}
+                </Typography>
+              ))}
+            </Box>
+            <Link to="/i-profiledetails" style={{ textDecoration: 'none' }}>
+              <Button
+                variant="contained"
                 sx={{
-                  background: 'white',
-                  borderRadius: '10px',
-                  p: 2,
-                  boxShadow: 3,
-                  mb: 4,
+                  bgcolor: 'white',
+                  color: '#0a3c72',
+                  fontWeight: 'bold',
+                  '&:hover': { bgcolor: '#f0f0f0' }, // optional hover styling
                 }}
               >
-                <Typography sx={{ fontSize: '16px', color: '#666', mb: 2 }}>
-                  Luxury apartment (ABC) Performance
-                </Typography>
-                <Box sx={{ height: 300 }}>
-                  <Line data={priceData} options={priceOptions} />
-                </Box>
-              </Box>
-            </Grid>
+                Update your KYC
+              </Button>
+            </Link>
+          </Box>
 
-            {/* Pie Chart Card */}
-            <Grid item xs={12} md={6}>
-              <Box
-                sx={{
-                  background: 'white',
-                  borderRadius: '10px',
-                  p: 2,
-                  boxShadow: 3,
-                  mb: 4,
-                }}
-              >
-                <Typography sx={{ fontSize: '16px', color: '#666', mb: 2 }}>
-                  Commercial Space (ABC) Performance
-                </Typography>
-                <Box sx={{ height: 300 }}>
-                  <Pie data={distributionData} options={distributionOptions} />
-                </Box>
-              </Box>
-            </Grid>
-          </Grid>
         </Container>
       </Box>
     </>

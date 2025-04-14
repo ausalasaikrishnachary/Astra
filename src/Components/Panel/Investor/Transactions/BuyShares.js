@@ -35,13 +35,17 @@ const BuyShares = () => {
   const [expandedRows, setExpandedRows] = useState({});
 
   const navigate = useNavigate();
-  const [remainingAmount, setRemainingAmount] = useState(null);
+  const [remainingAmount, setRemainingAmount] = useState([]);
+
+  const [filterDate, setFilterDate] = useState('');
+  const [filterAmount, setFilterAmount] = useState('');
+  const [filterPaymentType, setFilterPaymentType] = useState('');
+
 
   useEffect(() => {
     const fetchTransactions = async () => {
       try {
-        const userId = localStorage.getItem("user_id"); // Get user_id from localStorage
-        const advancePayment = "Advance-Payment"
+        const userId = localStorage.getItem("user_id");
 
         if (!userId) {
           setError("User ID not found");
@@ -49,9 +53,32 @@ const BuyShares = () => {
           return;
         }
 
-        const response = await axios.get(`http://175.29.21.7:83/transactions/user-id/${userId}/payment-type/${advancePayment}/`);
-        setTransactions(response.data);
-        console.log("response", response.data)
+        const response = await axios.get(`http://175.29.21.7:83/transactions/user-id/${userId}/`);
+        let transactionsData = response.data;
+
+        if (!Array.isArray(transactionsData)) {
+          throw new Error("Invalid response format");
+        }
+
+        // Group transactions by property_id
+        const groupedTransactions = transactionsData.reduce((acc, transaction) => {
+          if (!acc[transaction.property_id]) {
+            acc[transaction.property_id] = [];
+          }
+          acc[transaction.property_id].push(transaction);
+          return acc;
+        }, {});
+
+        // Filter transactions based on the given logic
+        const filteredTransactions = Object.values(groupedTransactions).map((transactions) => {
+          const fullPayment = transactions.find((t) => t.payment_type === "Full-Payment");
+          if (fullPayment) {
+            return fullPayment;
+          }
+          return transactions.find((t) => t.payment_type === "Token-Payment");
+        });
+
+        setTransactions(filteredTransactions);
       } catch (err) {
         setError("Failed to fetch transactions");
       } finally {
@@ -62,6 +89,8 @@ const BuyShares = () => {
     fetchTransactions();
   }, []);
 
+
+
   useEffect(() => {
     const fetchRemainingAmount = async () => {
       const userId = localStorage.getItem("user_id");
@@ -69,9 +98,11 @@ const BuyShares = () => {
       if (!transactions || transactions.length === 0) return; // Ensure transactions exist
 
       try {
+        let allRemainingAmounts = [];
+
         for (const transaction of transactions) {
           const response = await fetch(
-            `http://175.29.21.7:83/transactions/user-id/${userId}/property-id/${transaction.property_id}/payment-type/Full-Payment/`
+            `http://175.29.21.7:83/transactions/user-id/${userId}/property-id/${transaction.property_id}/`
           );
 
           if (!response.ok) {
@@ -80,23 +111,24 @@ const BuyShares = () => {
 
           const data = await response.json();
 
-
           if (Array.isArray(data) && data.length > 0) {
-            const remainingAmounts = data.map((item) => parseFloat(item.remaining_amount));
-            setRemainingAmount(remainingAmounts); // Store all remaining amounts in state
+            const amounts = data.map((item) => parseFloat(item.remaining_amount));
+            allRemainingAmounts = [...allRemainingAmounts, ...amounts];
           }
-
         }
+
+        setRemainingAmount(allRemainingAmounts); // Store all remaining amounts in state
+        console.log("remainingAmounts", allRemainingAmounts);
       } catch (error) {
         console.error("Error fetching remaining amount:", error);
-      } finally {
-        setLoading(false);
       }
     };
 
     fetchRemainingAmount();
   }, [transactions]); // Depend on transactions array
-  // Depend on transactions array
+
+  // Get the last element of the remainingAmount array
+  const highestIndexValue = remainingAmount.length > 0 ? remainingAmount[remainingAmount.length - 1] : null;
 
 
   const handleToggleExpand = (transactionId) => {
@@ -133,12 +165,26 @@ const BuyShares = () => {
     navigate(`/i-payment-form/${transactionId}`);
   };
 
-  // Filter transactions based on search query
-  const filteredTransactions = transactions.filter(
-    (transaction) =>
+  const filteredTransactions = transactions.filter((transaction) => {
+    const matchSearch =
       transaction.property_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      transaction.transaction_type.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+      transaction.transaction_type.toLowerCase().includes(searchQuery.toLowerCase());
+
+    const matchDate = filterDate
+      ? new Date(transaction.created_at).toISOString().slice(0, 10) === filterDate
+      : true;
+
+    const matchAmount = filterAmount
+      ? parseFloat(transaction.total_paid_amount) === parseFloat(filterAmount)
+      : true;
+
+    const matchPaymentType = filterPaymentType
+      ? transaction.payment_type === filterPaymentType
+      : true;
+
+    return matchSearch && matchDate && matchAmount && matchPaymentType;
+  });
+
 
   // Sort the transactions
   const sortedTransactions = [...filteredTransactions].sort((a, b) => {
@@ -160,26 +206,85 @@ const BuyShares = () => {
     <>
       <InvestorHeader />
       <Box sx={{ marginTop: 4, padding: '50px' }}>
+        <Grid container spacing={2} mb={3}>
+          <Grid item xs={12} sm={4}>
+            <TextField
+              fullWidth
+              type="date"
+              label="Filter by Transaction Date"
+              InputLabelProps={{ shrink: true }}
+              value={filterDate}
+              onChange={(e) => setFilterDate(e.target.value)}
+            />
+          </Grid>
+          <Grid item xs={12} sm={4}>
+            <TextField
+              fullWidth
+              label="Filter by Total Paid Amount"
+              type="number"
+              value={filterAmount}
+              onChange={(e) => setFilterAmount(e.target.value)}
+            />
+          </Grid>
+          <Grid item xs={12} sm={4}>
+            <FormControl fullWidth>
+              <InputLabel>Payment Type</InputLabel>
+              <Select
+                value={filterPaymentType}
+                onChange={(e) => setFilterPaymentType(e.target.value)}
+                label="Payment Type"
+              >
+                <MenuItem value="">All</MenuItem>
+                <MenuItem value="Full-Payment">Full-Payment</MenuItem>
+                <MenuItem value="Token-Payment">Token-Payment</MenuItem>
+              </Select>
+            </FormControl>
+          </Grid>
+          <Grid item xs={12} sm={12}>
+            <Box display="flex" justifyContent="flex-end">
+              <Button
+                variant="outlined"
+                onClick={() => {
+                  setFilterDate('');
+                  setFilterAmount('');
+                  setFilterPaymentType('');
+                  setSearchQuery('');
+                }}
+              >
+                Clear Filters
+              </Button>
+            </Box>
+          </Grid>
+
+        </Grid>
+
         {loading ? (
           <CircularProgress />
-        ) : error ? (
-          <Typography color="error">{error}</Typography>
         ) : (
           <>
             <Table sx={{ border: '1px solid black', width: '100%' }}>
               <TableHead>
                 <TableRow>
                   <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>
-                    Transaction ID
-                  </TableCell>
-                  <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>
                     Property Name
                   </TableCell>
                   <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>
-                    Transaction Type
+                    Property Value
+                  </TableCell>
+                  <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>
+                    Purchased Units
                   </TableCell>
                   <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>
                     Payment Type
+                  </TableCell>
+                  <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>
+                    Total Paid Amount
+                  </TableCell>
+                  <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>
+                    Remaining Amount
+                  </TableCell>
+                  <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>
+                    Transaction Date
                   </TableCell>
                   <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>
                     Action
@@ -188,66 +293,69 @@ const BuyShares = () => {
               </TableHead>
 
               <TableBody>
-                {paginatedTransactions.map((transaction) => (
-                  <React.Fragment key={transaction.transaction_id}>
-                    <TableRow>
-                      <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>
-                        {transaction.transaction_id}
-                      </TableCell>
+                {paginatedTransactions.length > 0 ? (
+                  paginatedTransactions.map((transaction) => (
+                    <TableRow
+                      key={transaction.property_id}
+                      onClick={() => navigate(`/i-transaction-details?property_id=${transaction.property_id}`)}
+                      sx={{ cursor: 'pointer', '&:hover': { backgroundColor: '#f5f5f5' } }}
+                    >
                       <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>
                         {transaction.property_name}
                       </TableCell>
                       <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>
-                        {transaction.transaction_type}
+                        {transaction.property_value}
+                      </TableCell>
+                      <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>
+                        {transaction.purchased_units}
                       </TableCell>
                       <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>
                         {transaction.payment_type}
                       </TableCell>
                       <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>
-                        <IconButton onClick={() => handleToggleExpand(transaction.transaction_id)}>
-                          <VisibilityIcon />
-                        </IconButton>
+                        {transaction.total_paid_amount}
+                      </TableCell>
+                      <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>
+                        {transaction.remaining_amount}
+                      </TableCell>
+                      <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>
+                        {new Date(transaction.created_at).toLocaleDateString('en-IN')}
+                      </TableCell>
+                      <TableCell
+                        sx={{ textAlign: 'center', border: '1px solid #000' }}
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            navigate(
+                              `/i-payment-form?property_id=${transaction.property_id}&transaction_id=${transaction.transaction_id}`
+                            );
+                          }}
+                          disabled={transaction.remaining_amount <= 0}
+                        >
+                          Pay Remaining
+                        </Button>
                       </TableCell>
                     </TableRow>
-
-                    {/* Expanded Row */}
-                    {expandedRows[transaction.transaction_id] && (
-                      <TableRow>
-                        <TableCell colSpan={5} sx={{ backgroundColor: '#f9f9f9', border: '1px solid #000' }}>
-                          <Grid container spacing={2} p={2}>
-                            <Grid item xs={4}><strong>Partner Name:</strong> {transaction.partner_name}</Grid>
-                            <Grid item xs={4}><strong>Property Value:</strong> {transaction.property_value}</Grid>
-                            <Grid item xs={4}><strong>Purchased Units:</strong> {transaction.purchased_units}</Grid>
-                            <Grid item xs={4}><strong>Price Per Unit:</strong> {transaction.price_per_unit}</Grid>
-                            <Grid item xs={4}><strong>Total Units Amount:</strong> {transaction.total_amount}</Grid>
-                            <Grid item xs={4}><strong>Paid Amount:</strong> {transaction.paid_amount}</Grid>
-                            <Grid item xs={4}><strong>Remaining Amount:</strong> {transaction.remaining_amount}</Grid>
-                            <Grid item xs={4}><strong>Payment Method:</strong> {transaction.payment_method}</Grid>
-                            <Grid item xs={4}><strong>Transaction Date:</strong> {new Date(transaction.created_at).toLocaleDateString()}</Grid>
-                            <Grid item xs={12}>
-                              <Button
-                                variant="contained"
-                                color="primary"
-                                disabled={parseFloat(remainingAmount) === 0}
-                                onClick={() =>
-                                  navigate(`/i-payment-form?property_id=${transaction.property_id}&transaction_id=${transaction.transaction_id}`)
-                                }
-                              >
-                                Pay Now
-                              </Button>
-                            </Grid>
-                          </Grid>
-                        </TableCell>
-                      </TableRow>
-                    )}
-                  </React.Fragment>
-                ))}
+                  ))
+                ) : (
+                  <TableRow>
+                    <TableCell colSpan={8} sx={{ textAlign: 'center', border: '1px solid #000', padding: 2 }}>
+                      No Data Found
+                    </TableCell>
+                  </TableRow>
+                )}
               </TableBody>
             </Table>
           </>
         )}
       </Box>
     </>
+
+
   );
 };
 

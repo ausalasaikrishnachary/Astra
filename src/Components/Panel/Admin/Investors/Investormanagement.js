@@ -13,6 +13,15 @@ import {
   Select,
   CircularProgress,
   Alert,
+  Table,
+  TableHead,
+  TableBody,
+  TableRow,
+  TableCell,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
 } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import VisibilityIcon from "@mui/icons-material/Visibility";
@@ -20,9 +29,10 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import IconButton from "@mui/material/IconButton";
 import Header from "../../../Shared/Navbar/Navbar";
+import { useLocation, useNavigate } from "react-router-dom";
 
 // API Endpoint
-const API_URL = "http://175.29.21.7:83/users/";
+const API_URL = "http://175.29.21.7:83/users/role/Investor/";
 
 // Summary Cards Data
 const summaryCardsData = [
@@ -32,11 +42,14 @@ const summaryCardsData = [
 ];
 
 const Tmanagement = () => {
+  const navigate = useNavigate();
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [sortBy, setSortBy] = useState("Latest");
   const [searchTerm, setSearchTerm] = useState("");
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [openModal, setOpenModal] = useState(false);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -59,54 +72,37 @@ const Tmanagement = () => {
   // Status Color
   const getStatusColor = (status) => (status === "active" ? "green" : "red");
 
-  // Columns for DataGrid
-  const columns = [
-    { field: "user_id", headerName: "User ID", flex: 1, minWidth: 100 },
-    { field: "username", headerName: "Username", flex: 1, minWidth: 150 },
-    { field: "email", headerName: "Email", flex: 1, minWidth: 250 },
-    { field: "phone", headerName: "Phone", flex: 1, minWidth: 150 },
-    { field: "dob", headerName: "DOB", flex: 1, minWidth: 150 },
-    { field: "gender", headerName: "Gender", flex: 1, minWidth: 120 },
-    // { field: "password", headerName: "Password", flex: 1, minWidth: 120 },
-    { field: "kyc_status", headerName: "KYC Status", flex: 1, minWidth: 130 },
-    { field: "account_holder_name", headerName: "Bank Account Holder", flex: 1.5, minWidth: 200 },
-    { field: "bank_name", headerName: "Bank Name", flex: 1.5, minWidth: 180 },
-    { field: "ifsc_code", headerName: "IFSC Code", flex: 1, minWidth: 150 },
-    { field: "nominee_name", headerName: "Nominee", flex: 1, minWidth: 150 },
-    { field: "nominee_relationship", headerName: "Nominee Relation", flex: 1, minWidth: 150 },
-    { field: "status", headerName: "Status", flex: 1, minWidth: 150, 
-      renderCell: (params) => (
-        <Typography sx={{ color: getStatusColor(params.value) }}>
-          {params.value}
-        </Typography>
-      ),
-    },
-    {
-      field: "actions",
-      headerName: "Actions",
-      flex: 1,
-      minWidth: 150,
-      sortable: false,
-      renderCell: () => (
-        <Box sx={{ display: "flex", gap: "5px" }}>
-          <IconButton size="small" color="primary">
-            <VisibilityIcon />
-          </IconButton>
-          <IconButton size="small" color="primary">
-            <EditIcon />
-          </IconButton>
-          <IconButton size="small" color="error">
-            <DeleteIcon />
-          </IconButton>
-        </Box>
-      ),
-    },
-  ];
+  const handleEdit = (userId) => {
+    navigate("/a-editinvestors", { state: { userId } });
+    console.log("Edit user with ID:", userId);
+  };
+
+  const handleDelete = async (userId) => {
+    if (!window.confirm("Are you sure you want to delete this user?")) return;
+
+    try {
+      const response = await fetch(`http://175.29.21.7:83/users/${userId}/`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) throw new Error("Failed to delete user");
+
+      // Remove deleted user from the state
+      setUsers((prevUsers) => prevUsers.filter((user) => user.user_id !== userId));
+
+      alert("User deleted successfully!");
+    } catch (error) {
+      console.error("Error deleting user:", error);
+      alert("Failed to delete user. Please try again.");
+    }
+  };
+
+
 
   // Filter Users based on Search
   const filteredUsers = users.filter((user) =>
-    Object.values(user).some((value) =>
-      value?.toString().toLowerCase().includes(searchTerm.toLowerCase())
+    ["user_id", "username", "email", "phone_number", "status"].some((key) =>
+      user[key]?.toString().toLowerCase().includes(searchTerm.toLowerCase())
     )
   );
 
@@ -115,12 +111,50 @@ const Tmanagement = () => {
   const activeUsers = users.filter((user) => user.status === "active").length;
   const inactiveUsers = totalUsers - activeUsers;
 
+  const KYC_STATUS_OPTIONS = ["Pending", "Under Review", "Verified"];
+
+  const handleKycStatusChange = async (userId, newStatus) => {
+    try {
+      const response = await fetch(`http://175.29.21.7:83/users/${userId}/`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ kyc_status: newStatus }),
+      });
+
+      if (!response.ok) throw new Error("Failed to update KYC status");
+
+      // Update the UI with the new KYC status
+      setUsers((prevUsers) =>
+        prevUsers.map((user) =>
+          user.user_id === userId ? { ...user, kyc_status: newStatus } : user
+        )
+      );
+
+      alert("KYC status updated successfully!");
+    } catch (error) {
+      console.error("Error updating KYC status:", error);
+      alert("Failed to update KYC status. Please try again.");
+    }
+  };
+
+  const handleView = (user) => {
+    setSelectedUser(user);
+    setOpenModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setOpenModal(false);
+    setSelectedUser(null);
+  };
+
   return (
     <>
       <Header />
       <Container sx={{ maxWidth: "900px", pt: 3 }}>
         <Typography variant="h4" component="h2" gutterBottom style={{ textAlign: "center" }}>
-          Leads Management
+          Investor Management
         </Typography>
 
         {/* Summary Cards */}
@@ -141,9 +175,9 @@ const Tmanagement = () => {
                   <Typography variant="h4" sx={{ color: "rgb(30,10,80)" }}>
                     {card.key === "total" ? totalUsers : card.key === "active" ? activeUsers : inactiveUsers}
                   </Typography>
-                  <Typography variant="body2">
+                  {/* <Typography variant="body2">
                     {card.key === "active" ? "Currently active" : "Currently inactive"}
-                  </Typography>
+                  </Typography> */}
                 </CardContent>
               </Card>
             </Grid>
@@ -159,7 +193,7 @@ const Tmanagement = () => {
             sx={{ width: "250px" }}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
-          <FormControl size="small" sx={{ width: "120px" }}>
+          {/* <FormControl size="small" sx={{ width: "120px" }}>
             <Select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
               <MenuItem value="Latest">Latest</MenuItem>
               <MenuItem value="Oldest">Oldest</MenuItem>
@@ -179,27 +213,174 @@ const Tmanagement = () => {
             }}
           >
             Filters
-          </Button>
+          </Button> */}
         </Box>
 
-        {/* DataGrid Table */}
-        <Box sx={{ height: 400, width: "100%" }}>
+        <Box >
           {loading ? (
-            <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100%" }}>
-              <CircularProgress />
-            </Box>
+            <CircularProgress />
           ) : error ? (
-            <Alert severity="error">{error}</Alert>
+            <Typography color="error">{error}</Typography>
           ) : (
-            <DataGrid
-              rows={filteredUsers.map((user) => ({ ...user, id: user.user_id }))}
-              columns={columns}
-              pageSize={5}
-              rowsPerPageOptions={[5]}
-              autoHeight
-              disableSelectionOnClick
-            />
+            <Table sx={{ border: "1px solid black" }}>
+              <TableHead>
+                <TableRow>
+                  <TableCell sx={{ fontWeight: "bold", textAlign: "center", border: "1px solid #000" }}>
+                    User ID
+                  </TableCell>
+                  <TableCell sx={{ fontWeight: "bold", textAlign: "center", border: "1px solid #000" }}>
+                    Username
+                  </TableCell>
+                  <TableCell sx={{ fontWeight: "bold", textAlign: "center", border: "1px solid #000" }}>
+                    Email
+                  </TableCell>
+                  <TableCell sx={{ fontWeight: "bold", textAlign: "center", border: "1px solid #000" }}>
+                    Phone
+                  </TableCell>
+                  <TableCell sx={{ fontWeight: "bold", textAlign: "center", border: "1px solid #000" }}>
+                    Status
+                  </TableCell>
+                  <TableCell sx={{ fontWeight: "bold", textAlign: "center", border: "1px solid #000" }}>
+                    Kyc Status
+                  </TableCell>
+                  <TableCell sx={{ fontWeight: "bold", textAlign: "center", border: "1px solid #000" }}>
+                    Actions
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {filteredUsers.map((user) => (
+                  <TableRow
+                    key={user.user_id}
+
+                    sx={{ cursor: "pointer", "&:hover": { backgroundColor: "#f5f5f5" } }}
+                  >
+                    <TableCell sx={{ textAlign: "center", border: "1px solid #000" }}>{user.user_id}</TableCell>
+                    <TableCell sx={{ textAlign: "center", border: "1px solid #000" }}>{user.username}</TableCell>
+                    <TableCell sx={{ textAlign: "center", border: "1px solid #000" }}>{user.email}</TableCell>
+                    <TableCell sx={{ textAlign: "center", border: "1px solid #000" }}>{user.phone_number}</TableCell>
+                    <TableCell sx={{ textAlign: "center", border: "1px solid #000", color: user.status === "active" ? "green" : "red" }}>
+                      {user.status}
+                    </TableCell>
+                    <TableCell sx={{ textAlign: "center", border: "1px solid #000" }}>
+                      <FormControl size="small" fullWidth>
+                        <Select
+                          value={user.kyc_status ?? ""} // Ensure it defaults to the fetched status
+                          onChange={(e) => handleKycStatusChange(user.user_id, e.target.value)}
+                          disabled={user.kyc_status === "Verified"} // Disable if status is verified
+                          displayEmpty
+                        >
+                          {KYC_STATUS_OPTIONS.map((status) => (
+                            <MenuItem key={status} value={status}>
+                              {status}
+                            </MenuItem>
+                          ))}
+                        </Select>
+                      </FormControl>
+                    </TableCell>
+
+
+                    <TableCell sx={{ textAlign: "center", border: "1px solid #000" }}>
+                      <IconButton size="small" color="primary" onClick={() => handleView(user)}>
+                        <VisibilityIcon />
+                      </IconButton>
+                      <IconButton size="small" color="primary" onClick={() => handleEdit(user.user_id)}>
+                        <EditIcon />
+                      </IconButton>
+                      <IconButton size="small" color="error" onClick={() => handleDelete(user.user_id)}>
+                        <DeleteIcon />
+                      </IconButton>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
           )}
+
+          {/* Modal for User Details */}
+          <Dialog open={openModal} onClose={handleCloseModal} fullWidth maxWidth="sm">
+            <DialogTitle>User Details</DialogTitle>
+            <DialogContent dividers>
+              {selectedUser && (
+                <Box>
+                  <Typography><strong>User ID:</strong> {selectedUser.user_id}</Typography>
+                  <Typography><strong>Username:</strong> {selectedUser.username}</Typography>
+                  <Typography><strong>Email:</strong> {selectedUser.email}</Typography>
+                  <Typography><strong>Phone:</strong> {selectedUser.phone_number}</Typography>
+                  <Typography><strong>DOB:</strong> {selectedUser.date_of_birth}</Typography>
+                  <Typography><strong>Gender:</strong> {selectedUser.gender}</Typography>
+                  <Typography><strong>Status:</strong> {selectedUser.status}</Typography>
+                  <Typography><strong>KYC Status:</strong> {selectedUser.kyc_status}</Typography>
+                  <Typography><strong>Address:</strong> {selectedUser.address || "N/A"}</Typography>
+                  <Typography><strong>City:</strong> {selectedUser.city || "N/A"}</Typography>
+                  <Typography><strong>State:</strong> {selectedUser.state || "N/A"}</Typography>
+                  <Typography><strong>Country:</strong> {selectedUser.country || "N/A"}</Typography>
+                  <Typography><strong>Pin Code:</strong> {selectedUser.pin_code || "N/A"}</Typography>
+                  <Typography><strong>Account Type:</strong> {selectedUser.account_type || "N/A"}</Typography>
+                  <Typography><strong>Pan Number:</strong> {selectedUser.pan_number || "N/A"}</Typography>
+                  <Typography><strong>Aadhaar Number:</strong> {selectedUser.aadhaar_number || "N/A"}</Typography>
+                  <Typography><strong>Account Holder Name:</strong> {selectedUser.account_holder_name || "N/A"}</Typography>
+                  <Typography><strong>Bank Name:</strong> {selectedUser.bank_name || "N/A"}</Typography>
+                  <Typography><strong>Branch Name:</strong> {selectedUser.branch_name || "N/A"}</Typography>
+                  <Typography><strong>Account Number:</strong> {selectedUser.account_number || "N/A"}</Typography>
+                  <Typography><strong>IFSC Code:</strong> {selectedUser.ifsc_code || "N/A"}</Typography>
+                  <Typography><strong>Referral Id:</strong> {selectedUser.referral_id || "N/A"}</Typography>
+                  <Typography><strong>Created At:</strong> {selectedUser.created_at || "N/A"}</Typography>
+
+                  {/* Display Images and Files at the End */}
+                  <Box mt={2}>
+                    <Typography><strong>Profile Image:</strong></Typography>
+                    <img
+                      src={`http://175.29.21.7:83/${selectedUser.image}`}
+                      alt="User Profile"
+                      style={{ width: "100%", maxWidth: "200px", borderRadius: "5px", marginTop: "5px" }}
+                    />
+
+                    <Typography><strong>PAN Card:</strong></Typography>
+                    {selectedUser.pan?.endsWith(".jpg") || selectedUser.pan?.endsWith(".png") ? (
+                      <img
+                        src={`http://175.29.21.7:83/${selectedUser.pan}`}
+                        alt="PAN Card"
+                        style={{ width: "100%", maxWidth: "200px", borderRadius: "5px", marginTop: "5px" }}
+                      />
+                    ) : (
+                      <a
+                        href={`http://175.29.21.7:83/${selectedUser.pan}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{ display: "block", marginTop: "5px", color: "blue", textDecoration: "underline" }}
+                      >
+                        View PAN File
+                      </a>
+                    )}
+
+                    <Typography><strong>Aadhaar Card:</strong></Typography>
+                    {selectedUser.aadhaar?.endsWith(".jpg") || selectedUser.aadhaar?.endsWith(".png") ? (
+                      <img
+                        src={`http://175.29.21.7:83/${selectedUser.aadhaar}`}
+                        alt="Aadhaar Card"
+                        style={{ width: "100%", maxWidth: "200px", borderRadius: "5px", marginTop: "5px" }}
+                      />
+                    ) : (
+                      <a
+                        href={`http://175.29.21.7:83/${selectedUser.aadhaar}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{ display: "block", marginTop: "5px", color: "blue", textDecoration: "underline" }}
+                      >
+                        View Aadhaar File
+                      </a>
+                    )}
+                  </Box>
+
+                </Box>
+              )}
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleCloseModal} color="primary">Close</Button>
+            </DialogActions>
+          </Dialog>
+
         </Box>
       </Container>
     </>

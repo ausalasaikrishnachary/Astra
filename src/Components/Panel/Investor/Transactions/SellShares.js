@@ -331,97 +331,116 @@ const BuyShares = () => {
 
   return (
     <>
-          <InvestorHeader />
-          <Box sx={{ marginTop: 4, padding: '50px' }}>
-            {loading ? (
-              <CircularProgress />
-            ) : error ? (
-              <Typography color="error">{error}</Typography>
-            ) : (
-              <>
-                <Table sx={{ border: '1px solid black', width: '100%' }}>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>
-                        Transaction ID
+      <InvestorHeader />
+      <Box sx={{ marginTop: 4, padding: '50px' }}>
+        {loading ? (
+          <CircularProgress />
+        ) : error ? (
+          <Typography color="error">{error}</Typography>
+        ) : (
+          <>
+            <Table sx={{ border: '1px solid black', width: '100%' }}>
+              <TableHead>
+                <TableRow>
+                  <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>
+                    Property Name
+                  </TableCell>
+                  <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>
+                    Property Value
+                  </TableCell>
+                  <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>
+                    Purchased Units
+                  </TableCell>
+                  {/* <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>
+                    Price Per Unit
+                  </TableCell> */}
+                  {/* <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>
+                    Transaction Type
+                  </TableCell> */}
+                  <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>
+                    Payment Type
+                  </TableCell>
+                  <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>
+                    Total Paid Amount
+                  </TableCell>
+                  <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>
+                    Remaining Amount
+                  </TableCell>
+                  <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>
+                    Transaction Date
+                  </TableCell>
+                  <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>
+                    Action
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+
+              <TableBody>
+                {paginatedTransactions.map((transaction) => (
+                  <React.Fragment key={transaction.transaction_id}>
+                     <TableRow>
+                      <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>
+                        {transaction.property_name}
                       </TableCell>
-                      <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>
-                        Property Name
+                      <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>
+                        {transaction.property_value}
                       </TableCell>
-                      <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>
-                        Transaction Type
+                      <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>
+                        {transaction.purchased_units}
                       </TableCell>
-                      <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>
-                        Payment Type
+                      {/* <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>
+                        {transaction.price_per_unit}
+                      </TableCell> */}
+                      {/* <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>
+                        {transaction.transaction_type}
+                      </TableCell> */}
+                      <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>
+                        {transaction.payment_type}
                       </TableCell>
-                      <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>
-                        Action
+                      <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>
+                        {transaction.total_paid_amount}
+                      </TableCell>
+                      <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>
+                        {transaction.remaining_amount}
+                      </TableCell>
+                      <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>
+                        {new Date(transaction.created_at).toLocaleDateString()}
+                      </TableCell>
+                      <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>
+                        <IconButton onClick={() => handleToggleExpand(transaction.transaction_id)}>
+                          <VisibilityIcon />
+                        </IconButton>
                       </TableCell>
                     </TableRow>
-                  </TableHead>
-    
-                  <TableBody>
-                    {paginatedTransactions.map((transaction) => (
-                      <React.Fragment key={transaction.transaction_id}>
-                        <TableRow>
-                          <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>
-                            {transaction.transaction_id}
-                          </TableCell>
-                          <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>
-                            {transaction.property_name}
-                          </TableCell>
-                          <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>
-                            {transaction.transaction_type}
-                          </TableCell>
-                          <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>
-                            {transaction.payment_type}
-                          </TableCell>
-                          <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>
-                            <IconButton onClick={() => handleToggleExpand(transaction.transaction_id)}>
-                              <VisibilityIcon />
-                            </IconButton>
-                          </TableCell>
-                        </TableRow>
-    
-                        {/* Expanded Row */}
-                        {expandedRows[transaction.transaction_id] && (
-                          <TableRow>
-                            <TableCell colSpan={5} sx={{ backgroundColor: '#f9f9f9', border: '1px solid #000' }}>
-                              <Grid container spacing={2} p={2}>
-                                <Grid item xs={4}><strong>Partner Name:</strong> {transaction.partner_name}</Grid>
-                                <Grid item xs={4}><strong>Property Value:</strong> {transaction.property_value}</Grid>
-                                <Grid item xs={4}><strong>Purchased Units:</strong> {transaction.purchased_units}</Grid>
-                                <Grid item xs={4}><strong>Price Per Unit:</strong> {transaction.price_per_unit}</Grid>
-                                <Grid item xs={4}><strong>Total Units Amount:</strong> {transaction.total_amount}</Grid>
-                                <Grid item xs={4}><strong>Paid Amount:</strong> {transaction.paid_amount}</Grid>
-                                <Grid item xs={4}><strong>Total Paid Amount:</strong> {transaction.total_paid_amount}</Grid>
-                                <Grid item xs={4}><strong>Remaining Amount:</strong> {transaction.remaining_amount}</Grid>
-                                <Grid item xs={4}><strong>Payment Method:</strong> {transaction.payment_method}</Grid>
-                                <Grid item xs={4}><strong>Transaction Date:</strong> {new Date(transaction.created_at).toLocaleDateString()}</Grid>
-                                {/* <Grid item xs={12}>
-                                  <Button
-                                    variant="contained"
-                                    color="primary"
-                                    disabled={parseFloat(transaction.remaining_amount) === 0}
-                                    onClick={() =>
-                                      navigate(`/i-payment-form?property_id=${transaction.property_id}&transaction_id=${transaction.transaction_id}`)
-                                    }
-                                  >
-                                    Pay Now
-                                  </Button>
-                                </Grid> */}
-                              </Grid>
-                            </TableCell>
-                          </TableRow>
-                        )}
-                      </React.Fragment>
-                    ))}
-                  </TableBody>
-                </Table>
-              </>
-            )}
-          </Box>
-        </>
+
+                    {/* Expanded Row */}
+                    {expandedRows[transaction.transaction_id] && (
+                      <TableRow>
+                        <TableCell colSpan={10} sx={{ backgroundColor: '#f9f9f9', border: '1px solid #000' }}>
+                          <Grid container spacing={2} p={2}>
+                            <Grid item xs={4}><strong>Partner Name:</strong> {transaction.partner_name}</Grid>
+                            <Grid item xs={4}><strong>Property Value:</strong> {transaction.property_value}</Grid>
+                            <Grid item xs={4}><strong>Purchased Units:</strong> {transaction.purchased_units}</Grid>
+                            <Grid item xs={4}><strong>Price Per Unit:</strong> {transaction.price_per_unit}</Grid>
+                            <Grid item xs={4}><strong>Total Units Amount:</strong> {transaction.total_amount}</Grid>
+                            <Grid item xs={4}><strong>Paid Amount:</strong> {transaction.paid_amount}</Grid>
+                            <Grid item xs={4}><strong>Total Paid Amount:</strong> {transaction.total_paid_amount}</Grid>
+                            <Grid item xs={4}><strong>Remaining Amount:</strong> {transaction.remaining_amount}</Grid>
+                            <Grid item xs={4}><strong>Payment Method:</strong> {transaction.payment_method}</Grid>
+                            <Grid item xs={4}><strong>Transaction Date:</strong> {new Date(transaction.created_at).toLocaleDateString()}</Grid>
+                          </Grid>
+                        </TableCell>
+                      </TableRow>
+                    )}
+                  </React.Fragment>
+                ))}
+              </TableBody>
+            </Table>
+
+          </>
+        )}
+      </Box>
+    </>
   );
 };
 

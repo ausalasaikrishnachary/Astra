@@ -13,7 +13,7 @@ import {
 import axios from "axios";
 import Header from '../../../Shared/Navbar/Navbar';
 import { useNavigate } from "react-router-dom";
-
+import Swal from 'sweetalert2';
 
 const PropertyForm = () => {
   const navigate = useNavigate();
@@ -28,7 +28,7 @@ const PropertyForm = () => {
     pin_code: "",
     latitude: "",
     longitude: "",
-    no_of_investors:"",
+    no_of_investors: "",
     total_units: "",
     available_units: "",
     property_value: "",
@@ -42,8 +42,20 @@ const PropertyForm = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+
+    if (name === "no_of_investors") {
+      const investors = parseInt(value, 10) || 0;
+      const calculatedUnits = investors; // Or multiply by X if needed
+      setFormData((prev) => ({
+        ...prev,
+        [name]: value,
+        total_units: calculatedUnits.toString(),
+      }));
+    } else {
+      setFormData((prev) => ({ ...prev, [name]: value }));
+    }
   };
+
 
   const handleCheckboxChange = (e, key) => {
     const { value, checked } = e.target;
@@ -66,7 +78,11 @@ const PropertyForm = () => {
       const file = files[0];
 
       if (!allowedTypes.includes(file.type)) {
-        alert("Invalid file type. Please upload a JPG or PNG image.");
+        Swal.fire({
+          icon: 'error',
+          title: 'Invalid File Type',
+          text: 'Please upload a JPG or PNG image.',
+        });
         return;
       }
 
@@ -87,7 +103,12 @@ const PropertyForm = () => {
       const validFiles = Array.from(files).filter((file) => allowedTypes.includes(file.type));
 
       if (validFiles.length === 0) {
-        alert("Invalid file type. Please upload only JPG or PNG images.");
+        Swal.fire({
+          icon: 'error',
+          title: 'Invalid File Type',
+          text: 'Please upload a JPG or PNG image.',
+        });
+
         return;
       }
 
@@ -104,20 +125,6 @@ const PropertyForm = () => {
     }
   };
 
-
-
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   try {
-  //     const response = await axios.post("http://175.29.21.7:83/property/", formData);
-  //     console.log("Response:", response.data);
-  //     alert("Property added successfully!");
-  //   } catch (error) {
-  //     console.error("Error:", error);
-  //     console.error("Response Data:", error.response?.data); // Log the error details
-  //     alert(`Error adding property: ${error.response?.data?.message || "Unknown error"}`);
-  //   }
-  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -153,109 +160,118 @@ const PropertyForm = () => {
       console.log("Response:", responseData);
 
       if (response.ok) {
-        alert("Property added successfully!");
-        navigate("/a-asset");
+
+        Swal.fire({
+          icon: 'success',
+          title: 'Success!',
+          text: 'Property added successfully!',
+        }).then(() => navigate("/a-asset"));
       } else {
-        alert(`Error adding property: ${responseData.property_image?.[0] || responseData.legal_documents?.[0] || responseData.message || "Unknown error"}`);
+        Swal.fire({
+          icon: 'error',
+          title: 'Failed!',
+          text: responseData.property_image?.[0] ||
+            responseData.legal_documents?.[0] ||
+            responseData.message ||
+            "Unknown error"
+        });
       }
     } catch (error) {
       console.error("Error:", error);
-      alert("An error occurred while submitting the form.");
+      Swal.fire({
+        icon: 'error',
+        title: 'Submission Error',
+        text: 'An error occurred while submitting the form.',
+      });
     }
   };
 
-
-
-
-
   return (
     <>
-    <Header />
-    <Container maxWidth="lg" sx={{ width: "100%", px: 2 }}>
-      <Typography
-        variant="h4"
-        sx={{ color: "#100f0f", fontSize: { xs: "24px", md: "28px" }, fontWeight: 700, pt: 4, textAlign: "center" }}
-      >
-        Add Asset
-      </Typography>
-  
-      <form onSubmit={handleSubmit} style={{ width: "100%", paddingTop: "15px" }}>
-        <Grid container spacing={2}>
-          <Grid item xs={12} md={6}>
-            <TextField fullWidth label="Property Name" name="property_name" value={formData.property_name} onChange={handleChange} />
-          </Grid>
-  
-          <Grid item xs={12} md={6}>
-            <TextField select fullWidth label="Property Type" name="property_type" value={formData.property_type} onChange={handleChange}>
-              <MenuItem value="Manufacturing Facilities">Manufacturing Facilities</MenuItem>
-              <MenuItem value="Warehouses">Warehouses</MenuItem>
-              <MenuItem value="Distribution">Distribution Centers</MenuItem>
-              <MenuItem value="Data Centers">Data Centers</MenuItem>
-              <MenuItem value="R&D">(R&D)</MenuItem>
-            </TextField>
-          </Grid>
-  
-          <Grid item xs={12}>
-            <TextField fullWidth label="Description" name="description" value={formData.description} onChange={handleChange} multiline rows={3} />
-          </Grid>
-  
-          <Grid item xs={12} md={6}>
-            <TextField fullWidth label="Location" name="address" value={formData.address} onChange={handleChange} />
-          </Grid>
-  
-          <Grid item xs={12} md={6}>
-            <TextField fullWidth label="City" name="city" value={formData.city} onChange={handleChange} />
-          </Grid>
-  
-          <Grid item xs={12} md={6}>
-            <TextField fullWidth label="State" name="state" value={formData.state} onChange={handleChange} />
-          </Grid>
-  
-          <Grid item xs={12} md={6}>
-            <TextField fullWidth label="Country" name="country" value={formData.country} onChange={handleChange} />
-          </Grid>
-  
-          <Grid item xs={12} md={6}>
-            <TextField fullWidth label="Postal Code" name="pin_code" value={formData.pin_code} onChange={handleChange} />
-          </Grid>
-  
-          <Grid item xs={12} md={6}>
-            <TextField fullWidth label="No of Investors" name="no_of_investors" value={formData.no_of_investors} onChange={handleChange} type="number" />
-          </Grid>
-  
-          <Grid item xs={12} md={6}>
-            <TextField fullWidth label="Total Units" name="total_units" value={formData.total_units} onChange={handleChange} type="number" />
-          </Grid>
-  
-          <Grid item xs={12} md={6}>
-            <TextField fullWidth label="Available Units" name="available_units" value={formData.available_units} onChange={handleChange} type="number" />
-          </Grid>
-  
-          <Grid item xs={12} md={6}>
-            <TextField fullWidth label="Total Price" name="property_value" value={formData.property_value} onChange={handleChange} type="number" />
-          </Grid>
-  
-          <Grid item xs={6}>
-            <Typography variant="h6">Property Image</Typography>
-            <input type="file" accept="image/*" onChange={(e) => handleFileChange(e, "property_image")} />
-          </Grid>
-  
-          {previewImages.property_image && (
-            <Grid item xs={12} sm={6} md={4} sx={{ display: "flex", justifyContent: "center" }}>
-              <img src={previewImages.property_image} alt="Property Preview" style={{ width: "100px", height: "100px", objectFit: "cover", borderRadius: "8px" }} />
+      <Header />
+      <Container maxWidth="lg" sx={{ width: "100%", px: 2 }}>
+        <Typography
+          variant="h4"
+          sx={{ color: "#100f0f", fontSize: { xs: "24px", md: "28px" }, fontWeight: 700, pt: 4, textAlign: "center" }}
+        >
+          Add Asset
+        </Typography>
+
+        <form onSubmit={handleSubmit} style={{ width: "100%", paddingTop: "15px" }}>
+          <Grid container spacing={2}>
+            <Grid item xs={12} md={6}>
+              <TextField fullWidth label="Property Name" name="property_name" value={formData.property_name} onChange={handleChange} />
             </Grid>
-          )}
-        </Grid>
-  
-        <Grid sx={{ marginTop: 3, marginBottom: "10px", textAlign: "left" }}>
-          <Button type="submit" variant="contained" sx={{ color: "white", width: "200px" }}>
-            Submit Property
-          </Button>
-        </Grid>
-      </form>
-    </Container>
-  </>
-  
+
+            <Grid item xs={12} md={6}>
+              <TextField select fullWidth label="Property Type" name="property_type" value={formData.property_type} onChange={handleChange}>
+                <MenuItem value="Manufacturing Facilities">Manufacturing Facilities</MenuItem>
+                <MenuItem value="Warehouses">Warehouses</MenuItem>
+                <MenuItem value="Distribution">Distribution Centers</MenuItem>
+                <MenuItem value="Data Centers">Data Centers</MenuItem>
+                <MenuItem value="R&D">(R&D)</MenuItem>
+              </TextField>
+            </Grid>
+
+            <Grid item xs={12}>
+              <TextField fullWidth label="Description" name="description" value={formData.description} onChange={handleChange} multiline rows={3} />
+            </Grid>
+
+            <Grid item xs={12} md={6}>
+              <TextField fullWidth label="Location" name="address" value={formData.address} onChange={handleChange} />
+            </Grid>
+
+            <Grid item xs={12} md={6}>
+              <TextField fullWidth label="City" name="city" value={formData.city} onChange={handleChange} />
+            </Grid>
+
+            <Grid item xs={12} md={6}>
+              <TextField fullWidth label="State" name="state" value={formData.state} onChange={handleChange} />
+            </Grid>
+
+            <Grid item xs={12} md={6}>
+              <TextField fullWidth label="Country" name="country" value={formData.country} onChange={handleChange} />
+            </Grid>
+
+            <Grid item xs={12} md={6}>
+              <TextField fullWidth label="Postal Code" name="pin_code" value={formData.pin_code} onChange={handleChange} />
+            </Grid>
+
+            <Grid item xs={12} md={6}>
+              <TextField fullWidth label="No of Investors" name="no_of_investors" value={formData.no_of_investors} onChange={handleChange} type="number" />
+            </Grid>
+
+            <Grid item xs={12} md={6}>
+              <TextField fullWidth label="Total Units" name="total_units" value={formData.total_units} onChange={handleChange} type="number" InputProps={{ readOnly: true }} />
+            </Grid>
+
+            <Grid item xs={12} md={6}>
+              <TextField fullWidth label="Available Units" name="available_units" value={formData.available_units} onChange={handleChange} type="number" />
+            </Grid>
+
+            <Grid item xs={12} md={6}>
+              <TextField fullWidth label="Total Price" name="property_value" value={formData.property_value} onChange={handleChange} type="number" />
+            </Grid>
+
+            <Grid item xs={6}>
+              <Typography variant="h6">Property Image</Typography>
+              <input type="file" accept="image/*" onChange={(e) => handleFileChange(e, "property_image")} />
+              {previewImages.property_image && (
+                <Grid item xs={12} sm={6} md={4} sx={{ display: "flex", justifyContent: "center", pt: 2 }}>
+                  <img src={previewImages.property_image} alt="Property Preview" style={{ height: "100px", objectFit: "cover", borderRadius: "8px" }} />
+                </Grid>
+              )}
+            </Grid>
+          </Grid>
+          <Grid sx={{ marginTop: 3, marginBottom: "10px", textAlign: "left" }}>
+            <Button type="submit" variant="contained" sx={{ color: "white", width: "200px" }}>
+              Submit Property
+            </Button>
+          </Grid>
+        </form>
+      </Container>
+    </>
+
   );
 };
 

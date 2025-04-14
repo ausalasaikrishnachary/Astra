@@ -16,11 +16,13 @@ import {
 } from "@mui/material";
 import InvestorHeader from "../../../Shared/Investor/InvestorNavbar";
 import { useLocation, useNavigate } from "react-router-dom";
+import Swal from 'sweetalert2';
 
 const InvestmentForm = () => {
   const [formData, setFormData] = useState({
     investor: "",
-    partner_id:"",
+    partner_id: "",
+    partner_name: "",
     escrow_id: "",
     property_name: "",
     property_type: "",
@@ -36,14 +38,22 @@ const InvestmentForm = () => {
     investment_period: "",
     total_value: "",
     advance_payment: "",
-    total_paid_amount:""
+    total_paid_amount: ""
   });
   const navigate = useNavigate();
 
   const hiddenFields = [
     "investor",
     "agent",
+    "property_type",
+    "partner_id",
+    "partner_name",
+    "escrow_id",
+    "no_of_investors",
+    "total_units",
+    "available_units",
     "transaction_type",
+    "deposit_amount",
     "transaction_reference",
     "commission_paid_date",
     "approval_date",
@@ -72,7 +82,7 @@ const InvestmentForm = () => {
   console.log("Extracted Property ID:", propertyId);
   const [partners, setPartners] = useState([]);
 
-   // Fetch Partners (Role: Partner)
+  // Fetch Partners (Role: Partner)
   useEffect(() => {
     fetch("http://175.29.21.7:83/users/role/Partner/")
       .then((response) => response.json())
@@ -107,7 +117,7 @@ const InvestmentForm = () => {
             }));
 
             // Fetch Escrow ID after fetching property details
-            fetch(`http://175.29.21.7:83/escrow/account/property/${propertyId}/`)
+            fetch(`http://175.29.21.7:83/escrow/account/property-id/${propertyId}/`)
               .then((response) => response.json())
               .then((escrowData) => {
                 console.log("Fetched Escrow Data:", escrowData);
@@ -154,24 +164,56 @@ const InvestmentForm = () => {
     }
   }, [formData.total_value]);
 
-  // Handle input changes
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: type === "checkbox" ? checked : value,
-    }));
+
+    setFormData((prevData) => {
+      if (name === "partner_id") {
+        const selectedPartner = partners.find((partner) => partner.user_id === value);
+        return {
+          ...prevData,
+          partner_id: value,
+          partner_name: selectedPartner ? selectedPartner.username : "", // Assign partner_name
+        };
+      }
+
+      // Clear dependent fields if no_of_units_to_be_purchased is cleared
+      if (name === "no_of_units_to_be_purchased") {
+        if (value === "") {
+          return {
+            ...prevData,
+            no_of_units_to_be_purchased: "",
+            total_value: "",
+            advance_payment: "",
+          };
+        } else {
+          return {
+            ...prevData,
+            [name]: value,
+          };
+        }
+      }
+
+
+      return {
+        ...prevData,
+        [name]: type === "checkbox" ? checked : value,
+      };
+    });
   };
+
 
   // Form submission handler
   const handleSubmit = async (e) => {
     e.preventDefault();
     const userId = localStorage.getItem("user_id");
+    const userName = localStorage.getItem("user_name");
 
     const sanitizedData = {
       ...formData,
       property_id: propertyId,
-      partner_id:Number(formData.partner_id) || 0,
+      partner_name: formData.partner_name || null,
+      partner_id: Number(formData.partner_id) || 0,
       available_units: Number(formData.available_units) || 0,
       price_per_unit: Number(formData.price_per_unit) || 0,
       property_value: Number(formData.property_value) || 0,
@@ -188,12 +230,13 @@ const InvestmentForm = () => {
       commission_paid_date: formData.commission_paid_date || null,
       no_of_investors: formData.no_of_investors || null,
       user_id: userId || null, // Replace with dynamic user ID if available
+      user_name: userName || null,
       escrow_id: formData.escrow_id || "", // Default or fetched escrow ID
       paid_amount: formData.advance_payment || "0.00",
-      total_paid_amount:formData.advance_payment || "0.00",
+      total_paid_amount: formData.advance_payment || "0.00",
       remaining_amount: (Number(formData.total_value) - Number(formData.advance_payment)).toFixed(2),
-      payment_type:"Advance-Payment",
-      payment_method:"Cash",
+      payment_type: "Token-Payment",
+      payment_method: "Cash",
     };
 
     try {
@@ -206,29 +249,14 @@ const InvestmentForm = () => {
 
       if (response.ok) {
         const result = await response.json();
-        alert("Success: Transaction submitted successfully!");
+        await Swal.fire({
+          icon: 'success',
+          title: 'Success',
+          text: 'Transaction submitted successfully!',
+        }).then(() => {
+          navigate("/i-buyunits");
+        });
         console.log("Transaction Success:", result);
-
-        // Step 2: Submit advance payment
-        // const advancePaymentData = {
-        //   user_id: result.investor || 1, // Replace with dynamic user ID if available
-        //   property_id: propertyId,
-        //   escrow_id: formData.escrow_id || "", // Default or fetched escrow ID
-        //   paid_amount: formData.advance_payment || "0.00",
-        //   pending_amount: (Number(formData.total_value) - Number(formData.advance_payment)).toFixed(2),
-        // };
-
-        // const advancePaymentResponse = await fetch("http://175.29.21.7:83/advance/payments/", {
-        //   method: "POST",
-        //   headers: { "Content-Type": "application/json" },
-        //   body: JSON.stringify(advancePaymentData),
-        // });
-
-        // if (advancePaymentResponse.ok) {
-        //   console.log("Advance Payment Successfully Stored:", await advancePaymentResponse.json());
-        // } else {
-        //   console.error("Failed to store advance payment", await advancePaymentResponse.json());
-        // }
 
         // Step 3: Update available units
         if (propertyId) {
@@ -251,7 +279,7 @@ const InvestmentForm = () => {
         }
 
         // Step 4: Fetch current deposit_amount and update it
-        const escrowResponse = await fetch(`http://175.29.21.7:83/escrow/account/property/${propertyId}/`);
+        const escrowResponse = await fetch(`http://175.29.21.7:83/escrow/account/property-id/${propertyId}/`);
         if (escrowResponse.ok) {
           const escrowData = await escrowResponse.json();
           const currentDepositAmount = Number(escrowData.deposit_amount) || 0;
@@ -260,7 +288,7 @@ const InvestmentForm = () => {
           console.log("updatedDepositAmount:", updatedDepositAmount)
           // Step 5: Update deposit_amount
           const updateDepositResponse = await fetch(
-            `http://175.29.21.7:83/escrow/account/property/${propertyId}/`,
+            `http://175.29.21.7:83/escrow/account/property-id/${propertyId}/`,
             {
               method: "PUT",
               headers: { "Content-Type": "application/json" },
@@ -277,19 +305,48 @@ const InvestmentForm = () => {
           console.error("Failed to fetch escrow details.");
         }
 
-        navigate("/i-buyunits");
+
       } else {
         const errorData = await response.json();
-        alert(`Failed: ${errorData.message || "Unable to submit the transaction."}`);
+        await Swal.fire({
+          icon: 'error',
+          title: 'Failed',
+          text: errorData.message || "Unable to submit the transaction.",
+        });
         console.error("Transaction Error:", errorData);
       }
     } catch (error) {
-      alert("Error: Something went wrong. Please try again.");
+      await Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Something went wrong. Please try again.',
+      });
       console.error("Error:", error);
     }
   };
 
 
+  const fieldLabels = {
+    property_name: "Property Name",
+    property_type: "Property Type",
+    property_value: "Property Value (₹)",
+    no_of_units_to_be_purchased: "Units to Buy",
+    investment_period: "Investment Period (Months)",
+    price_per_unit: "Price per Unit (₹)",
+    total_value: "Total Investment (₹)",
+    advance_payment: "Token Amount (₹)",
+    total_paid_amount: "Total Paid Amount (₹)",
+    available_units: "Available Units",
+    total_units: "Total Units",
+    no_of_investors: "No. of Investors",
+    partner_id: "Partner",
+    partner_name: "Partner Name",
+    escrow_id: "Escrow ID",
+    agent_name: "Agent Name",
+    transaction_type: "Transaction Type",
+    agent: "Agent ID",
+    // Add more mappings as needed...
+  };
 
 
 
@@ -308,8 +365,8 @@ const InvestmentForm = () => {
               <FormControl fullWidth>
                 <InputLabel id="partner_id">Select Partner</InputLabel>
                 <Select
-                labelId="partner_id"
-                id="partner_id"
+                  labelId="partner_id"
+                  id="partner_id"
                   name="partner_id"
                   value={formData.partner_id}
                   onChange={handleChange}
@@ -318,7 +375,7 @@ const InvestmentForm = () => {
                 >
                   {partners.map((partner) => (
                     <MenuItem key={partner.user_id} value={partner.user_id}>
-                      {partner.username}
+                      {partner.username}-{partner.user_id}
                     </MenuItem>
                   ))}
                 </Select>
@@ -343,13 +400,13 @@ const InvestmentForm = () => {
                   ) : (
                     <TextField
                       fullWidth
-                      label={key.replace(/_/g, " ")}
+                      label={fieldLabels[key] || key.replace(/_/g, " ")}
                       name={key}
                       value={formData[key] || ""}
                       onChange={handleChange}
                       variant="outlined"
                       InputProps={{
-                        readOnly: ["property_name", "property_type", "property_value", "total_units", "available_units", "price_per_unit", "total_value"].includes(
+                        readOnly: ["property_name", "escrow_id", "total_value", "advance_payment", "deposit_amount", "no_of_investors", "property_type", "property_value", "total_units", "available_units", "price_per_unit", "total_value"].includes(
                           key
                         ),
                       }}

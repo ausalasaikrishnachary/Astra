@@ -34,7 +34,7 @@ export default function PartnerHeader() {
   // For the "Transactions" item, we add a submenu.
   const navItems = [
     { label: 'Dashboard', path: '/p-dashboard' },
-    { label: 'My Assets', path: '/p-myassets' },
+    { label: 'Assets', path: '/p-myassets' },
     { label: 'My Investors', path: '/p-myinvestors' },
     // {
     //   label: 'Transactions', path: "/p-transactions",
@@ -50,6 +50,21 @@ export default function PartnerHeader() {
 
   // Inside your PartnerHeader component:
   const [partnerType, setPartnerType] = useState('Partner');
+  const [username, setUsername] = useState("");
+  const userId = localStorage.getItem("user_id");
+
+  useEffect(() => {
+    if (userId) {
+      fetch(`http://175.29.21.7:83/users/${userId}/`)
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.username) {
+            setUsername(data.username.trim() || "Investor");
+          }
+        })
+        .catch((error) => console.error("Error fetching user data:", error));
+    }
+  }, [userId]);
 
   useEffect(() => {
     const savedType = localStorage.getItem('partnerType');
@@ -126,39 +141,39 @@ export default function PartnerHeader() {
   );
 
   const [roles, setRoles] = useState([]); // Store roles from API
-    const [selectedRole, setSelectedRole] = useState(''); // Store selected role
-  
-    useEffect(() => {
-      // Fetch roles from API
-      const fetchRoles = async () => {
-        try {
-          const response = await axios.get('http://175.29.21.7:83/roles/');
-          setRoles(response.data); // Set roles from API response
-          setSelectedRole(response.data[0]?.role_name || ''); // Set default role
-        } catch (error) {
-          console.error('Error fetching roles:', error);
-        }
-      };
-  
-      fetchRoles();
-    }, []);
-  
-    const handleRoleChange = (event) => {
-      const role = event.target.value;
-      setSelectedRole(role);
-  
-      // Define role-based navigation
-      const rolePaths = {
-        Admin: '/a-dashboard',
-        Partner: '/p-dashboard',
-        Investor: '/i-dashboard',
-      };
-  
-      // Navigate to the corresponding dashboard if role exists
-      if (rolePaths[role]) {
-        navigate(rolePaths[role]);
+  const [selectedRole, setSelectedRole] = useState(''); // Store selected role
+
+  useEffect(() => {
+    // Fetch roles from API
+    const fetchRoles = async () => {
+      try {
+        const response = await axios.get('http://175.29.21.7:83/roles/');
+        setRoles(response.data); // Set roles from API response
+        setSelectedRole(response.data[0]?.role_name || ''); // Set default role
+      } catch (error) {
+        console.error('Error fetching roles:', error);
       }
     };
+
+    fetchRoles();
+  }, []);
+
+  const handleRoleChange = (event) => {
+    const role = event.target.value;
+    setSelectedRole(role);
+
+    // Define role-based navigation
+    const rolePaths = {
+      Admin: '/a-dashboard',
+      Partner: '/p-dashboard',
+      Investor: '/i-dashboard',
+    };
+
+    // Navigate to the corresponding dashboard if role exists
+    if (rolePaths[role]) {
+      navigate(rolePaths[role]);
+    }
+  };
 
   return (
     <>
@@ -216,9 +231,9 @@ export default function PartnerHeader() {
                     ))}
                   </Select>
                 </FormControl> */}
-                <Typography variant='h6'>
-                              Partner
-                            </Typography>
+                <Typography variant="h6">
+                  {username ? `${username} (Partner)` : "Partner"}
+                </Typography>
                 <Avatar
                   onClick={handleAvatarClick}
                   sx={{ width: 40, height: 40, cursor: 'pointer' }}
@@ -279,9 +294,9 @@ export default function PartnerHeader() {
                   ))}
                 </Select>
               </FormControl> */}
-              <Typography variant='h6'>
-                            Partner
-                          </Typography>
+              <Typography variant="h6">
+                {username ? `${username} (Partner)` : "Partner"}
+              </Typography>
               <Avatar
                 onClick={handleAvatarClick}
                 sx={{ width: 40, height: 40, cursor: 'pointer' }}
@@ -320,7 +335,7 @@ export default function PartnerHeader() {
         >
           Profile
         </MenuItem>
-        <MenuItem
+        {/* <MenuItem
           onClick={() => {
             handleProfileMenuClose();
             navigate('/p-profiledetails');
@@ -328,7 +343,7 @@ export default function PartnerHeader() {
           sx={{ fontWeight: 'bold' }}
         >
           KYC
-        </MenuItem>
+        </MenuItem> */}
         <MenuItem
           onClick={() => {
             localStorage.removeItem("user_id");

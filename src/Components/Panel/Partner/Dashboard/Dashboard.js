@@ -1,113 +1,110 @@
-import React from 'react';
-import { Container, Grid, Card, CardContent, Typography, Box, Stack } from '@mui/material';
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
-import DescriptionIcon from '@mui/icons-material/Description';
-import BuildIcon from '@mui/icons-material/Build';
-import { Bar, Line } from 'react-chartjs-2';
+import React, { useState, useEffect } from 'react';
+import { Container, Grid, Card, CardContent, Typography, Box } from '@mui/material';
+import { Line, Pie } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
   CategoryScale,
   LinearScale,
-  BarElement,
-  Title as ChartTitle,
-  Tooltip,
-  Legend,
   LineElement,
   PointElement,
+  ArcElement,
+  Title,
+  Tooltip,
+  Legend,
 } from 'chart.js';
-import PartnerHeader from '../../../Shared/Partner/PartnerNavbar';
+import PartnerHeader from "../../../Shared/Partner/PartnerNavbar";
 
-// Register ChartJS components
+// Register required ChartJS components
 ChartJS.register(
   CategoryScale,
   LinearScale,
-  BarElement,
-  ChartTitle,
-  Tooltip,
-  Legend,
   LineElement,
   PointElement,
+  ArcElement,
+  Title,
+  Tooltip,
+  Legend
 );
 
 function Dashboard() {
-  // Data and options for the Asset Performance bar chart
-  const assetData = {
-    labels: ['Property A', 'Property B', 'Property C'],
-    datasets: [
-      {
-        data: [7500, 12000, 5000],
-        backgroundColor: 'rgba(138, 113, 255, 0.8)',
-        borderRadius: 6,
-        barThickness: 40,
-      },
-    ],
-  };
+      const [counts, setCounts] = useState({});
+  
+      useEffect(() => {
+        // Fetch the counts data
+        fetch("http://175.29.21.7:83/counts/")
+          .then(response => response.json())
+          .then(data => setCounts(data))
+          .catch(error => console.error("Error fetching counts:", error));
+      }, []);
 
-  const assetOptions = {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      legend: { display: false },
+    const priceData = {
+        labels: ['2023-01', '2023-02', '2023-03', '2023-04'],
+        datasets: [
+          {
+            label: 'Price Trend',
+            data: [200000, 210000, 220000, 240000],
+            borderColor: '#ffa500',
+            backgroundColor: 'rgba(255, 165, 0, 0.1)',
+            fill: true,
+            tension: 0.4,
+          },
+        ],
+      };
+    
+      const priceOptions = {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'top',
+          },
+        },
+        scales: {
+          y: {
+            beginAtZero: false,
+          },
+        },
+      };
+    
+      // Data and options for the pie chart (Distribution)
+      const distributionData = {
+        labels: ['Industry 1', 'Industry 2', 'Industry 3'],
+        datasets: [
+          {
+            data: [45, 30, 25],
+            backgroundColor: ['#0066cc', '#ffa500', '#00cc88'],
+          },
+        ],
+      };
+    
+      const distributionOptions = {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'top',
+          },
+        },
+      };
+    
+  const summaryCardsData = [
+    {
+      title: "Total Assets",
+      value: counts.total_properties || "Loading...", // Dynamic value
     },
-    scales: {
-      y: {
-        beginAtZero: true,
-        grid: { color: 'rgba(0, 0, 0, 0.05)' },
-        ticks: { font: { size: 12 } },
-      },
-      x: {
-        grid: { display: false },
-        ticks: { font: { size: 12 } },
-      },
+    {
+      title: "Total Value",
+      value: counts.total_properties_value ? `₹${counts.total_properties_value}` : "Loading...", // Dynamic value
     },
-  };
-
-  // Data and options for the Revenue History line chart
-  const revenueData = {
-    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-    datasets: [
-      {
-        data: [22000, 25000, 27000, 25500, 29000, 31000],
-        borderColor: 'rgba(138, 113, 255, 0.8)',
-        backgroundColor: 'rgba(138, 113, 255, 0.1)',
-        tension: 0.4,
-        fill: true,
-        pointRadius: 4,
-        pointBackgroundColor: '#fff',
-        pointBorderColor: 'rgba(138, 113, 255, 0.8)',
-        pointBorderWidth: 2,
-      },
-    ],
-  };
-
-  const revenueOptions = {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      legend: { display: false },
+    {
+      title: "Active Units",
+      value: counts.total_properties_available_units || "Loading...", // Dynamic value
     },
-    scales: {
-      y: {
-        beginAtZero: true,
-        grid: { color: 'rgba(0, 0, 0, 0.05)' },
-        ticks: { font: { size: 12 } },
-      },
-      x: {
-        grid: { display: false },
-        ticks: { font: { size: 12 } },
-      },
-    },
-  };
+  ];
 
   return (
     <>
       <PartnerHeader />
       <Box
         sx={{
-          backgroundImage:
-            "url('https://img.freepik.com/free-photo/contemporary-building-blur_23-2147694747.jpg')",
-          minHeight: '100vh',
-          backgroundSize: 'cover',
           backgroundPosition: 'center',
           display: 'flex',
           alignItems: 'center',
@@ -116,141 +113,89 @@ function Dashboard() {
         }}
       >
         <Container>
-          <Typography variant="h4" sx={{ color: '#100f0f', fontWeight: 700, mb: 4, pl: 2,textAlign:"center" }}>
+          {/* Page Title */}
+          <Typography
+            variant="h4"
+            sx={{ color: '#100f0f', fontSize: '28px', fontWeight: 700, mb: 4, pl: 2, textAlign: "center" }}
+          >
             Partner Dashboard
           </Typography>
-          <Grid container spacing={3}>
-            {/* Left Column */}
 
-            <Grid item xs={12} md={8}>
-              <Grid container spacing={3}>
-                <Grid item xs={12}>
-                  <Card sx={{ borderRadius: '15px', boxShadow: 3 }}>
-                    <CardContent>
-                      <Typography variant="h6" sx={{ color: '#333', fontWeight: 600, mb: 2 }}>
-                        Asset Performance
-                      </Typography>
-                      <Box sx={{ height: 280 }}>
-                        <Bar data={assetData} options={assetOptions} />
-                      </Box>
-                    </CardContent>
-                  </Card>
-                </Grid>
-                <Grid item xs={12}>
-                  <Card sx={{ borderRadius: '15px', boxShadow: 3 }}>
-                    <CardContent>
-                      <Typography variant="h6" sx={{ color: '#333', fontWeight: 600, mb: 2 }}>
-                        Revenue History
-                      </Typography>
-                      <Box sx={{ height: 280 }}>
-                        <Line data={revenueData} options={revenueOptions} />
-                      </Box>
-                    </CardContent>
-                  </Card>
-                </Grid>
+          {/* Stats Cards */}
+          <Grid container spacing={2}>
+            {summaryCardsData.map((card, index) => (
+              <Grid item xs={12} md={4} key={index}>
+                <Card
+                  sx={{
+                    backgroundColor: "#f8f9fa",
+                    textAlign: "center",
+                    p: 2,
+                    borderRadius: 2,
+                    boxShadow: "2px 2px 10px rgba(0, 0, 0, 0.1)",
+                  }}
+                >
+                  <CardContent>
+                    <Typography variant="h6" gutterBottom>
+                      {card.title}
+                    </Typography>
+                    <Typography variant="h4" sx={{ color: "rgb(30,10,80)" }}>
+                      {card.value}
+                    </Typography>
+                    <Typography variant="body2">{card.subtext}</Typography>
+                  </CardContent>
+                </Card>
               </Grid>
-            </Grid>
-
-
-            {/* Right Column */}
-            <Grid item xs={12} md={4}>
-              <Stack spacing={3}>
-                {/* Required Actions Card */}
-                <Card sx={{ borderRadius: '15px', boxShadow: 3 }}>
-                  <CardContent>
-                    <Typography variant="h6" sx={{ color: '#333', fontWeight: 600, mb: 2 }}>
-                      Required Actions
-                    </Typography>
-                    <Stack spacing={2}>
-                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                        <AccessTimeIcon sx={{ fontSize: 24, color: '#5c6bc0' }} />
-                        <Box>
-                          <Typography variant="body1">
-                            Property inspection required for 123 Main St
-                          </Typography>
-                          <Typography variant="caption" sx={{ color: '#888' }}>
-                            Due: Oct 15
-                          </Typography>
-                        </Box>
-                      </Box>
-                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                        <DescriptionIcon sx={{ fontSize: 24, color: '#5c6bc0' }} />
-                        <Box>
-                          <Typography variant="body1">
-                            Document verification pending for new investor
-                          </Typography>
-                          <Typography variant="caption" sx={{ color: '#888' }}>
-                            Due: Oct 16
-                          </Typography>
-                        </Box>
-                      </Box>
-                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                        <BuildIcon sx={{ fontSize: 24, color: '#5c6bc0' }} />
-                        <Box>
-                          <Typography variant="body1">
-                            Maintenance request needs approval
-                          </Typography>
-                          <Typography variant="caption" sx={{ color: '#888' }}>
-                            Due: Oct 18
-                          </Typography>
-                        </Box>
-                      </Box>
-                    </Stack>
-                  </CardContent>
-                </Card>
-
-                {/* Financial Performance Card */}
-                <Card sx={{ borderRadius: '15px', boxShadow: 3 }}>
-                  <CardContent>
-                    <Typography variant="h6" sx={{ color: '#333', fontWeight: 600, mb: 2 }}>
-                      Financial Performance
-                    </Typography>
-                    <Box
-                      sx={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                        borderBottom: '1px solid #f0f0f0',
-                        pb: 1,
-                      }}
-                    >
-                      <Typography variant="body2" sx={{ color: '#888' }}>
-                        Monthly Revenue
-                      </Typography>
-                      <Typography variant="h6" sx={{ color: '#444', fontWeight: 700 }}>
-                        25,000/-
-                      </Typography>
-                    </Box>
-                  </CardContent>
-                </Card>
-
-                {/* Asset Overview Card */}
-                <Card sx={{ borderRadius: '15px', boxShadow: 3 }}>
-                  <CardContent>
-                    <Typography variant="h6" sx={{ color: '#333', fontWeight: 600, mb: 2 }}>
-                      Asset Overview
-                    </Typography>
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
-                      <Typography variant="body2" sx={{ color: '#888' }}>
-                        Total Assets
-                      </Typography>
-                      <Typography variant="h6" sx={{ color: '#444', fontWeight: 700 }}>
-                        12
-                      </Typography>
-                    </Box>
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <Typography variant="body2" sx={{ color: '#888' }}>
-                        Active Listings
-                      </Typography>
-                      <Typography variant="h6" sx={{ color: '#444', fontWeight: 700 }}>
-                        8
-                      </Typography>
-                    </Box>
-                  </CardContent>
-                </Card>
-              </Stack>
-            </Grid>
+            ))}
           </Grid>
+
+        
+          {/* <Typography
+            variant="h5"
+            sx={{ color: '#100f0f', fontSize: '28px', fontWeight: 700, mt: 4, mb: 3, pl: 2, textAlign: "center" }}
+          >
+            Analytics
+          </Typography> */}
+
+          {/* <Grid container spacing={3}>
+            <Grid item xs={12} md={6}>
+              <Box
+                sx={{
+                  background: 'white',
+                  borderRadius: '10px',
+                  p: 2,
+                  boxShadow: 3,
+                  mb: 4,
+                }}
+              >
+                <Typography sx={{ fontSize: '16px', color: '#666', mb: 2 }}>
+                  Performance
+                </Typography>
+                <Box sx={{ height: 300 }}>
+                  <Line data={priceData} options={priceOptions} />
+                </Box>
+              </Box>
+            </Grid>
+
+           
+            <Grid item xs={12} md={6}>
+              <Box
+                sx={{
+                  background: 'white',
+                  borderRadius: '10px',
+                  p: 2,
+                  boxShadow: 3,
+                  mb: 4,
+                }}
+              >
+                <Typography sx={{ fontSize: '16px', color: '#666', mb: 2 }}>
+                  Performance
+                </Typography>
+                <Box sx={{ height: 300 }}>
+                  <Pie data={distributionData} options={distributionOptions} />
+                </Box>
+              </Box>
+            </Grid>
+          </Grid> */}
         </Container>
       </Box>
     </>
