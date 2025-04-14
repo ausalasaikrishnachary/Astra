@@ -47,6 +47,7 @@ import PurchasedAssets from "./Components/Panel/Investor/Asset/PurchasedAssets";
 import Dashboard from "./Components/Panel/SuperAdmin/Dashboard/Dashboard";
 import AddAdmin from "./Components/Panel/SuperAdmin/AddAdmin/AddAdmin";
 import ViewAdmin from "./Components/Panel/SuperAdmin/ViewAdmin/ViewAdmin";
+import Everstrat from "./Everstrat/Everstrat";
 
 function Layout() {
   const location = useLocation();
@@ -104,6 +105,7 @@ function Layout() {
           <Route path="/s-viewadmins" element={<ViewAdmin />} />
 
           <Route path="/login" element={<Login />} />
+          <Route path="/Everstrat" element={<Everstrat/>} />
         </Routes>
       </div>
       {publicPaths.includes(location.pathname) && <Footer />}
