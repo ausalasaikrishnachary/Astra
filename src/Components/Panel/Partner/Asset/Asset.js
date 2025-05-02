@@ -67,15 +67,15 @@ const AssetDashboard = () => {
   const summaryCardsData = [
     {
       title: "Total Assets",
-      value: counts.total_properties || "Loading...", // Dynamic value
+      value: counts.total_properties || "0", // Dynamic value
     },
     {
       title: "Total Value",
-      value: counts.total_properties_value ? `₹${counts.total_properties_value}` : "Loading...", // Dynamic value
+      value: counts.total_properties_value ? `₹${counts.total_properties_value}` : "0", // Dynamic value
     },
     {
       title: "Active Units",
-      value: counts.total_properties_available_units || "Loading...", // Dynamic value
+      value: counts.total_properties_available_units || "0", // Dynamic value
     },
   ];
 
