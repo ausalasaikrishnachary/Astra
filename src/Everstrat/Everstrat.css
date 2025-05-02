@@ -1,0 +1,183 @@
+/* Everstrat.css */
+
+.form-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 2rem;
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #f7f8fc;
+  }
+  
+  .form-title {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .google-button {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border: 1px solid #ddd;
+    background-color: white;
+    padding: 10px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    margin: 0 auto 1.5rem;
+  }
+  
+  .google-button img {
+    width: 18px;
+  }
+  
+  .separator {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+  
+  .separator hr {
+    flex: 1;
+    border: none;
+    border-top: 1px solid #ccc;
+  }
+  
+  .separator span {
+    padding: 0 1rem;
+    font-weight: bold;
+    color: #888;
+  }
+  
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem 1.5rem;
+  }
+  
+  .form-group {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .full-width {
+    grid-column: span 2;
+  }
+  
+  .checkbox-group {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  
+  .form-group label {
+    margin-bottom: 6px;
+    font-weight: 500;
+  }
+  
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"],
+  input[type="password"],
+  select {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+    background-color: #fff;
+  }
+  
+  .phone-input {
+    display: flex;
+    gap: 0.5rem;
+  }
+  
+  .phone-input select {
+    width: 80px;
+  }
+  
+  .submit-btn {
+    padding: 8px 24px;
+    background-color: #13007c;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    display: block;
+    margin: 0 auto; /* centers the button horizontally */
+    width: auto;     /* makes button only as wide as content */
+    min-width: 120px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .submit-btn:hover {
+    background-color: #0e0065;
+  }
+  
+  
+  .login-text {
+    text-align: center;
+    margin-top: 1rem;
+    font-size: 14px;
+  }
+  
+  .login-text a {
+    font-weight: bold;
+    text-decoration: none;
+    color: #13007c;
+  }
+  
+  .checkbox-group span {
+    color: #13007c;
+    font-weight: 500;
+  }
+
+  .google-signin-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    border: 1px solid #ddd;
+    background-color: white;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: fit-content;
+    margin: 0 auto 1.5rem auto;
+  }
+  
+  .google-signin-btn:hover {
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .google-icon {
+    width: 18px;
+    height: 18px;
+  }
+
+  .verified-badge {
+    background-color: #2ecc71;
+    color: white;
+    padding: 10px;
+    margin: 10px 0;
+    text-align: center;
+    font-weight: bold;
+    border-radius: 5px;
+  }
+  
+  .resend-text {
+    font-size: 12px;
+    color: #888;
+    text-align: right;
+    margin-top: 5px;
+  }
+  
+ 
+  
+  
