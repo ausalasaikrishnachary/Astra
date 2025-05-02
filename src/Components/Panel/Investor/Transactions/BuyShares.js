@@ -259,7 +259,14 @@ const BuyShares = () => {
         </Grid>
 
         {loading ? (
+          <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+        
+        >
           <CircularProgress />
+        </Box>
         ) : (
           <>
             <Table sx={{ border: '1px solid black', width: '100%' }}>

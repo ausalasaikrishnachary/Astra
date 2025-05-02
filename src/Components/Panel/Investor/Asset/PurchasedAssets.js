@@ -146,55 +146,63 @@ const PurchasedAssets = () => {
         >
           <Grid container spacing={2} alignItems="center">
             {/* Search Input */}
-            <Grid item xs={12} md={6} lg={7}>
-              <TextField
-                placeholder="Search by name or value..."
-                fullWidth
-                variant="outlined"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <SearchIcon sx={{ color: '#757575' }} />
-                    </InputAdornment>
-                  ),
-                  sx: {
-                    borderRadius: '8px',
-                    fontSize: '15px'
-                  }
-                }}
-                sx={{
-                  '& .MuiOutlinedInput-root': {
-                    '& fieldset': {
-                      borderColor: '#E0E0E0'
-                    },
-                    '&:hover fieldset': {
-                      borderColor: '#4A90E2'
-                    },
-                    '&.Mui-focused fieldset': {
-                      borderColor: '#4A90E2'
-                    }
-                  }
-                }}
-              />
-
-            </Grid>
-
-            {/* Filter Select */}
-            <Grid item xs={12} md={3} lg={3}>
-              <FormControl fullWidth>
-                <Select
-                  value={sortBy}
-                  onChange={(e) => setSortBy(e.target.value)}
-                  sx={{ borderRadius: "8px", fontSize: "15px" }}
-                >
-                  <MenuItem value="latest">Latest</MenuItem>
-                  <MenuItem value="price-high">Price: High to Low</MenuItem>
-                  <MenuItem value="price-low">Price: Low to High</MenuItem>
-                </Select>
-              </FormControl>
-            </Grid>
+             <Grid item xs={12} md={6} lg={7} marginLeft={6}>
+                          <TextField
+                            placeholder="Search by name or value..."
+                            fullWidth
+                            variant="outlined"
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                            InputProps={{
+                              // endAdornment: (
+                              //   // <InputAdornment position="end" sx={{ height: '100%' }}>
+                              //   //   <SearchIcon sx={{ color: '#757575' }} />
+                              //   // </InputAdornment>
+                              // ),
+                              sx: {
+                                height: '56px', // standard height
+                                padding: 0,
+                                '& input': {
+                                  padding: '16.5px 14px', // default MUI padding, adjust if needed
+                                }
+                              }
+                            }}
+                            sx={{
+                              '& .MuiOutlinedInput-root': {
+                                height: '56px', // enforce outer height
+                                '& fieldset': {
+                                  borderColor: '#E0E0E0'
+                                },
+                                '&:hover fieldset': {
+                                  borderColor: '#4A90E2'
+                                },
+                                '&.Mui-focused fieldset': {
+                                  borderColor: '#4A90E2'
+                                }
+                              }
+                            }}
+                          />
+                        </Grid>
+            
+            
+                        {/* Filter Select */}
+                        <Grid item xs={12} md={8} lg={4}>
+                          <FormControl fullWidth>
+                            <Select
+                              value={sortBy}
+                              onChange={(e) => setSortBy(e.target.value)}
+                              sx={{
+                                borderRadius: "8px",
+                                fontSize: "15px",
+                                height: '56px' // standard TextField height
+                              }}
+                            >
+                              <MenuItem value="latest">Latest</MenuItem>
+                              <MenuItem value="price-high">Price: High to Low</MenuItem>
+                              <MenuItem value="price-low">Price: Low to High</MenuItem>
+                            </Select>
+                          </FormControl>
+                        </Grid>
             {/* Add Asset Button */}
             {/* <Grid item xs={12} md={3} lg={2}>
               <Button
@@ -359,7 +367,7 @@ const PurchasedAssets = () => {
                 </Grid>
               </DialogContent>
               <DialogActions>
-                <Button onClick={handleCloseDialog} color="primary">Close</Button>
+                <Button onClick={handleCloseDialog} color="000000DE">Close</Button>
               </DialogActions>
             </>
           )}

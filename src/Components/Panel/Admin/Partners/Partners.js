@@ -363,7 +363,7 @@ const Tmanagement = () => {
     )}
   </DialogContent>
   <DialogActions>
-    <Button onClick={handleCloseModal} color="primary">Close</Button>
+    <Button onClick={handleCloseModal} color="000000DE">Close</Button>
   </DialogActions>
 </Dialog>
 
