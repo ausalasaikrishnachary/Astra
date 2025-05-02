@@ -1,8 +1,12 @@
 import React from 'react';
 import { Button, TextField, Grid, Container, Typography } from '@mui/material';
 import './Properties.css'; // Import the CSS file
+import { useNavigate } from 'react-router-dom';
+
 
 const Properties = () => {
+  const navigate = useNavigate();
+
   return (
     <Container className="properties">
       <div className="filters-container">
@@ -97,6 +101,7 @@ const Properties = () => {
               <div className="btn-container single-button">
                 <Button
                   sx={{ color: "#2E166D", border: "1px solid #2E166D", width: "100%" }}
+                  onClick={() => navigate('/propertydetails')}
                 >
                   View Details
                 </Button>

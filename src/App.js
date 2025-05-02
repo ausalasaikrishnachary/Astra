@@ -59,14 +59,15 @@ import EditPartner from "./Components/Panel/Admin/Partners/EditPartner";
 import EditInvestor from "./Components/Panel/Admin/Investors/EditInvestor";
 import EditAsset from "./Components/Panel/Admin/Asset/EditAsset";
 import ScheduleCall from "./Components/Panel/Admin/Asset/SheduleMeeting";
+import PropertyDetails from "./website/Pages/Properties/PropertyDetails";
 
 
 function Layout() {
   const location = useLocation();
 
   // Define paths where Header and Footer should be visible
-  const publicPaths = ["/", "/aboutus", "/FAQ", "/contactus", "/properties", "/signup", "/signin"];
-  
+  const publicPaths = ["/", "/aboutus", "/FAQ", "/contactus", "/properties","/propertydetails", "/signup", "/signin"];
+  const footerPaths = ["/", "/aboutus", "/FAQ", "/contactus", "/properties", "/signup", "/signin"]; // Removed '/propertydetails'
   return (
     <>
       {publicPaths.includes(location.pathname) && <Header />}
@@ -77,6 +78,7 @@ function Layout() {
           <Route path="/FAQ" element={<FAQAccordion />} />
           <Route path="/contactus" element={<Contact />} />
           <Route path="/properties" element={<Properties />} />
+          <Route path="/propertydetails" element={<PropertyDetails />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/signin" element={<SignIn />} />
 
@@ -130,7 +132,7 @@ function Layout() {
           <Route path="/Everstrat" element={<Everstrat/>} />
         </Routes>
       </div>
-      {publicPaths.includes(location.pathname) && <Footer />}
+      {footerPaths.includes(location.pathname) && <Footer />}
     </>
   );
 }
