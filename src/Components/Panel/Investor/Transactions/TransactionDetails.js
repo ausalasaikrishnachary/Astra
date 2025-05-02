@@ -16,6 +16,7 @@ import {
 import axios from 'axios';
 import InvestorHeader from '../../../Shared/Investor/InvestorNavbar';
 import { useLocation } from "react-router-dom";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 const TransactionList = () => {
     const location = useLocation();
@@ -57,71 +58,60 @@ const TransactionList = () => {
     return (
         <>
         <InvestorHeader />
-        <Box sx={{ marginTop: 4, padding: '50px' }}>
-        <Box sx={{ marginTop: 3, textAlign: 'left' }}>
-            <Button variant="outlined" onClick={() => navigate(-1)}>Back</Button>
-          </Box>
-          <Typography variant="h5" sx={{ marginBottom: 2, fontWeight: 'bold',textAlign:"center" }}>Transaction List</Typography>
-          <TableContainer>
-            <Table sx={{ border: '1px solid black', width: '100%' }}>
-              <TableHead>
-                <TableRow>
-                  <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>Transaction ID</TableCell>
-                  <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>Property Name</TableCell>
-                  <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>Partner Name</TableCell>
-                  <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>Property Value</TableCell>
-                  <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>Payment Type</TableCell>
-                  <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>Purchased Units</TableCell>
-                  <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>Price Per Unit</TableCell>
-                  <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>Total Amount</TableCell>
-                  <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>Paid Amount</TableCell>
-                  <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>Remaining Amount</TableCell>
-                  <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>Payment Method</TableCell>
-                  <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>Transaction Date</TableCell>
-                  {/* <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>Action</TableCell> */}
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {transactions.map((transaction) => (
-                  <TableRow
-                    key={transaction.transaction_id}
-                    // onClick={() => navigate(`/i-transaction-details?transaction_id=${transaction.transaction_id}`)}
-                    sx={{ cursor: 'pointer', '&:hover': { backgroundColor: '#f5f5f5' } }}
-                  >
-                    <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>{transaction.transaction_id}</TableCell>
-                    <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>{transaction.property_name}</TableCell>
-                    <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>{transaction.partner_name}</TableCell>
-                    <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>{transaction.property_value || 'N/A'}</TableCell>
-                    <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>{transaction.payment_type || 'N/A'}</TableCell>
-                    <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>{transaction.purchased_units}</TableCell>
-                    <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>{transaction.price_per_unit}</TableCell>
-                    <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>{transaction.total_amount}</TableCell>
-                    <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>{transaction.paid_amount}</TableCell>
-                    <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>{transaction.remaining_amount}</TableCell>
-                    <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>{transaction.payment_method}</TableCell>
-                    <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>{new Date(transaction.created_at).toLocaleDateString('en-IN')}</TableCell>
-                    {/* <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }} onClick={(e) => e.stopPropagation()}>
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          navigate(
-                            `/i-payment-form?property_id=${transaction.property_id}&transaction_id=${transaction.transaction_id}`
-                          );
-                        }}
-                        disabled={transaction.remaining_amount <= 0}
-                      >
-                        Pay Remaining
-                      </Button>
-                    </TableCell> */}
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-          
-        </Box>
+        
+
+<Box sx={{ marginTop: 4, padding: '50px' }}>
+  <Box sx={{ marginTop: 3, textAlign: 'left' }}>
+    <Button variant="outlined" onClick={() => navigate(-1)} startIcon={<ArrowBackIcon />}>
+      {/* You can remove text or leave it empty */}
+    </Button>
+  </Box>
+  <Typography variant="h5" sx={{ marginBottom: 2, fontWeight: 'bold', textAlign: "center" }}>
+    Transaction List
+  </Typography>
+  <TableContainer>
+    <Table sx={{ border: '1px solid black', width: '100%' }}>
+      <TableHead>
+        <TableRow>
+          <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>Transaction ID</TableCell>
+          <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>Property Name</TableCell>
+          <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>Partner Name</TableCell>
+          <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>Property Value</TableCell>
+          <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>Payment Type</TableCell>
+          <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>Purchased Units</TableCell>
+          <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>Price Per Unit</TableCell>
+          <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>Total Amount</TableCell>
+          <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>Paid Amount</TableCell>
+          <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>Remaining Amount</TableCell>
+          <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>Payment Method</TableCell>
+          <TableCell sx={{ fontWeight: 'bold', textAlign: 'center', border: '1px solid #000' }}>Transaction Date</TableCell>
+        </TableRow>
+      </TableHead>
+      <TableBody>
+        {transactions.map((transaction) => (
+          <TableRow
+            key={transaction.transaction_id}
+            sx={{ cursor: 'pointer', '&:hover': { backgroundColor: '#f5f5f5' } }}
+          >
+            <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>{transaction.transaction_id}</TableCell>
+            <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>{transaction.property_name}</TableCell>
+            <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>{transaction.partner_name}</TableCell>
+            <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>{transaction.property_value || 'N/A'}</TableCell>
+            <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>{transaction.payment_type || 'N/A'}</TableCell>
+            <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>{transaction.purchased_units}</TableCell>
+            <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>{transaction.price_per_unit}</TableCell>
+            <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>{transaction.total_amount}</TableCell>
+            <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>{transaction.paid_amount}</TableCell>
+            <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>{transaction.remaining_amount}</TableCell>
+            <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>{transaction.payment_method}</TableCell>
+            <TableCell sx={{ textAlign: 'center', border: '1px solid #000' }}>{new Date(transaction.created_at).toLocaleDateString('en-IN')}</TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
+  </TableContainer>
+</Box>
+
       </>
       
     );

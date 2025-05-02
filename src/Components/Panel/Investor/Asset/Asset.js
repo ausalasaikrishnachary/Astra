@@ -32,7 +32,7 @@ const AssetDashboard = () => {
   const [openDialog, setOpenDialog] = useState(false);
   const [selectedAsset, setSelectedAsset] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
-    const [sortBy, setSortBy] = useState("latest");
+  const [sortBy, setSortBy] = useState("latest");
   const [counts, setCounts] = useState({});
 
   useEffect(() => {
@@ -97,16 +97,16 @@ const AssetDashboard = () => {
     <>
       <InvestorHeader />
       <Container sx={{ py: 4 }}>
-      <Box
+        <Box
           sx={{
             backgroundColor: 'white',
             p: 2.5,
             borderRadius: 2,
             boxShadow: '0 2px 10px rgba(0,0,0,0.05)',
             mb: 4,
-            display:"flex",
-            flexDirection:"row",
-            alignItems:"center"
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center"
           }}
         >
           <Grid container spacing={2} alignItems="center">
@@ -219,7 +219,7 @@ const AssetDashboard = () => {
                   display: 'flex',
                   flexDirection: 'column',
                   borderRadius: 2,
-                  
+
                   transition: 'all 0.3s ease',
                   position: 'relative',
                   backgroundColor: 'white',
@@ -254,7 +254,7 @@ const AssetDashboard = () => {
                         </Typography>
                       </Grid>
                       <Grid item xs={6}>
-                        <Typography variant="body2" fontWeight="bold" color="#4A90E2" align="right">
+                        <Typography variant="body2" fontWeight="bold" color="#2c3e50" align="right">
                           ₹{asset.property_value}/-
                         </Typography>
                       </Grid>
@@ -280,7 +280,14 @@ const AssetDashboard = () => {
                     <LinearProgress
                       variant="determinate"
                       value={60}
-                      sx={{ height: 8, borderRadius: 4 }}
+                      sx={{
+                        height: 8,
+                        borderRadius: 4,
+                        '& .MuiLinearProgress-bar': {
+                          backgroundColor: '#2c3e50',
+                        },
+                        backgroundColor: '#e0e0e0', // Optional: set a lighter background
+                      }}
                     />
                     <Typography variant="caption" color="text.secondary" display="block" mt={0.5}>
                       60% funded
@@ -364,7 +371,7 @@ const AssetDashboard = () => {
                 </Grid>
               </DialogContent>
               <DialogActions>
-                <Button onClick={handleCloseDialog} color="primary">Close</Button>
+                <Button onClick={handleCloseDialog} color="000000DE">Close</Button>
               </DialogActions>
             </>
           )}

@@ -280,7 +280,7 @@ const PurchasedAssets = () => {
                           </Typography>
                         </Grid>
                         <Grid item xs={6}>
-                          <Typography variant="body2" fontWeight="bold" color="#4A90E2" align="right">
+                          <Typography variant="body2" fontWeight="bold" color="#2c3e50" align="right">
                             ₹{asset.property_value}/-
                           </Typography>
                         </Grid>
