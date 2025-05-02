@@ -3,6 +3,9 @@ import { Box, TextField, Button, Typography, Link, Paper, Grid } from "@mui/mate
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import image2 from "./../Images/Logo File.png";
+import login_bg from "./../../Images/loginbg.jpg";
+import { InputAdornment, IconButton } from "@mui/material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -14,6 +17,8 @@ const Login = () => {
   const [emailError, setEmailError] = useState("");
   const [showForgotPassword, setShowForgotPassword] = useState(false);
   const [showResetPassword, setShowResetPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+
 
   const handleEmailChange = (e) => {
     const value = e.target.value;
@@ -63,34 +68,34 @@ const Login = () => {
   };
 
   const selectUserRole = async (roles) => {
-        const { value: selectedRole } = await Swal.fire({
-          title: "Select Your Role",
-          input: "select",
-          inputOptions: roles.reduce((acc, role) => ({ ...acc, [role]: role }), {}),
-          inputPlaceholder: "Choose your role",
-          showCancelButton: true,
-          confirmButtonText: "Proceed",
-          cancelButtonText: "Cancel",
-        });
-    
-        if (selectedRole) {
-          navigateToDashboard(selectedRole);
-        }
-      };
-  
-      const navigateToDashboard = (role) => {
-        if (role === "Admin") {
-          navigate("/a-dashboard");
-        } else if (role === "Partner") {
-          navigate("/p-dashboard");
-        } else if (role === "Investor") {
-          navigate("/i-dashboard");
-        } else if (role === "Super Admin") {
-          navigate("/s-dashboard");
-        } else {
-          setError("Invalid role assigned. Please contact support.");
-        }
-      };
+    const { value: selectedRole } = await Swal.fire({
+      title: "Select Your Role",
+      input: "select",
+      inputOptions: roles.reduce((acc, role) => ({ ...acc, [role]: role }), {}),
+      inputPlaceholder: "Choose your role",
+      showCancelButton: true,
+      confirmButtonText: "Proceed",
+      cancelButtonText: "Cancel",
+    });
+
+    if (selectedRole) {
+      navigateToDashboard(selectedRole);
+    }
+  };
+
+  const navigateToDashboard = (role) => {
+    if (role === "Admin") {
+      navigate("/a-dashboard");
+    } else if (role === "Partner") {
+      navigate("/p-dashboard");
+    } else if (role === "Investor") {
+      navigate("/i-dashboard");
+    } else if (role === "Super Admin") {
+      navigate("/s-dashboard");
+    } else {
+      setError("Invalid role assigned. Please contact support.");
+    }
+  };
 
   const handleSendOTP = async () => {
     if (!email || emailError) {
@@ -153,13 +158,16 @@ const Login = () => {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        backgroundImage: "url(https://cdn.pixabay.com/photo/2018/11/22/23/57/london-3833039_1280.jpg)",
+        backgroundImage: `url(${login_bg})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
-        marginTop:"-85px"
+        marginTop: "-85px",
       }}
     >
-      <Paper elevation={4} sx={{ display: "flex", width: "90%", maxWidth: 900, borderRadius: 2, overflow: "hidden" }}>
+      <Paper elevation={4} sx={{
+        display: "flex", width: "90%", maxWidth: 900, borderRadius: 2, overflow: "hidden", backdropFilter: "blur(40px)",
+        background: "transparent", boxShadow: "0px 10px 30px rgba(59, 135, 225, 0.9)",
+      }}>
         <Grid container>
           <Grid
             item
@@ -169,9 +177,10 @@ const Login = () => {
               display: { xs: "none", md: "flex" },
               alignItems: "center",
               justifyContent: "center",
-              backgroundImage: "url(https://img.freepik.com/free-vector/background-banner-colorful-gradient_677411-3591.jpg?w=360)",
+              // backgroundImage: "url(https://img.freepik.com/free-vector/background-banner-colorful-gradient_677411-3591.jpg?w=360)",
               backgroundSize: "cover",
               padding: 2,
+
             }}
           >
             <img src={image2} alt="Login illustration" style={{ maxWidth: "100%", height: "auto" }} />
@@ -218,6 +227,7 @@ const Login = () => {
                   margin="normal"
                   value={email}
                   disabled
+                  sx={{ background: "transparent", borderColor: "white" }}
                 />
                 <TextField
                   fullWidth
@@ -247,19 +257,136 @@ const Login = () => {
               </>
             ) : (
               <>
-                <Typography variant="h4" align="center" gutterBottom>
+                <Typography variant="h4" align="center" gutterBottom sx={{ color: 'white', }}>
                   Login
                 </Typography>
-                <TextField fullWidth label="Email" variant="outlined" margin="normal" value={email} onChange={handleEmailChange} />
-                <TextField fullWidth label="Password" type="password" variant="outlined" margin="normal" value={password} onChange={(e) => setPassword(e.target.value)} />
+                <TextField
+                  fullWidth
+                  label="Email"
+                  variant="outlined"
+                  margin="normal"
+                  value={email}
+                  onChange={handleEmailChange}
+                  sx={{
+                    '& label': {
+                      color: 'white',
+                    },
+                    '& label.Mui-focused': {
+                      color: 'white',
+                    },
+                    '& .MuiOutlinedInput-root': {
+                      '& fieldset': {
+                        borderColor: 'white',
+                      },
+                      '&:hover fieldset': {
+                        borderColor: 'white',
+                      },
+                      '&.Mui-focused fieldset': {
+                        border: '1px solid white',
+                      },
+                      '& input': {
+                        color: 'white',
+                        backgroundColor: 'transparent',
+                        '&:-webkit-autofill': {
+                          WebkitBoxShadow: '0 0 0 1000px transparent inset',
+                          WebkitTextFillColor: 'white',
+                          transition: 'background-color 5000s ease-in-out 0s',
+                        },
+                      },
+                    },
+                  }}
+                />
+
+
+                <TextField
+                  fullWidth
+                  label="Password"
+                  type={showPassword ? "text" : "password"}
+                  variant="outlined"
+                  margin="normal"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <IconButton
+                          aria-label="toggle password visibility"
+                          onClick={() => setShowPassword((prev) => !prev)}
+                          edge="end"
+                          sx={{color: 'white',}}
+                        >
+                          {showPassword ? <VisibilityOff /> : <Visibility />}
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
+                  sx={{
+                    '& label': {
+                      color: 'white',
+                    },
+                    '& label.Mui-focused': {
+                      color: 'white',
+                    },
+                    '& .MuiOutlinedInput-root': {
+                      '& fieldset': {
+                        borderColor: 'white',
+                      },
+                      '&:hover fieldset': {
+                        borderColor: 'white',
+                      },
+                      '&.Mui-focused fieldset': {
+                        border: '1px solid white',
+                      },
+                      '& input': {
+                        color: 'white',
+                        backgroundColor: 'transparent',
+                        '&:-webkit-autofill': {
+                          WebkitBoxShadow: '0 0 0 1000px transparent inset',
+                          WebkitTextFillColor: 'white',
+                          transition: 'background-color 5000s ease-in-out 0s',
+                        },
+                      },
+                    },
+                  }}
+                />
+
+
                 <Box textAlign="right">
-                  <Link href="#" onClick={() => setShowForgotPassword(true)} sx={{ cursor: "pointer", color: "error.main" }}>
+                  <Link
+                    href="#"
+                    onClick={() => setShowForgotPassword(true)}
+                    underline="none"
+                    sx={{
+                      cursor: "pointer",
+                      color: "white",
+                      fontWeight: 400, // normal weight
+                      '&:hover': {
+                        fontWeight: 'bold', // bold on hover
+                      },
+                    }}
+                  >
                     Forgot Password?
                   </Link>
+
                 </Box>
-                <Button fullWidth variant="contained" sx={{ mt: 2, bgcolor: "#00cc8f", "&:hover": { bgcolor: "#004080", color: "#fff" } }} onClick={handleLogin}>
+                <Button
+                  fullWidth
+                  variant="contained"
+                  sx={{
+                    mt: 2,
+                    bgcolor: "#2c3e50",
+                    color: "#ffffff",
+                    border: "2px solid #2a5f9e",
+                    "&:hover": {
+                      bgcolor: "#2a5f9e", // new background color on hover
+                      color: "#ffffff",    // new font color on hover
+                    },
+                  }}
+                  onClick={handleLogin}
+                >
                   Login
                 </Button>
+
               </>
             )}
           </Grid>

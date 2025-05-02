@@ -34,7 +34,7 @@ export default function PartnerHeader() {
   // For the "Transactions" item, we add a submenu.
   const navItems = [
     { label: 'Dashboard', path: '/p-dashboard' },
-    { label: 'Assets', path: '/p-myassets' },
+    { label: 'Properties', path: '/p-myassets' },
     { label: 'My Investors', path: '/p-myinvestors' },
     // {
     //   label: 'Transactions', path: "/p-transactions",

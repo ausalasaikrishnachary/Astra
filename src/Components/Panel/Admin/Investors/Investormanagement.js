@@ -30,6 +30,8 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import IconButton from "@mui/material/IconButton";
 import Header from "../../../Shared/Navbar/Navbar";
 import { useLocation, useNavigate } from "react-router-dom";
+import Stack from '@mui/material/Stack';
+
 
 // API Endpoint
 const API_URL = "http://175.29.21.7:83/users/role/Investor/";
@@ -241,7 +243,7 @@ const Tmanagement = () => {
                     Status
                   </TableCell>
                   <TableCell sx={{ fontWeight: "bold", textAlign: "center", border: "1px solid #000" }}>
-                    Kyc Status
+                  KYC Status
                   </TableCell>
                   <TableCell sx={{ fontWeight: "bold", textAlign: "center", border: "1px solid #000" }}>
                     Actions
@@ -281,10 +283,10 @@ const Tmanagement = () => {
 
 
                     <TableCell sx={{ textAlign: "center", border: "1px solid #000" }}>
-                      <IconButton size="small" color="primary" onClick={() => handleView(user)}>
+                      <IconButton size="small" color="primary" sx={{ color: '#2c3e50', '&:hover': { color: '#2c3e50' } }} onClick={() => handleView(user)}>
                         <VisibilityIcon />
                       </IconButton>
-                      <IconButton size="small" color="primary" onClick={() => handleEdit(user.user_id)}>
+                      <IconButton size="small" color="primary" sx={{ color: "#FFC107", "&:hover": { color: "#FF9800" } }} onClick={() => handleEdit(user.user_id)}>
                         <EditIcon />
                       </IconButton>
                       <IconButton size="small" color="error" onClick={() => handleDelete(user.user_id)}>
@@ -297,89 +299,150 @@ const Tmanagement = () => {
             </Table>
           )}
 
-          {/* Modal for User Details */}
-          <Dialog open={openModal} onClose={handleCloseModal} fullWidth maxWidth="sm">
-            <DialogTitle>User Details</DialogTitle>
-            <DialogContent dividers>
-              {selectedUser && (
-                <Box>
-                  <Typography><strong>User ID:</strong> {selectedUser.user_id}</Typography>
-                  <Typography><strong>Username:</strong> {selectedUser.username}</Typography>
-                  <Typography><strong>Email:</strong> {selectedUser.email}</Typography>
-                  <Typography><strong>Phone:</strong> {selectedUser.phone_number}</Typography>
-                  <Typography><strong>DOB:</strong> {selectedUser.date_of_birth}</Typography>
-                  <Typography><strong>Gender:</strong> {selectedUser.gender}</Typography>
-                  <Typography><strong>Status:</strong> {selectedUser.status}</Typography>
-                  <Typography><strong>KYC Status:</strong> {selectedUser.kyc_status}</Typography>
-                  <Typography><strong>Address:</strong> {selectedUser.address || "N/A"}</Typography>
-                  <Typography><strong>City:</strong> {selectedUser.city || "N/A"}</Typography>
-                  <Typography><strong>State:</strong> {selectedUser.state || "N/A"}</Typography>
-                  <Typography><strong>Country:</strong> {selectedUser.country || "N/A"}</Typography>
-                  <Typography><strong>Pin Code:</strong> {selectedUser.pin_code || "N/A"}</Typography>
-                  <Typography><strong>Account Type:</strong> {selectedUser.account_type || "N/A"}</Typography>
-                  <Typography><strong>Pan Number:</strong> {selectedUser.pan_number || "N/A"}</Typography>
-                  <Typography><strong>Aadhaar Number:</strong> {selectedUser.aadhaar_number || "N/A"}</Typography>
-                  <Typography><strong>Account Holder Name:</strong> {selectedUser.account_holder_name || "N/A"}</Typography>
-                  <Typography><strong>Bank Name:</strong> {selectedUser.bank_name || "N/A"}</Typography>
-                  <Typography><strong>Branch Name:</strong> {selectedUser.branch_name || "N/A"}</Typography>
-                  <Typography><strong>Account Number:</strong> {selectedUser.account_number || "N/A"}</Typography>
-                  <Typography><strong>IFSC Code:</strong> {selectedUser.ifsc_code || "N/A"}</Typography>
-                  <Typography><strong>Referral Id:</strong> {selectedUser.referral_id || "N/A"}</Typography>
-                  <Typography><strong>Created At:</strong> {selectedUser.created_at || "N/A"}</Typography>
+<Dialog open={openModal} onClose={handleCloseModal} fullWidth maxWidth="sm">
+  <DialogTitle>User Details</DialogTitle>
+  <DialogContent dividers>
+    {selectedUser && (
+      <Box>
+        <Grid container spacing={2}>
+          {/* Basic Details */}
+          <Grid item xs={6}>
+            <Typography><strong>User ID:</strong> {selectedUser.user_id}</Typography>
+          </Grid>
+          <Grid item xs={6}>
+            <Typography><strong>Username:</strong> {selectedUser.username}</Typography>
+          </Grid>
+          <Grid item xs={6}>
+            <Typography><strong>Email:</strong> {selectedUser.email}</Typography>
+          </Grid>
+          <Grid item xs={6}>
+            <Typography><strong>Phone:</strong> {selectedUser.phone_number}</Typography>
+          </Grid>
+          <Grid item xs={6}>
+            <Typography><strong>DOB:</strong> {selectedUser.date_of_birth}</Typography>
+          </Grid>
+          <Grid item xs={6}>
+            <Typography><strong>Gender:</strong> {selectedUser.gender}</Typography>
+          </Grid>
+          <Grid item xs={6}>
+            <Typography><strong>Status:</strong> {selectedUser.status}</Typography>
+          </Grid>
+          <Grid item xs={6}>
+            <Typography><strong>KYC Status:</strong> {selectedUser.kyc_status}</Typography>
+          </Grid>
 
-                  {/* Display Images and Files at the End */}
-                  <Box mt={2}>
-                    <Typography><strong>Profile Image:</strong></Typography>
-                    <img
-                      src={`http://175.29.21.7:83/${selectedUser.image}`}
-                      alt="User Profile"
-                      style={{ width: "100%", maxWidth: "200px", borderRadius: "5px", marginTop: "5px" }}
-                    />
+          {/* Address Details */}
+          <Grid item xs={6}>
+            <Typography><strong>Address:</strong> {selectedUser.address || "N/A"}</Typography>
+          </Grid>
+          <Grid item xs={6}>
+            <Typography><strong>City:</strong> {selectedUser.city || "N/A"}</Typography>
+          </Grid>
+          <Grid item xs={6}>
+            <Typography><strong>State:</strong> {selectedUser.state || "N/A"}</Typography>
+          </Grid>
+          <Grid item xs={6}>
+            <Typography><strong>Country:</strong> {selectedUser.country || "N/A"}</Typography>
+          </Grid>
+          <Grid item xs={6}>
+            <Typography><strong>Pin Code:</strong> {selectedUser.pin_code || "N/A"}</Typography>
+          </Grid>
 
-                    <Typography><strong>PAN Card:</strong></Typography>
-                    {selectedUser.pan?.endsWith(".jpg") || selectedUser.pan?.endsWith(".png") ? (
-                      <img
-                        src={`http://175.29.21.7:83/${selectedUser.pan}`}
-                        alt="PAN Card"
-                        style={{ width: "100%", maxWidth: "200px", borderRadius: "5px", marginTop: "5px" }}
-                      />
-                    ) : (
-                      <a
-                        href={`http://175.29.21.7:83/${selectedUser.pan}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        style={{ display: "block", marginTop: "5px", color: "blue", textDecoration: "underline" }}
-                      >
-                        View PAN File
-                      </a>
-                    )}
+          {/* Bank & Document Info */}
+          <Grid item xs={6}>
+            <Typography><strong>Account Type:</strong> {selectedUser.account_type || "N/A"}</Typography>
+          </Grid>
+          <Grid item xs={6}>
+            <Typography><strong>Pan Number:</strong> {selectedUser.pan_number || "N/A"}</Typography>
+          </Grid>
+          <Grid item xs={6}>
+            <Typography><strong>Aadhaar Number:</strong> {selectedUser.aadhaar_number || "N/A"}</Typography>
+          </Grid>
+          <Grid item xs={6}>
+            <Typography><strong>Account Holder Name:</strong> {selectedUser.account_holder_name || "N/A"}</Typography>
+          </Grid>
+          <Grid item xs={6}>
+            <Typography><strong>Bank Name:</strong> {selectedUser.bank_name || "N/A"}</Typography>
+          </Grid>
+          <Grid item xs={6}>
+            <Typography><strong>Branch Name:</strong> {selectedUser.branch_name || "N/A"}</Typography>
+          </Grid>
+          <Grid item xs={6}>
+            <Typography><strong>Account Number:</strong> {selectedUser.account_number || "N/A"}</Typography>
+          </Grid>
+          <Grid item xs={6}>
+            <Typography><strong>IFSC Code:</strong> {selectedUser.ifsc_code || "N/A"}</Typography>
+          </Grid>
+          <Grid item xs={6}>
+            <Typography><strong>Referral Id:</strong> {selectedUser.referral_id || "N/A"}</Typography>
+          </Grid>
+          <Grid item xs={6}>
+            <Typography><strong>Created At:</strong> {selectedUser.created_at || "N/A"}</Typography>
+          </Grid>
+        </Grid>
 
-                    <Typography><strong>Aadhaar Card:</strong></Typography>
-                    {selectedUser.aadhaar?.endsWith(".jpg") || selectedUser.aadhaar?.endsWith(".png") ? (
-                      <img
-                        src={`http://175.29.21.7:83/${selectedUser.aadhaar}`}
-                        alt="Aadhaar Card"
-                        style={{ width: "100%", maxWidth: "200px", borderRadius: "5px", marginTop: "5px" }}
-                      />
-                    ) : (
-                      <a
-                        href={`http://175.29.21.7:83/${selectedUser.aadhaar}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        style={{ display: "block", marginTop: "5px", color: "blue", textDecoration: "underline" }}
-                      >
-                        View Aadhaar File
-                      </a>
-                    )}
-                  </Box>
+        {/* Images Section */}
+        <Box mt={4}>
+          <Typography variant="h6" gutterBottom><strong>Documents</strong></Typography>
+          <Stack direction="row" spacing={4} flexWrap="wrap">
+            <Box>
+              <Typography><strong>Profile Image:</strong></Typography>
+              <img
+                src={`http://175.29.21.7:83/${selectedUser.image}`}
+                alt="User Profile"
+                style={{ width: "100%", maxWidth: "200px", borderRadius: "5px", marginTop: "5px" }}
+              />
+            </Box>
 
-                </Box>
+            <Box>
+              <Typography><strong>PAN Card:</strong></Typography>
+              {selectedUser.pan?.match(/\.(jpg|jpeg|png)$/i) ? (
+                <img
+                  src={`http://175.29.21.7:83/${selectedUser.pan}`}
+                  alt="PAN Card"
+                  style={{ width: "100%", maxWidth: "200px", borderRadius: "5px", marginTop: "5px" }}
+                />
+              ) : (
+                <a
+                  href={`http://175.29.21.7:83/${selectedUser.pan}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ display: "block", marginTop: "5px", color: "blue", textDecoration: "underline" }}
+                >
+                  View PAN File
+                </a>
               )}
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={handleCloseModal} color="primary">Close</Button>
-            </DialogActions>
-          </Dialog>
+            </Box>
+
+            <Box>
+              <Typography><strong>Aadhaar Card:</strong></Typography>
+              {selectedUser.aadhaar?.match(/\.(jpg|jpeg|png)$/i) ? (
+                <img
+                  src={`http://175.29.21.7:83/${selectedUser.aadhaar}`}
+                  alt="Aadhaar Card"
+                  style={{ width: "100%", maxWidth: "200px", borderRadius: "5px", marginTop: "5px" }}
+                />
+              ) : (
+                <a
+                  href={`http://175.29.21.7:83/${selectedUser.aadhaar}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ display: "block", marginTop: "5px", color: "blue", textDecoration: "underline" }}
+                >
+                  View Aadhaar File
+                </a>
+              )}
+            </Box>
+          </Stack>
+        </Box>
+      </Box>
+    )}
+  </DialogContent>
+  <DialogActions>
+    <Button onClick={handleCloseModal} color="primary">Close</Button>
+  </DialogActions>
+</Dialog>
+
 
         </Box>
       </Container>

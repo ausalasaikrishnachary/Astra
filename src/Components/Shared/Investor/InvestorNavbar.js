@@ -34,7 +34,7 @@ export default function InvestorHeader() {
   // For the "Transactions" item, we add a submenu.
   const navItems = [
     { label: 'Dashboard', path: '/i-dashboard' },
-    { label: 'Buy Assets', path: '/i-asset' },
+    { label: 'Buy Property', path: '/i-asset' },
     { label: 'Transactions', path: '/i-buyunits' },
     { label: 'Purchased Assets', path: '/i-purchasedasset' },
     // { label: 'KYC', path: '/i-profiledetails' },

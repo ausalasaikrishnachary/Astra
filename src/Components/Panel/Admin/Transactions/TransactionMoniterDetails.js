@@ -17,6 +17,7 @@ import axios from 'axios';
 import InvestorHeader from '../../../Shared/Investor/InvestorNavbar';
 import { useLocation } from "react-router-dom";
 import Header from "../../../Shared/Navbar/Navbar";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 
 const TransactionMoniterDetails = () => {
@@ -31,7 +32,7 @@ const TransactionMoniterDetails = () => {
 
     useEffect(() => {
         const fetchTransactions = async () => {
-            
+
             try {
                 const response = await axios.get(`http://175.29.21.7:83/transactions/user-id/${userId}/property-id/${propertyId}/`);
 
@@ -68,7 +69,9 @@ const TransactionMoniterDetails = () => {
                 ) : (
                     <div >
                         <Box sx={{ marginTop: 3, textAlign: 'left' }}>
-                            <Button variant="outlined" onClick={() => navigate(-1)}>Back</Button>
+                            <Button variant="outlined" onClick={() => navigate(-1)} startIcon={<ArrowBackIcon />}>
+                                {/* You can remove text or leave it empty */}
+                            </Button>
                         </Box>
                         <Typography variant="h5" sx={{ marginBottom: 2, fontWeight: 'bold', textAlign: 'center' }}>
                             Transaction List
@@ -127,7 +130,7 @@ const TransactionMoniterDetails = () => {
                                 </TableBody>
                             </Table>
                         </TableContainer>
-                        
+
                     </div>
                 )}
             </Box>

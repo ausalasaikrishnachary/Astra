@@ -159,10 +159,10 @@ const AssetDashboard = () => {
                       borderColor: '#E0E0E0'
                     },
                     '&:hover fieldset': {
-                      borderColor: '#4A90E2'
+                      borderColor: '#2c3e50'
                     },
                     '&.Mui-focused fieldset': {
-                      borderColor: '#4A90E2'
+                      borderColor: '#2c3e50'
                     }
                   }
                 }}
@@ -243,14 +243,14 @@ const AssetDashboard = () => {
                   display: 'flex',
                   flexDirection: 'column',
                   borderRadius: 2,
-                  boxShadow: '0 4px 5px rgba(0, 0, 0, 0.749)',
+                  // boxShadow: '0 4px 5px rgba(0, 0, 0, 0.749)',
                   transition: 'all 0.3s ease',
                   position: 'relative',
                   backgroundColor: 'white',
                   overflow: 'visible',
                   '&:hover': {
                     transform: 'translateY(-5px)',
-                    boxShadow: '0 8px 25px rgba(0,0,0,0.1)'
+                    boxShadow: '0 4px 5px rgba(0, 0, 0, 0.749)',
                   }
                 }}
               >
@@ -279,7 +279,7 @@ const AssetDashboard = () => {
                         </Typography>
                       </Grid>
                       <Grid item xs={6}>
-                        <Typography variant="body2" fontWeight="bold" color="#4A90E2" align="right">
+                        <Typography variant="body2" fontWeight="bold" color="#2c3e50" align="right">
                           ₹{asset.property_value}/-
                         </Typography>
                       </Grid>
@@ -299,15 +299,22 @@ const AssetDashboard = () => {
                   {/* Funding Loading Section */}
 
                   <Box sx={{ px: 2, pb: 2 }}>
-                    <Typography variant="body2" color="text.secondary" mb={0.5}>
+                    <Typography variant="body2" color="#2c3e50" mb={0.5}>
                       Funding Progress
                     </Typography>
                     <LinearProgress
                       variant="determinate"
                       value={60}
-                      sx={{ height: 8, borderRadius: 4 }}
+                      sx={{
+                        height: 8,
+                        borderRadius: 4,
+                        "& .MuiLinearProgress-bar": {
+                          backgroundColor: "#2c3e50", // custom progress bar color
+                        },
+                        backgroundColor: "#e0e0e0", // optional: change track color
+                      }}
                     />
-                    <Typography variant="caption" color="text.secondary" display="block" mt={0.5}>
+                    <Typography variant="caption" color="#2c3e50" display="block" mt={0.5}>
                       60% funded
                     </Typography>
                   </Box>
@@ -325,7 +332,7 @@ const AssetDashboard = () => {
                     </Grid>
                     <Grid item>
                       <IconButton
-                        sx={{ color: '#4A90E2', '&:hover': { color: '#357ABD' } }}
+                        sx={{ color: '#2c3e50', '&:hover': { color: '#2c3e50' } }}
                         onClick={() => handleOpenDialog(asset)}
                       >
                         <VisibilityIcon />
@@ -377,7 +384,7 @@ const AssetDashboard = () => {
                 </Grid>
               </DialogContent>
               <DialogActions>
-                <Button onClick={handleCloseDialog} color="primary">Close</Button>
+                <Button onClick={handleCloseDialog} color="#2c3e50">Close</Button>
               </DialogActions>
             </>
           )}

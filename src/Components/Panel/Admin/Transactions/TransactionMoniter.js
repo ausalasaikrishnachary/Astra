@@ -204,22 +204,22 @@ const TransactionMoniter = () => {
     const matchSearch =
       transaction.property_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       transaction.transaction_type.toLowerCase().includes(searchQuery.toLowerCase());
-  
+
     const matchDate = filterDate
       ? new Date(transaction.created_at).toISOString().slice(0, 10) === filterDate
       : true;
-  
+
     const matchAmount = filterAmount
       ? parseFloat(transaction.total_paid_amount) === parseFloat(filterAmount)
       : true;
-  
+
     const matchPaymentType = filterPaymentType
       ? transaction.payment_type === filterPaymentType
       : true;
-  
+
     return matchSearch && matchDate && matchAmount && matchPaymentType;
   });
-  
+
 
   // Sort the transactions
   const sortedTransactions = [...filteredTransactions].sort((a, b) => {
@@ -237,47 +237,47 @@ const TransactionMoniter = () => {
     (currentPage + 1) * rowsPerPage
   );
 
-  
+
 
   return (
     <>
       <Header />
       <Box sx={{ marginTop: 4, padding: '50px' }}>
-      <Grid container spacing={2} mb={3}>
-  <Grid item xs={12} sm={4}>
-    <TextField
-      fullWidth
-      type="date"
-      label="Filter by Transaction Date"
-      InputLabelProps={{ shrink: true }}
-      value={filterDate}
-      onChange={(e) => setFilterDate(e.target.value)}
-    />
-  </Grid>
-  <Grid item xs={12} sm={4}>
-    <TextField
-      fullWidth
-      label="Filter by Total Paid Amount"
-      type="number"
-      value={filterAmount}
-      onChange={(e) => setFilterAmount(e.target.value)}
-    />
-  </Grid>
-  <Grid item xs={12} sm={4}>
-    <FormControl fullWidth>
-      <InputLabel>Payment Type</InputLabel>
-      <Select
-        value={filterPaymentType}
-        onChange={(e) => setFilterPaymentType(e.target.value)}
-        label="Payment Type"
-      >
-        <MenuItem value="">All</MenuItem>
-        <MenuItem value="Full-Payment">Full-Payment</MenuItem>
-        <MenuItem value="Advance-Payment">Advance-Payment</MenuItem>
-      </Select>
-    </FormControl>
-  </Grid>
-</Grid>
+        <Grid container spacing={2} mb={3}>
+          <Grid item xs={12} sm={4}>
+            <TextField
+              fullWidth
+              type="date"
+              label="Filter by Transaction Date"
+              InputLabelProps={{ shrink: true }}
+              value={filterDate}
+              onChange={(e) => setFilterDate(e.target.value)}
+            />
+          </Grid>
+          <Grid item xs={12} sm={4}>
+            <TextField
+              fullWidth
+              label="Filter by Total Paid Amount"
+              type="number"
+              value={filterAmount}
+              onChange={(e) => setFilterAmount(e.target.value)}
+            />
+          </Grid>
+          <Grid item xs={12} sm={4}>
+            <FormControl fullWidth>
+              <InputLabel>Payment Type</InputLabel>
+              <Select
+                value={filterPaymentType}
+                onChange={(e) => setFilterPaymentType(e.target.value)}
+                label="Payment Type"
+              >
+                <MenuItem value="">All</MenuItem>
+                <MenuItem value="Full-Payment">Full-Payment</MenuItem>
+                <MenuItem value="Token-Payment">Token-Payment</MenuItem>
+              </Select>
+            </FormControl>
+          </Grid>
+        </Grid>
 
         {loading ? (
           <CircularProgress />
