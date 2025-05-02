@@ -1,1048 +1,744 @@
-// import React, { useState } from 'react';
-// import { Link } from "react-router-dom";
-// import {
-//   Box,
-//   Container,
-//   Typography,
-//   Select,
-//   MenuItem,
-//   FormControl,
-//   InputLabel,
-//   Grid,
-//   Card,
-//   CardMedia,
-//   CardContent,
-//   Button,
-//   LinearProgress,
-//   Paper,
-//   List,
-//   ListItem,
-//   ListItemIcon,
-//   ListItemText,
-//   TextField,
-//   IconButton,
-//   Avatar,
-// } from '@mui/material';
-// import { Check, AArrowDown as Add, Move as Remove } from 'lucide-react';
-// import CheckIcon from '@mui/icons-material/Check';
-// import img1 from './../../../Images/4k-architecture.jpg'
-// import img2 from './../../../Images/images.jpeg';
-// import { faker } from '@faker-js/faker';
-// import "./Home.css"
-// import Logo from '../../Images/Logo File.png';
-// import StatsSection from './CountingCard';
-// import Divider from '@mui/material/Divider';
-
-// const Home = () => {
-//   const [searchBy, setSearchBy] = useState("value");
-
-//   const [investment, setInvestment] = useState(1000000);
-//   const [years, setYears] = useState(5);
-//   const teamMembers = [
-//     {
-//       role: 'Chief Executive Officer (CEO)',
-//       description: 'Leads key decision-making and partnerships.',
-//       experience: [
-//         '10+ years in investment banking, finance, or real estate.',
-//         'Strong leadership, strategic planning, and risk management skills.',
-//         'Extensive experience in managing large-scale investment portfolios, including multi-million dollar assets.'
-//       ],
-//       image: 'https://img.freepik.com/premium-vector/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-vector-illustration_561158-3383.jpg'
-//     },
-//     {
-//       role: 'Chief Financial Officer (CFO)',
-//       description: 'Leads financial planning, budgeting, and investment risk management.',
-//       experience: [
-//         '8+ years in finance, accounting, or wealth management.',
-//         'Strong analytical skills, financial forecasting, and risk assessment.',
-//         'Experience in managing large-scale investment budgets and financial audits.'
-//       ],
-//       image: 'https://img.freepik.com/premium-vector/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-vector-illustration_561158-3383.jpg'
-//     },
-//     {
-//       role: 'Chief Investment Officer (CIO)',
-//       description: 'Manages investment strategies, market analysis.',
-//       experience: [
-//         '10+ years in asset management, stock markets, or real estate investments.',
-//         'Expertise in financial modeling, risk mitigation, and high-return strategies.',
-//         'Proven track record in achieving consistent investment growth and managing diversified portfolios.'
-//       ],
-//       image: 'https://img.freepik.com/premium-vector/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-vector-illustration_561158-3383.jpg'
-//     }
-//   ];
-
-
-//   const investmentOptions = [
-//     {
-//       title: "Commercial Real Estate",
-//       amount: "1,950,000",
-//       xirr: "17.1% XIRR since 2018",
-//       extra: "Monthly income of *7500",
-//     },
-//     {
-//       title: "Fixed Deposit",
-//       amount: "1,360,000",
-//       xirr: "7.2% XIRR since 2018",
-//     },
-//     {
-//       title: "Gold",
-//       amount: "1,437,981",
-//       xirr: "8.76% XIRR since 2018",
-//     },
-//     {
-//       title: "Stocks & Mutual Funds",
-//       amount: "1,600,000",
-//       xirr: "12% XIRR since 2018",
-//     },
-//   ];
-
-//   return (
-//     <>
-//       {/* Hero Section - Updated to match the design in Image 1 */}
-
-//       <Box 
-//         sx={{ 
-//           background: 'linear-gradient(rgba(30, 30, 60, 0.85), rgba(30, 30, 60, 0.85)), url(https://img.freepik.com/free-photo/big-buildings_1127-2221.jpg?ga=GA1.1.718196285.1710491388&semt=ais_hybrid)',
-//           backgroundSize: 'cover', 
-//           backgroundPosition: 'center',
-//           color: 'white',
-//           pt: 6,
-//           pb: 10
-//         }}
-//       >
-//         <Box
-//               component="img"
-//               src={Logo} // Replace with your logo URL or import
-//               alt="Astra Logo"
-//               sx={{
-//                 display: 'block',
-//                 mx: 'auto', // centers the logo horizontally
-//                 mb: 2,      // adds spacing below the logo
-//                 height:"100px",
-//                 transform: 'scale(2.5)',
-//               }}
-//             />
-//         <Container maxWidth="lg">
-//           <Box className="home-hero-content">
-//           <Container maxWidth="lg">
-//           <Box className="home-hero-content" sx={{ textAlign: 'center', mt: 8 }}>
-//             {/* Logo added above the heading */}
-//             <Typography variant="h3" align="center" fontWeight="bold" gutterBottom >
-//               Astra revolutionizes the real estate industry with impactful innovation.
-//             </Typography>
-//             <Typography variant="h6" sx={{ color: '#636363', textAlign: "justify" }}>
-//               Astra is a forward-thinking commercial real estate investment firm, built on the principle that a strategic, value-driven approach in the overlooked middle market can yield outstanding returns. We invest across various asset types, risk levels, and locations, always prioritizing exceptional risk-adjusted gains for our clients. Our clientele includes endowments, foundations, wealth managers, family offices, and individual investors.
-//             </Typography>
-//             <StatsSection/>
-//           </Box>
-//         </Container>
-
-//             <Box sx={{ my: 4 }}>
-//               <Typography variant="h6" sx={{ mb: 1 }}>
-//                 Make your portfolio robust
-//               </Typography>
-//               <Typography variant="h6" sx={{ mb: 1 }}>
-//                 Explore exclusive selections
-//               </Typography>
-//               <Typography variant="h6" sx={{ mb: 1 }}>
-//                 Find your preferred asset & invest today
-//               </Typography>
-//             </Box>
-
-//             {/* Property Card within Hero */}
-//             <Card sx={{ maxWidth: 500, bgcolor: 'white', color: 'black', borderRadius: 2, mt: 4 }}>
-//               <Box sx={{ bgcolor: 'success.main', py: 1, px: 2, color: 'white' }}>
-//                 <Typography variant="body1" fontWeight="bold">Fully Funded</Typography>
-//               </Box>
-//               <CardContent>
-//                 <Grid container spacing={2}>
-//                   <Grid item xs={3}>
-//                     <Box 
-//                       component="img" 
-//                       src={img1}
-//                       alt="Healthcare Property"
-//                       sx={{ width: '100%', borderRadius: 1 }}
-//                     />
-//                   </Grid>
-//                   <Grid item xs={9}>
-//                     <Typography variant="h6" fontWeight="bold">Greenmark Villa</Typography>
-//                     <Typography variant="body2" color="text.secondary">Hosur</Typography>
-
-//                     <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2 }}>
-//                       <Box>
-//                         <Typography variant="caption">Gross Entry Yield</Typography>
-//                         <Typography variant="body2" fontWeight="bold">9.02%</Typography>
-//                       </Box>
-//                       <Box>
-//                         <Typography variant="caption">Asset Value</Typography>
-//                         <Typography variant="body2" fontWeight="bold">₹45,00,00,000</Typography>
-//                       </Box>
-//                       <Box>
-//                         <Typography variant="caption">Target IRR</Typography>
-//                         <Typography variant="body2" fontWeight="bold">13.4%</Typography>
-//                       </Box>
-//                     </Box>
-
-//                     <Box sx={{ mt: 2 }}>
-//                       <LinearProgress
-//                         variant="determinate"
-//                         value={100}
-//                         sx={{ height: 6, borderRadius: 1 }}
-//                         color="success"
-//                       />
-//                       <Typography variant="caption" color="success.main" sx={{ display: 'block', mt: 0.5 }}>
-//                         100% Funded
-//                       </Typography>
-//                     </Box>
-
-//                     <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2 }}>
-//                       <Button variant="contained" size="small" sx={{ bgcolor: '#333', '&:hover': { bgcolor: '#222' } }}>
-//                         Invest Now
-//                       </Button>
-//                       <Button variant="outlined" size="small" sx={{ color: '#333', borderColor: '#ccc' }}>
-//                         View Details
-//                       </Button>
-//                     </Box>
-//                   </Grid>
-//                 </Grid>
-//               </CardContent>
-//             </Card>
-
-//             <Button 
-//               variant="contained" 
-//               sx={{ mt: 4, bgcolor: 'white', color: 'black', '&:hover': { bgcolor: '#f5f5f5' } }}
-//             >
-//               All Properties
-//             </Button>
-
-//             {/* App Download Buttons */}
-//             <Box sx={{ display: 'flex', gap: 2, mt: 4 }}>
-//               <Box 
-//                 component="img" 
-//                 src="https://developer.apple.com/app-store/marketing/guidelines/images/badge-download-on-the-app-store.svg"
-//                 alt="Download on App Store"
-//                 sx={{ height: 40 }}
-//               />
-//               <Box 
-//                 component="img" 
-//                 src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png"
-//                 alt="Get it on Google Play"
-//                 sx={{ height: 40 }}
-//               />
-//             </Box>
-//           </Box>
-//         </Container>
-//       </Box>
-
-//       <Box> 
-//         <hr/>
-//   <Container sx={{ my: 8, py: 6, backgroundColor: "#f9fafb", borderRadius: 4 }} maxWidth="lg">
-//   {/* Section Heading with underline */}
-//   <Box sx={{ textAlign: "center", mb: 6 }}>
-//     <Typography variant="h4" fontWeight="bold">
-//       Company Tour
-//     </Typography>
-//     {/* Uncomment if you want the underline
-//     <Box 
-//       sx={{ 
-//         width: "60px", 
-//         height: "4px", 
-//         backgroundColor: "#1976d2", 
-//         mx: "auto", 
-//         mt: 2 
-//       }} 
-//     /> */}
-//   </Box>
-
-//   <Grid container spacing={4} alignItems="flex-start">
-//     {/* Left Side - Benefits Cards in 2x2 Grid */}
-//     <Grid item xs={12} md={6}>
-//       <Typography variant="h5" fontWeight="bold" sx={{ mb: 4, pl: 1 }}>
-//         Key Benefits
-//       </Typography>
-//       <Grid container spacing={3}>
-//         {[
-//           { icon: "≡", title: "Stable Asset Class", description: "Lower volatility compared to public markets" },
-//           { icon: "↑", title: "Monthly Cashflow", description: "Consistent passive income generation" },
-//           { icon: "◢", title: "Capital Appreciation", description: "Property value growth over time" },
-//           { icon: "□○", title: "Portfolio Diversification", description: "Reduced overall investment risk" }
-//         ].map((item, index) => (
-//           <Grid item xs={12} sm={6} key={index} spacing={2} >
-//             <Paper
-//               elevation={2}
-//               sx={{
-//                 p: 1,
-//                 mb:5,
-//                 height: "100%",
-//                 borderRadius: 3,
-//                 transition: "transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out",
-//                 "&:hover": {
-//                   transform: "translateY(-5px)",
-//                   boxShadow: 6
-//                 }
-//               }}
-//             >
-//               <Box  sx={{ 
-//                 fontSize: 36, 
-//                 fontWeight: "bold", 
-//                 mb: 2, 
-//                 color: "#1976d2"
-//               }}>
-//                 {item.icon}
-//               </Box>
-//               <Typography variant="h6" fontWeight="bold" gutterBottom>
-//                 {item.title}
-//               </Typography>
-//               <Typography variant="body2" color="text.secondary">
-//                 {item.description}
-//               </Typography>
-//             </Paper>
-//           </Grid>
-//         ))}
-//       </Grid>
-//     </Grid>
-
-//     {/* Right Side - Asset Comparison with proper quadrant chart */}
-//     <Grid item xs={12} md={6}>
-//       <Typography variant="h5" fontWeight="bold" sx={{ mb: 4 }}>
-//         CRE vs. Other Asset Classes
-//       </Typography>
-
-//       <Box
-//         sx={{
-//           position: "relative",
-//           border: "2px solid #e0e0e0",
-//           borderRadius: 2,
-//           height: "400px",
-//           overflow: "hidden",
-//           boxShadow: 1
-//         }}
-//       >
-//         {/* Horizontal and Vertical dividing lines */}
-//         <Box sx={{ 
-//           position: "absolute", 
-//           top: 0, 
-//           bottom: 0, 
-//           left: "50%", 
-//           width: "1px", 
-//           bgcolor: "#e0e0e0", 
-//           zIndex: 1 
-//         }} />
-//         <Box sx={{ 
-//           position: "absolute", 
-//           left: 0, 
-//           right: 0, 
-//           top: "50%", 
-//           height: "1px", 
-//           bgcolor: "#e0e0e0", 
-//           zIndex: 1 
-//         }} />
-
-//         {/* Axis Labels */}
-//         <Typography sx={{ 
-//           position: "absolute", 
-//           top: 16, 
-//           left: "50%", 
-//           transform: "translateX(-50%)", 
-//           fontWeight: "bold",
-//           zIndex: 2
-//         }}>
-//           Stable
-//         </Typography>
-//         <Typography sx={{ 
-//           position: "absolute", 
-//           bottom: 16, 
-//           left: "50%", 
-//           transform: "translateX(-50%)", 
-//           fontWeight: "bold",
-//           zIndex: 2
-//         }}>
-//           Volatile
-//         </Typography>
-//         <Typography sx={{ 
-//           position: "absolute", 
-//           top: "50%", 
-//           left: 16, 
-//           transform: "translateY(-50%) rotate(-90deg)", 
-//           fontWeight: "bold",
-//           transformOrigin: "left center",
-//           zIndex: 2
-//         }}>
-//           Lower Returns
-//         </Typography>
-//         <Typography sx={{ 
-//           position: "absolute", 
-//           top: "50%", 
-//           right: 16, 
-//           transform: "translateY(-50%) rotate(90deg)", 
-//           fontWeight: "bold",
-//           transformOrigin: "right center",
-//           zIndex: 2
-//         }}>
-//           Higher Returns
-//         </Typography>
-
-//         {/* Quadrant Items */}
-//         <Box sx={{ 
-//           display: "grid", 
-//           gridTemplateColumns: "1fr 1fr", 
-//           gridTemplateRows: "1fr 1fr", 
-//           height: "100%",
-//           width: "100%",
-//           position: "relative",
-//           zIndex: 0
-//         }}>
-//           {[
-//             { 
-//               title: "Residential Properties", 
-//               position: "top-left", 
-//               bg: "#fff" ,
-//               fontWeight: "bold",
-//             },
-//             { 
-//               title: "Commercial Real Estate", 
-//               position: "top-right", 
-//               bg: "#f5d7a1", 
-//               fontWeight: "bold",
-//               desc: "High stability with strong returns"
-//             },
-//             { 
-//               title: "Gold", 
-//               position: "bottom-left", 
-//               bg: "#fff",
-//               fontWeight: "bold",
-//               desc: "Stable store of value, lower growth"
-//             },
-//             { 
-//               title: "Stocks & Mutual Funds", 
-//               position: "bottom-right", 
-//               bg: "#fff",
-//               fontWeight: "bold",
-//               desc: "Higher potential returns with volatility"
-//             }
-//           ].map((item, index) => {
-//             const isTopLeft = item.position === "top-left";
-//             const isTopRight = item.position === "top-right";
-//             const isBottomLeft = item.position === "bottom-left";
-//             const isBottomRight = item.position === "bottom-right";
-
-//             return (
-//               <Box
-//                 key={index}
-//                 sx={{
-//                   p: 3,
-//                   display: "flex",
-//                   flexDirection: "column",
-//                   alignItems: "center",
-//                   justifyContent: "center",
-//                   backgroundColor: item.bg,
-//                   gridColumn: isTopLeft || isBottomLeft ? "1" : "2",
-//                   gridRow: isTopLeft || isTopRight ? "1" : "2",
-//                   position: "relative",
-//                   transition: "background-color 0.2s",
-//                   "&:hover": {
-//                     backgroundColor: isTopRight ? "#f0c379" : "#f5f5f5"
-//                   }
-//                 }}
-//               >
-//                 <Typography 
-//                   variant="body1" 
-//                   fontWeight={item.fontWeight || "normal"} 
-//                   align="center"
-//                   gutterBottom
-//                 >
-//                   {item.title}
-//                 </Typography>
-//                 {item.desc && (
-//                   <Typography 
-//                     variant="caption" 
-//                     color="text.secondary" 
-//                     align="center"
-//                   >
-//                     {item.desc}
-//                   </Typography>
-//                 )}
-//               </Box>
-//             );
-//           })}
-//         </Box>
-//       </Box>
-//     </Grid>
-//   </Grid>
-// </Container>
-
-
-//         {/* Team Section */}
-//         <Container sx={{ mt: 4, mb: 4 }} maxWidth={false} >
-//           <Typography variant="h4" align="center" sx={{ mb: 4, textAlign:"center",fontWeight:"bold" }}>
-//             Our Team
-//           </Typography>
-
-//           <Grid container spacing={4}>
-//             {teamMembers.map((member, index) => (
-//               <Grid item xs={12} md={4} key={index}>
-//                 <Card elevation={3}>
-//                   <CardContent sx={{ p: 3 }}>
-//                   <Avatar
-//                   src={member.image || "https://www.w3schools.com/w3images/avatar5.png"}
-//                   sx={{
-//                   width: 150,
-//                   height: 150,
-//                   mx: 'auto',
-//                   mb: 3
-//                  }}
-//                  />
-//                     {/* Combined Role & Description */}
-//                     <Typography variant="body1" sx={{ textAlign: 'justify', mb: 2 }}>
-//                       <strong>Role:</strong> {member.role} - {member.description}
-//                     </Typography>
-//                     {/* Combined Experience */}
-//                     <Typography variant="body1" sx={{ textAlign: 'justify', mb: 2 }}>
-//                       <strong>Experience:</strong> {member.experience.join(' | ')}
-//                     </Typography>
-//                   </CardContent>
-//                 </Card>
-//               </Grid>
-//             ))}
-//           </Grid>
-//         </Container>
-//       </Box>
-//     </>
-//   );
-// };
-
-// export default Home;
-
-
-import React, { useState } from 'react';
-import { Link } from "react-router-dom";
-import {
-  Box,
-  Container,
-  Typography,
-  Select,
-  MenuItem,
-  FormControl,
-  InputLabel,
-  Grid,
-  Card,
-  CardMedia,
-  CardContent,
-  Button,
-  LinearProgress,
-  Paper,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  TextField,
-  IconButton,
-  Avatar,
-} from '@mui/material';
-import { Check, AArrowDown as Add, Move as Remove } from 'lucide-react';
-import CheckIcon from '@mui/icons-material/Check';
-import img11 from './../../../Images/gettyimage1.jpg'
-import img22 from './../../../Images/image2.jpg'
-import img33 from './../../../Images/images.jpeg'
-
-import img2 from './../../../Images/images.jpeg';
-import { faker } from '@faker-js/faker';
+import React from 'react';
 import "./Home.css"
-import Logo from '../../Images/Logo File.png';
-import StatsSection from './CountingCard';
-import Divider from '@mui/material/Divider';
+import { Container, Navbar, Nav, Row, Col, Form, Button } from 'react-bootstrap';
 
-const Home = () => {
-  const [searchBy, setSearchBy] = useState("value");
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min';
+import 'font-awesome/css/font-awesome.min.css';
+import 'aos/dist/aos.css';
+import { useEffect } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheckCircle } from '@fortawesome/free-solid-svg-icons';
+import {
+  faSearch,
+  faChartLine,
+  faShieldAlt
+} from '@fortawesome/free-solid-svg-icons';
+import {
+  faMapMarkerAlt,
+  faPhone,
+  faEnvelope
+} from '@fortawesome/free-solid-svg-icons';
+const AstraLandingPage = () => {
 
-  const [investment, setInvestment] = useState(1000000);
-  const [years, setYears] = useState(5);
+  useEffect(() => {
+    // Initialize AOS (Animate On Scroll) if needed
+    if (typeof window !== 'undefined') {
+      const AOS = require('aos');
+      AOS.init({
+        duration: 800,
+        easing: 'ease-in-out',
+        once: true
+      });
+    }
+  }, []);
+
+
+  // Team member data
   const teamMembers = [
     {
-      role: 'Chief Executive Officer (CEO)',
-      description: 'Leads key decision-making and partnerships.',
-      experience: [
-        '10+ years in investment banking, finance, or real estate.',
-        'Strong leadership, strategic planning, and risk management skills.',
-        'Extensive experience in managing large-scale investment portfolios, including multi-million dollar assets.'
-      ],
-      image: 'https://img.freepik.com/premium-vector/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-vector-illustration_561158-3383.jpg'
+      name: "John Doe",
+      position: "Chief Executive Officer",
+      description: "10+ years in investment banking, finance, or real estate. | Strong leadership, strategic planning, and risk management.",
+      imgSrc: "https://img.freepik.com/free-psd/contact-icon-illustration-isolated_23-2151903337.jpg?ga=GA1.1.718196285.1710491388&semt=ais_hybrid&w=740"
     },
     {
-      role: 'Chief Financial Officer (CFO)',
-      description: 'Leads financial planning, budgeting, and investment risk management.',
-      experience: [
-        '8+ years in finance, accounting, or wealth management.',
-        'Strong analytical skills, financial forecasting, and risk assessment.',
-        'Experience in managing large-scale investment budgets and financial audits.'
-      ],
-      image: 'https://img.freepik.com/premium-vector/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-vector-illustration_561158-3383.jpg'
+      name: "Jane Smith",
+      position: "Chief Financial Officer",
+      description: "8+ years in finance, accounting, or wealth management. Strong analytical skills, financial forecasting, and risk assessment.",
+      imgSrc: "https://img.freepik.com/free-psd/contact-icon-illustration-isolated_23-2151903337.jpg?ga=GA1.1.718196285.1710491388&semt=ais_hybrid&w=740"
     },
     {
-      role: 'Chief Investment Officer (CIO)',
-      description: 'Manages investment strategies, market analysis.',
-      experience: [
-        '10+ years in asset management, stock markets, or real estate investments.',
-        'Expertise in financial modeling, risk mitigation, and high-return strategies.',
-        'Proven track record in achieving consistent investment growth and managing diversified portfolios.'
-      ],
-      image: 'https://img.freepik.com/premium-vector/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-vector-illustration_561158-3383.jpg'
+      name: "Robert Johnson",
+      position: "Chief Investment Officer",
+      description: "10+ years Proven track record in achieving consistent investment growth and managing diversified portfolios.",
+      imgSrc: "https://img.freepik.com/free-psd/contact-icon-illustration-isolated_23-2151903337.jpg?ga=GA1.1.718196285.1710491388&semt=ais_hybrid&w=740"
+    },
+    {
+      name: "Sarah Williams",
+      position: "Director of Marketing",
+      description: "10+ years in finance, wealth management. Strong analytical skills, financial forecasting, and risk assessment.",
+      imgSrc: "https://img.freepik.com/free-psd/contact-icon-illustration-isolated_23-2151903337.jpg?ga=GA1.1.718196285.1710491388&semt=ais_hybrid&w=740"
     }
   ];
 
-  // const cards = [
-  //   { title: "Greenmark Villa", location: "Hosur", img: img11 },
-  //   { title: "Blue Haven", location: "Bangalore", img: img22 },
-  //   { title: "Sunrise Residency", location: "Chennai", img: img33 }
-  // ];
-  const cards = [
-    { title: "Tech Park Hub", location: "Electronic City, Bangalore", img: img11 },
-    { title: "Logistics Center", location: "Navi Mumbai", img: img22 },
-    { title: "Manufacturing Unit", location: "Chennai Industrial Area", img: "https://eu-images.contentstack.com/v3/assets/blt8eb3cdfc1fce5194/blt29d49d9dc2394b9c/66210a507963b40fc4ceec07/google_20data_20center_20cooling_20pipes.jpg?width=1280&auto=webp&quality=95&format=jpg&disable=upscale" }
+
+  const processSteps = [
+    {
+      title: "Property Search",
+      description: "Browse our extensive inventory of premium commercial properties"
+    },
+    {
+      title: "Consultation",
+      description: "Meet with our real estate experts to discuss your needs"
+    },
+    {
+      title: "Closing",
+      description: "Complete the transaction with our hassle-free process"
+    }
+  ];
+  const advantages = [
+    {
+      icon: faSearch,
+      title: "Curated Selection",
+      description: "We carefully select only the highest quality commercial properties with strong investment potential."
+    },
+    {
+      icon: faChartLine,
+      title: "Market Expertise",
+      description: "Our team of analysts provide in-depth market insights and valuation assessments."
+    },
+    {
+      icon: faShieldAlt,
+      title: "Secure Process",
+      description: "End-to-end secure transaction processes with full legal and compliance support."
+    }
   ];
 
-  const investmentOptions = [
+
+  const properties = [
     {
-      title: "Commercial Real Estate",
-      amount: "1,950,000",
-      xirr: "17.1% XIRR since 2018",
-      extra: "Monthly income of *7500",
+      id: 1,
+      title: "Industrial Warehouse",
+      image: "https://img.freepik.com/free-photo/view-full-warehouse-with-forklift_181624-44643.jpg?ga=GA1.1.718196285.1710491388&semt=ais_hybrid&w=740",
+      details: "32,000 sq ft | $4.5M | 7.2% Cap Rate"
     },
     {
-      title: "Fixed Deposit",
-      amount: "1,360,000",
-      xirr: "7.2% XIRR since 2018",
+      id: 2,
+      title: "Corporate Office",
+      image: "https://img.freepik.com/premium-photo/empty-corridor-building_1048944-12819982.jpg?ga=GA1.1.718196285.1710491388&semt=ais_hybrid&w=740",
+      details: "18,500 sq ft | $7.2M | 6.8% Cap Rate"
     },
     {
-      title: "Gold",
-      amount: "1,437,981",
-      xirr: "8.76% XIRR since 2018",
-    },
-    {
-      title: "Stocks & Mutual Funds",
-      amount: "1,600,000",
-      xirr: "12% XIRR since 2018",
-    },
+      id: 3,
+      title: "Retail Plaza",
+      image: "https://img.freepik.com/free-photo/large-warehouse-with-bright-light-coming-through-door_123827-23506.jpg?ga=GA1.1.718196285.1710491388&semt=ais_hybrid&w=740",
+      details: "24,000 sq ft | $5.8M | 7.5% Cap Rate"
+    }
   ];
+
+  const backers = [
+    {
+      id: 1,
+      logo: "https://img.freepik.com/free-psd/real-estate-logo-design_23-2151249802.jpg?ga=GA1.1.718196285.1710491388&semt=ais_hybrid&w=740",
+      alt: "Backer 1"
+    },
+    {
+      id: 2,
+      logo: "https://img.freepik.com/free-vector/gradient-data-logo-template_23-2149200605.jpg?ga=GA1.1.718196285.1710491388&semt=ais_hybrid&w=740",
+      alt: "Backer 2"
+    },
+    {
+      id: 3,
+      logo: "https://img.freepik.com/free-vector/modern-real-estate-logo_1025-685.jpg?ga=GA1.1.718196285.1710491388&semt=ais_hybrid&w=740",
+      alt: "Backer 3"
+    },
+    {
+      id: 4,
+      logo: "https://img.freepik.com/free-vector/dome-logo-template-design_23-2149850065.jpg?ga=GA1.1.718196285.1710491388&semt=ais_hybrid&w=740",
+      alt: "Backer 4"
+    },
+    {
+      id: 5,
+      logo: "https://img.freepik.com/free-vector/abstract-logo-business-made-with-colorful_341269-908.jpg?ga=GA1.1.718196285.1710491388&semt=ais_hybrid&w=740",
+      alt: "Backer 5"
+    }
+  ];
+
+  const newsItems = [
+    {
+      id: 1,
+      image: "https://img.freepik.com/free-photo/modern-warehouse-bathed-glow-setting-sun_91128-4583.jpg?ga=GA1.1.718196285.1710491388&semt=ais_hybrid&w=740",
+      date: "April 15, 2025",
+      title: "Astra Expands Commercial Portfolio with New Acquisitions",
+      excerpt: "Leading commercial real estate firm Astra announces expansion with five new premium properties...",
+      delay: 100
+    },
+    {
+      id: 2,
+      image: "https://img.freepik.com/premium-photo/metallurgical-plant-against-blue-sky-sunny-day_1048944-19582239.jpg?ga=GA1.1.718196285.1710491388&semt=ais_hybrid&w=740",
+      date: "April 5, 2025",
+      title: "Market Trends Show Growing Demand for Warehouse Space",
+      excerpt: "Recent market analysis reveals increasing demand for warehouse and distribution facilities...",
+      delay: 200
+    },
+    {
+      id: 3,
+      image: "https://img.freepik.com/free-photo/modern-warehouse-bathed-glow-setting-sun_91128-4583.jpg?ga=GA1.1.718196285.1710491388&semt=ais_hybrid&w=740",
+      date: "March 28, 2025",
+      title: "Astra Named Top Commercial Real Estate Provider",
+      excerpt: "Industry recognition highlights Astra's commitment to excellence in commercial real estate...",
+      delay: 300
+    }
+  ];
+
 
   return (
     <>
-      {/* Hero Section - Updated to match the design in Image 1 */}
+      {/* <nav className="navbar navbar-expand-lg navbar-light">
+        <div className="container">
+          <a className="navbar-brand" href="#">
+            <img 
+              src="http://175.29.21.7:84/static/media/Logo%20File.78893cdbe11c7dfa5f45.png" 
+              alt="Astra Logo" 
+              className="logo"
+            />
+          </a>
+          <button 
+            className="navbar-toggler" 
+            type="button" 
+            data-bs-toggle="collapse" 
+            data-bs-target="#navbarNav" 
+            aria-controls="navbarNav" 
+            aria-expanded="false" 
+            aria-label="Toggle navigation"
+          >
+            <span className="navbar-toggler-icon"></span>
+          </button>
+          <div className="collapse navbar-collapse" id="navbarNav">
+            <ul className="navbar-nav ms-auto">
+              <li className="nav-item">
+                <a className="nav-link" href="#">Properties</a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" href="#">Why Astra</a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" href="#">Sign Up</a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" href="#">Login</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav> */}
+      {/* <Navbar expand="lg" className="navbar-custom">
+              <Container>
+                <Navbar.Brand href="#">
+                  <img 
+                    src="http://175.29.21.7:84/static/media/Logo%20File.78893cdbe11c7dfa5f45.png" 
+                    alt="Astra Logo" 
+                    className="logo"
+                  />
+                </Navbar.Brand>
+                <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                <Navbar.Collapse id="basic-navbar-nav">
+                  <Nav className="ms-auto">
+                    <Nav.Link href="#">Properties</Nav.Link>
+                    <Nav.Link href="#">Why Astra</Nav.Link>
+                    <Nav.Link href="#">Sign Up</Nav.Link>
+                    <Nav.Link href="#">Login</Nav.Link>
+                  </Nav>
+                </Navbar.Collapse>
+              </Container>
+            </Navbar> */}
 
-      <Box
-        sx={{
-          background: 'linear-gradient(rgba(30, 30, 60, 0.85), rgba(30, 30, 60, 0.85)), url(https://plus.unsplash.com/premium_photo-1682144741954-3a9dcea81dd2?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8aW5kdXN0cmlhbHxlbnwwfHwwfHx8MA%3D%3D)',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          color: 'white',
-          pt: 6,
-          pb: 10
+      {/* Hero Section */}
+      <section
+        className="hero-section"
+        style={{
+          backgroundImage: "url('https://img.freepik.com/free-photo/modern-warehouse-bathed-glow-setting-sun_91128-4255.jpg?ga=GA1.1.718196285.1710491388&semt=ais_hybrid&w=740')",
+          marginTop: "-9px"
         }}
+        data-aos="fade"
       >
-        <Box
-          component="img"
-          src={Logo} // Replace with your logo URL or import
-          alt="Astra Logo"
-          sx={{
-            display: 'block',
-            mx: 'auto', // centers the logo horizontally
-               // adds spacing below the logo
-            height: "100px",
-            transform: 'scale(2.5)',
-          }}
-        />
-        <Container maxWidth="lg">
-          <Box className="home-hero-content">
-            <Container maxWidth="lg">
-              <Box className="home-hero-content" sx={{ textAlign: 'center',  }}>
-                {/* Logo added above the heading */}
-                <Typography variant="h4" align="center" fontWeight="bold" gutterBottom >
-                  Astra revolutionizes the real estate industry with impactful innovation.
-                </Typography>
-                <Typography variant="h6" sx={{ color: '#FFFFFF', textAlign: "justify" }}>
-                  Astra is a forward-thinking commercial real estate investment firm, built on the principle that a strategic, value-driven approach in the overlooked middle market can yield outstanding returns. We invest across various asset types, risk levels, and locations, always prioritizing exceptional risk-adjusted gains for our clients. Our clientele includes endowments, foundations, wealth managers, family offices, and individual investors.
-                </Typography>
-                <StatsSection />
-              </Box>
-            </Container>
+        <div className="container">
+          <div className="row">
+            <div className="col-md-6">
+              <div className="hero-content" data-aos="fade-right" data-aos-delay="200">
+                <h1 className="display-4 fw-bold mb-4">Premium Commercial Real Estate</h1>
+                <p className="lead mb-5">Find the perfect warehouse or commercial building for your business with Astra Real Estate</p>
+                <a href="/properties" className="btn view-property-btn px-4 py-2">View Properties</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-            <Box sx={{ my: 4 }}>
-              <Typography variant="h6" sx={{ mb: 1 }}>
-                Make your portfolio robust
-              </Typography>
-              <Typography variant="h6" sx={{ mb: 1 }}>
-                Explore exclusive selections
-              </Typography>
-              <Typography variant="h6" sx={{ mb: 1 }}>
-                Find your preferred asset & invest today
-              </Typography>
-            </Box>
-
-            <Grid container spacing={3} sx={{ mt: 4 }}>
-              {cards.map((card, index) => (
-                <Grid item xs={12} sm={6} md={4} key={index}>
-                  <Card sx={{ maxWidth: 500, bgcolor: "white", color: "black", borderRadius: 2 }}>
-                    <Box sx={{ bgcolor: "#2d1656", py: 1, px: 2, color: "white" }}>
-                      <Typography variant="body1" fontWeight="bold">Fully Funded</Typography>
-                    </Box>
-                    <CardContent>
-                      <Grid container spacing={2}>
-                        <Grid item xs={3}>
-                          <Box component="img" src={card.img} alt="Industry" sx={{ width: "100%", borderRadius: 1 }} />
-                        </Grid>
-                        <Grid item xs={9}>
-                          <Typography variant="h5" sx={{ color: '#636363' }} fontWeight="bold">{card.title}</Typography>
-                          <Typography variant="body2" color="text.secondary">{card.location}</Typography>
-
-                          <Box sx={{ display: "flex", justifyContent: "space-between", mt: 2 }}>
-                            <Box>
-                              <Typography variant="caption">Gross Entry Yield</Typography>
-                              <Typography variant="body2" fontWeight="bold">10.5%</Typography>
-                            </Box>
-                            <Box>
-                              <Typography variant="caption">Asset Value</Typography>
-                              <Typography variant="body2" fontWeight="bold">₹75,00,00,000</Typography>
-                            </Box>
-                            <Box>
-                              <Typography variant="caption">Target IRR</Typography>
-                              <Typography variant="body2" fontWeight="bold">15.2%</Typography>
-                            </Box>
-                          </Box>
-
-                          <Box sx={{ mt: 2 }}>
-                            <LinearProgress variant="determinate" value={100} sx={{ height: 6, borderRadius: 1, color: "#2d1656" }} />
-                            <Typography variant="caption" sx={{ display: "block", mt: 0.5, color: "#2d1656" }}>
-                              100% Funded
-                            </Typography>
-                          </Box>
-
-                          <Box sx={{ display: "flex", justifyContent: "space-between", mt: 2 }}>
-                            <Button variant="contained" disableRipple disableElevation
-                              size="small" sx={{ bgcolor: "#333", "&:hover": { bgcolor: "#222" } }}>
-                              Invest Now
-                            </Button>
-                            <Button variant="outlined" disableRipple disableElevation
-                              size="small" sx={{ color: "#333", borderColor: "#ccc" }}>
-                              View Details
-                            </Button>
-                          </Box>
-                        </Grid>
-                      </Grid>
-                    </CardContent>
-                  </Card>
-                </Grid>
-              ))}
-            </Grid>
-
-            <a href="/properties" style={{ textDecoration: "none" }}>
-              <Button
-                variant="contained"
-                disableRipple // Disables the ripple effect
-                disableElevation // Removes elevation on click
-                sx={{
-                  mt: 4,
-                  bgcolor: "white",
-                  color: "black",
-                  "&:hover": { bgcolor: "#f5f5f5" },
-                }}
-              >
-                All Properties
-              </Button>
-            </a>
-
-            {/* App Download Buttons */}
-            {/* <Box sx={{ display: 'flex', gap: 2, mt: 4 }}>
-              <Box 
-                component="img" 
-                src="https://developer.apple.com/app-store/marketing/guidelines/images/badge-download-on-the-app-store.svg"
-                alt="Download on App Store"
-                sx={{ height: 40 }}
-              />
-              <Box 
-                component="img" 
-                src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png"
-                alt="Get it on Google Play"
-                sx={{ height: 40 }}
-              />
-            </Box> */}
-          </Box>
-        </Container>
-      </Box>
-
-      <Box>
-        <Container sx={{ my: 8, py: 6, borderRadius: 4 }} maxWidth="lg">
-          {/* Section Heading with underline */}
-          <Box sx={{ textAlign: "center", mb: 6 }}>
-            <Typography variant="h4" fontWeight="bold">
-              Company Tour
-            </Typography>
-            {/* Uncomment if you want the underline
-    <Box 
-      sx={{ 
-        width: "60px", 
-        height: "4px", 
-        backgroundColor: "#1976d2", 
-        mx: "auto", 
-        mt: 2 
-      }} 
-    /> */}
-          </Box>
-
-          <Grid container spacing={4} alignItems="flex-start">
-            {/* Left Side - Benefits Cards in 2x2 Grid */}
-            <Grid item xs={12} md={6}>
-              <Typography variant="h5" fontWeight="bold" sx={{ mb: 4, pl: 1 }}>
-                Key Benefits
-              </Typography>
-              <Grid container spacing={3}>
-                {[
-                  { icon: "≡", title: "Stable Asset Class", description: "Lower volatility compared to public markets" },
-                  { icon: "↑", title: "Monthly Cashflow", description: "Consistent passive income generation" },
-                  { icon: "◢", title: "Capital Appreciation", description: "Property value growth over time" },
-                  { icon: "□○", title: "Portfolio Diversification", description: "Reduced overall investment risk" }
-                ].map((item, index) => (
-                  <Grid item xs={12} sm={6} key={index} spacing={2} >
-                    <Paper
-                      elevation={2}
-                      sx={{
-                        p: 1,
-                        mb: 5,
-                        height: "100%",
-                        borderRadius: 3,
-                        transition: "transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out",
-                        "&:hover": {
-                          transform: "translateY(-5px)",
-                          boxShadow: 6
-                        }
-                      }}
-                    >
-                      <Box sx={{
-                        fontSize: 36,
-                        fontWeight: "bold",
-                        mb: 2,
-                        color: "#1976d2"
-                      }}>
-                        {item.icon}
-                      </Box>
-                      <Typography variant="h6" fontWeight="bold" gutterBottom>
-                        {item.title}
-                      </Typography>
-                      <Typography variant="body2" color="text.secondary">
-                        {item.description}
-                      </Typography>
-                    </Paper>
-                  </Grid>
-                ))}
-              </Grid>
-            </Grid>
-
-            {/* Right Side - Asset Comparison with proper quadrant chart */}
-            <Grid item xs={12} md={6}>
-              <Typography variant="h5" fontWeight="bold" sx={{ mb: 4 }}>
-                CRE vs. Other Asset Classes
-              </Typography>
-
-              <Box
-                sx={{
-                  position: "relative",
-                  border: "2px solid #e0e0e0",
-                  borderRadius: 2,
-                  height: "400px",
-                  overflow: "hidden",
-                  boxShadow: 1
-                }}
-              >
-                {/* Horizontal and Vertical dividing lines */}
-                <Box sx={{
-                  position: "absolute",
-                  top: 0,
-                  bottom: 0,
-                  left: "50%",
-                  width: "1px",
-                  bgcolor: "#e0e0e0",
-                  zIndex: 1
-                }} />
-                <Box sx={{
-                  position: "absolute",
-                  left: 0,
-                  right: 0,
-                  top: "50%",
-                  height: "1px",
-                  bgcolor: "#e0e0e0",
-                  zIndex: 1
-                }} />
-
-                {/* Axis Labels */}
-                <Typography sx={{
-                  position: "absolute",
-                  top: 16,
-                  left: "50%",
-                  transform: "translateX(-50%)",
-                  fontWeight: "bold",
-                  zIndex: 2
-                }}>
-                  Stable
-                </Typography>
-                <Typography sx={{
-                  position: "absolute",
-                  bottom: 16,
-                  left: "50%",
-                  transform: "translateX(-50%)",
-                  fontWeight: "bold",
-                  zIndex: 2
-                }}>
-                  Volatile
-                </Typography>
-                <Typography sx={{
-                  position: "absolute",
-                  top: "50%",
-                  left: 16,
-                  transform: "translateY(-50%) rotate(-90deg)",
-                  fontWeight: "bold",
-                  transformOrigin: "left center",
-                  zIndex: 2
-                }}>
-                  Lower Returns
-                </Typography>
-                <Typography sx={{
-                  position: "absolute",
-                  top: "50%",
-                  right: 16,
-                  transform: "translateY(-50%) rotate(90deg)",
-                  fontWeight: "bold",
-                  transformOrigin: "right center",
-                  zIndex: 2
-                }}>
-                  Higher Returns
-                </Typography>
-
-                {/* Quadrant Items */}
-                <Box sx={{
-                  display: "grid",
-                  gridTemplateColumns: "1fr 1fr",
-                  gridTemplateRows: "1fr 1fr",
-                  height: "100%",
-                  width: "100%",
-                  position: "relative",
-                  zIndex: 0
-                }}>
-                  {[
-                    {
-                      title: "Industrial Properties",
-                      position: "top-left",
-                      bg: "#fff",
-                      fontWeight: "bold",
-                    },
-                    {
-                      title: "Large Warehouse",
-                      position: "top-right",
-                      bg: "#f5d7a1",
-                      fontWeight: "bold",
-                      desc: "High stability with strong returns"
-                    },
-                    {
-                      title: "Logistic Hub",
-                      position: "bottom-left",
-                      bg: "#fff",
-                      fontWeight: "bold",
-                      desc: "Stable store of value, lower growth"
-                    },
-                    {
-                      title: "Data Center",
-                      position: "bottom-right",
-                      bg: "#fff",
-                      fontWeight: "bold",
-                      desc: "Higher potential returns with volatility"
-                    }
-                  ].map((item, index) => {
-                    const isTopLeft = item.position === "top-left";
-                    const isTopRight = item.position === "top-right";
-                    const isBottomLeft = item.position === "bottom-left";
-                    const isBottomRight = item.position === "bottom-right";
-
-                    return (
-                      <Box
-                        key={index}
-                        sx={{
-                          p: 3,
-                          display: "flex",
-                          flexDirection: "column",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          backgroundColor: item.bg,
-                          gridColumn: isTopLeft || isBottomLeft ? "1" : "2",
-                          gridRow: isTopLeft || isTopRight ? "1" : "2",
-                          position: "relative",
-                          transition: "background-color 0.2s",
-                          "&:hover": {
-                            backgroundColor: isTopRight ? "#f0c379" : "#f5f5f5"
-                          }
-                        }}
-                      >
-                        <Typography
-                          variant="body1"
-                          fontWeight={item.fontWeight || "normal"}
-                          align="center"
-                          gutterBottom
-                        >
-                          {item.title}
-                        </Typography>
-                        {item.desc && (
-                          <Typography
-                            variant="caption"
-                            color="text.secondary"
-                            align="center"
-                          >
-                            {item.desc}
-                          </Typography>
-                        )}
-                      </Box>
-                    );
-                  })}
-                </Box>
-              </Box>
-            </Grid>
-          </Grid>
-        </Container>
-
-
-        {/* Team Section */}
-        <Container sx={{ mt: 4, mb: 4 }} maxWidth={false} >
-          <Typography variant="h4" align="center" sx={{ mb: 4, textAlign: "center", fontWeight: "bold" }}>
-            Our Team
-          </Typography>
-
-          <Grid container spacing={4}>
+      {/* Team Section */}
+      <section className="py-5 bg-light Team-section">
+        <div className="container">
+          <h2 className="section-title text-left" data-aos="fade-up">Our Team</h2>
+          <div className="row">
             {teamMembers.map((member, index) => (
-              <Grid item xs={12} md={4} key={index}>
-                <Card elevation={3}>
-                  <CardContent sx={{ p: 3 }}>
-                    <Avatar
-                      src={member.image || "https://www.w3schools.com/w3images/avatar5.png"}
-                      sx={{
-                        width: 150,
-                        height: 150,
-                        mx: 'auto',
-                        mb: 3
-                      }}
-                    />
-                    {/* Combined Role & Description */}
-                    <Typography variant="body1" sx={{ textAlign: 'justify', mb: 2 }}>
-                      <strong>Role:</strong> {member.role} - {member.description}
-                    </Typography>
-                    {/* Combined Experience */}
-                    <Typography variant="body1" sx={{ textAlign: 'justify', mb: 2 }}>
-                      <strong>Experience:</strong> {member.experience.join(' | ')}
-                    </Typography>
-                  </CardContent>
-                </Card>
-              </Grid>
+              <div
+                key={index}
+                className="col-lg-3 col-md-6 mb-4"
+                data-aos="fade-up"
+                data-aos-delay={(index + 1) * 100}
+              >
+                <div className="property-card text-center">
+                  <img
+                    src={member.imgSrc}
+                    alt={member.name}
+                    className="img-fluid rounded-circle mb-3 mt-3"
+                    style={{ width: '180px', height: '180px', objectFit: 'cover',marginLeft:"50px" }}
+                  />
+                  <div className="p-3">
+                    <h5>{member.name}</h5>
+                    <p className="text-muted">{member.position}</p>
+                    <p>{member.description}</p>
+                  </div>
+                </div>
+              </div>
             ))}
-          </Grid>
+          </div>
+          <div className="text-center mt-4">
+            <a href="#" className="btn btn-primary view-property-btn px-4 py-2" data-aos="fade-up">
+              Meet Our Full Team
+            </a>
+          </div>
+        </div>
+      </section>
+
+
+
+      {/* Intro Section */}
+      <section className="py-5 bg-light">
+        <div className="container">
+          <div className="row align-items-left">
+            <div className="col-lg-6" data-aos="fade-right">
+              <h2 className="section-title">Welcome to Astra Commercial Real Estate</h2>
+              <p>We specialize in connecting investors with premium commercial real estate opportunities across various sectors including warehouses, office buildings, retail spaces, and industrial complexes.</p>
+              <p>Our team of experts thoroughly vets each property to ensure it meets our high standards for investment potential, location quality, and long-term value appreciation.</p>
+              <a href="/properties" className="btn view-property-btn mt-3">View Properties</a>
+            </div>
+            <div className="col-lg-6" data-aos="fade-left">
+              <img
+                src="https://img.freepik.com/premium-photo/digital-marketing-business-strategy-businessman-using-tablet-analyzing-sales-data-economic-growth-graph-chart-hologram-screen-business-strategy-digital-data-250_1118535-4376.jpg?ga=GA1.1.718196285.1710491388&semt=ais_hybrid&w=740"
+                alt="Commercial Property"
+                className="img-fluid rounded shadow"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Why Commercial RE Section */}
+      <section className="why-astra-section">
+        <div className="container">
+          <h2
+            className="section-title text-left"
+            data-aos="fade-up"
+            style={{ marginTop: '30px', paddingTop: '20px' }}
+          >
+            Why Commercial Real Estate
+          </h2>
+          <div className="row">
+            <div className="col-lg-6" data-aos="fade-right">
+              <div className="video-container mb-4">
+                <video width="100%" height="300" controls>
+                  <source
+                    src="https://media.gettyimages.com/id/1356847933/video/drone-view-of-warehouse-in-milton-keynes-uk.mp4?s=mp4-640x640-gi&k=20&c=z4Nixp-V5djCUdvjQ8f8GNWee8BRU6VW9q5du4wKzwU="
+                    type="video/mp4"
+                  />
+                  Your browser does not support the video tag.
+                </video>
+              </div>
+            </div>
+            <div className="col-lg-6" data-aos="fade-left">
+              <div className="p-4">
+                <h3 className="mb-4">Investment Benefits</h3>
+                <ul className="list-unstyled">
+                  <li className="mb-3">
+                    <FontAwesomeIcon icon={faCheckCircle} className="text-success me-2" />
+                    Higher returns compared to residential properties
+                  </li>
+                  <li className="mb-3">
+                    <FontAwesomeIcon icon={faCheckCircle} className="text-success me-2" />
+                    Longer lease terms providing stable income
+                  </li>
+                  <li className="mb-3">
+                    <FontAwesomeIcon icon={faCheckCircle} className="text-success me-2" />
+                    Triple-net leases reducing ownership costs
+                  </li>
+                  <li className="mb-3">
+                    <FontAwesomeIcon icon={faCheckCircle} className="text-success me-2" />
+                    Opportunity for portfolio diversification
+                  </li>
+                  <li className="mb-3">
+                    <FontAwesomeIcon icon={faCheckCircle} className="text-success me-2" />
+                    Potential tax benefits through depreciation
+                  </li>
+                </ul>
+                <div className="text-center text-lg-start mt-4">
+                  <a href="#" className="btn btn-primary view-property-btn px-4 py-2">
+                    Learn More
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      {/* How It Works Section */}
+      <section className="video-section">
+        <div className="container">
+          <h2 className="section-title text-left" data-aos="fade-up">How It Works</h2>
+          <div className="row">
+            <div className="col-lg-6" data-aos="fade-right">
+              <div className="p-4">
+                <h3 className="mb-4">Our Process</h3>
+                {processSteps.map((step, index) => (
+                  <div className="d-flex mb-4" key={index}>
+                    <div className="me-3">
+                      <FontAwesomeIcon
+                        icon={faCheckCircle}
+                        className="text-success"
+                        style={{ width: '20px', height: '20px' }}
+                      />
+                    </div>
+                    <div>
+                      <h5>{step.title}</h5>
+                      <p>{step.description}</p>
+                    </div>
+                  </div>
+                ))}
+                <div className="text-center text-lg-start mt-4">
+                  <a href="#" className="btn btn-primary view-property-btn px-4 py-2">
+                    Get Started
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div className="col-lg-6" data-aos="fade-left">
+              <div className="video-container">
+                <video width="100%" height="300" controls>
+                  <source
+                    src="https://media.gettyimages.com/id/1005428552/video/loading-docks.mp4?s=mp4-640x640-gi&k=20&c=pvbOZeOzq8K9p1_soQvYu-PIsZyaxRbltKDFACLVqEk="
+                    type="video/mp4"
+                  />
+                  Your browser does not support the video tag.
+                </video>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      {/* Astra Advantage Section */}
+      <section className="py-5">
+        <div className="container">
+          <h2 className="section-title text-left mb-5" data-aos="fade-up">Astra Advantage</h2>
+          <div className="row">
+            {advantages.map((advantage, index) => (
+              <div
+                className="col-md-4 mb-4"
+                key={index}
+                data-aos="fade-up"
+                data-aos-delay={(index + 1) * 100}
+              >
+                <div className="advantage-card">
+                  <FontAwesomeIcon
+                    icon={advantage.icon}
+                    className="fa-2x mb-3"
+                    style={{ color: 'var(--primary-color)' }}
+                  />
+                  <h4>{advantage.title}</h4>
+                  <p>{advantage.description}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="text-center mt-3">
+            <a href="#" className="btn btn-primary view-property-btn px-4 py-2">
+              Learn More About Our Advantages
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* Properties Section */}
+      <section className="py-5 bg-light">
+        <div className="container">
+          <h2 className="section-title text-left mb-5" data-aos="fade-up">Properties</h2>
+          <div className="row">
+            {properties.map((property, index) => (
+              <div
+                className="col-md-4 mb-4"
+                key={property.id}
+                data-aos="fade-up"
+                data-aos-delay={(index + 1) * 100}
+              >
+                <div className="property-card card">
+                  <img
+                    src={property.image}
+                    alt={property.title}
+                    className="card-img-top"
+                  />
+                  <div className="card-body">
+                    <h5 className="card-title">{property.title}</h5>
+                    <p className="card-text">{property.details}</p>
+                    <a href="/properties" className="btn btn-primary view-property-btn px-4 py-2">
+                      View Property
+                    </a>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="text-center mt-3">
+            <a href="/properties" className="btn btn-primary view-property-btn px-4 py-2">
+              Browse All Properties
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* Our Backers Section */}
+      <section className="py-5" style={{ backgroundColor: '#e9e9e9' }}>
+        <div className="container">
+          <h2 className="section-title text-left mb-5" data-aos="fade-up">Our Backers</h2>
+          <div className="row align-items-center justify-content-center">
+            {backers.map((backer, index) => (
+              <div
+                className="col-md-2 col-4 text-center mb-4"
+                key={backer.id}
+                data-aos="fade-up"
+                data-aos-delay={(index + 1) * 100}
+              >
+                <img
+                  src={backer.logo}
+                  alt={backer.alt}
+                  className="backer-logo"
+                />
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* In The News Section */}
+      <section className="py-5">
+        <div className="container">
+          <h2 className="section-title text-left" data-aos="fade-up">In The News</h2>
+          <div className="row">
+            {newsItems.map((news) => (
+              <div
+                className="col-md-4 mb-4"
+                key={news.id}
+                data-aos="fade-up"
+                data-aos-delay={news.delay}
+              >
+                <div className="news-card">
+                  <img
+                    src={news.image}
+                    alt={`News ${news.id}`}
+                    className="img-fluid rounded mb-3"
+                  />
+                  <p className="news-date">{news.date}</p>
+                  <h5>{news.title}</h5>
+                  <p>{news.excerpt}</p>
+                  <a href="#" className="text-primary">Read More</a>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+      {/* Contact Us Section */}
+      <section className="py-5" id="contact" style={{ backgroundColor: '#f9f9f9' }}>
+        <div className="container">
+          <h2 className="section-title text-left mb-5">Contact Us</h2>
+          <div className="row">
+            <div className="col-lg-6" data-aos="fade-right">
+              <div className="contact-form">
+                <p className="mb-4">Interested in learning more about our properties or investment opportunities? Get in touch with our team.</p>
+                <form>
+                  <div className="mb-3">
+                    <label htmlFor="name" className="form-label">Name</label>
+                    <input type="text" className="form-control" id="name" placeholder="Your Name" />
+                  </div>
+                  <div className="mb-3">
+                    <label htmlFor="mobile" className="form-label">Mobile Number</label>
+                    <input type="tel" className="form-control" id="mobile" placeholder="Your Mobile Number" />
+                  </div>
+                  <div className="mb-3">
+                    <label htmlFor="email" className="form-label">Email Address</label>
+                    <input type="email" className="form-control" id="email" placeholder="Your Email" />
+                  </div>
+                  <div className="mb-3">
+                    <label htmlFor="comments" className="form-label">Comments</label>
+                    <textarea className="form-control" id="comments" rows="4" placeholder="Your Message"></textarea>
+                  </div>
+                  <button type="submit" className="btn view-property-btn px-4 py-2">Submit</button>
+                </form>
+              </div>
+            </div>
+            <div className="col-lg-6" data-aos="fade-left">
+              <div className="ps-lg-4">
+                <h5 className="contact">Top-Tier Commercial Investment Properties</h5>
+                <p>Our carefully curated selection of commercial real estate offers exceptional returns and security for investors looking to diversify their portfolio.</p>
+
+                {/* Google Map Placeholder */}
+                <div className="map-container mt-4 mb-4">
+                  <div style={{ width: '100%', height: '250px', borderRadius: '8px', overflow: 'hidden', boxShadow: '0 4px 8px rgba(0,0,0,0.1)' }}>
+                    <svg width="100%" height="100%" viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+                      {/* Background */}
+                      <rect width="100%" height="100%" fill="#e9f5f9" />
+
+                      {/* Roads */}
+                      <line x1="0" y1="100" x2="800" y2="100" stroke="#ffffff" strokeWidth="20" />
+                      <line x1="0" y1="200" x2="800" y2="200" stroke="#ffffff" strokeWidth="30" />
+                      <line x1="0" y1="300" x2="800" y2="300" stroke="#ffffff" strokeWidth="15" />
+                      <line x1="200" y1="0" x2="200" y2="400" stroke="#ffffff" strokeWidth="25" />
+                      <line x1="400" y1="0" x2="400" y2="400" stroke="#ffffff" strokeWidth="35" />
+                      <line x1="600" y1="0" x2="600" y2="400" stroke="#ffffff" strokeWidth="20" />
+
+                      {/* Buildings */}
+                      <rect x="220" y="120" width="60" height="60" fill="#d3d3d3" />
+                      <rect x="420" y="220" width="80" height="60" fill="#c0c0c0" />
+                      <rect x="320" y="320" width="40" height="40" fill="#d3d3d3" />
+
+                      {/* Location marker */}
+                      <g transform="translate(400, 200)">
+                        <path d="M0-48c-9.8 0-18 8.2-18 18 0 14 18 30 18 30s18-16 18-30c0-9.8-8.2-18-18-18z" fill="#FF5252" />
+                        <circle cx="0" cy="-40" r="6" fill="white" />
+                      </g>
+
+                      {/* Water */}
+                      <rect x="620" y="20" width="160" height="120" fill="#a5d7e8" />
+
+                      {/* Parks */}
+                      <rect x="50" y="320" width="100" height="60" fill="#b5d8b9" />
+                      <rect x="500" y="50" width="80" height="80" fill="#b5d8b9" />
+
+                      {/* Text */}
+                      <text x="400" y="380" fontFamily="Arial" fontSize="16" textAnchor="middle" fill="#666">Astra Commercial Realty</text>
+                    </svg>
+                  </div>
+                </div>
+
+                <div className=" ipad-off">
+                  <h5>Office Locations</h5>
+                  <p>
+                    <FontAwesomeIcon icon={faMapMarkerAlt} className="me-2" style={{ color: 'var(--primary-color)' }} />
+                    New York: 123 Broadway, Suite 300, NY 10001
+                  </p>
+                  <p>
+                    <FontAwesomeIcon icon={faMapMarkerAlt} className="me-2" style={{ color: 'var(--primary-color)' }} />
+                    Chicago: 456 Michigan Ave, Floor 15, IL 60611
+                  </p>
+                </div>
+                <div className="mt-4">
+                  <h5>Contact Information</h5>
+                  <p>
+                    <FontAwesomeIcon icon={faPhone} className="me-2" style={{ color: 'var(--primary-color)' }} />
+                    (800) 123-4567
+                  </p>
+                  <p>
+                    <FontAwesomeIcon icon={faEnvelope} className="me-2" style={{ color: 'var(--primary-color)' }} />
+                    info@astrarealestate.com
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      {/* Footer Section */}
+      {/* <footer className="footer-custom">
+        <Container>
+          <Row>
+            <Col md={4} className="mb-4 mb-md-0">
+              <img
+                src="http://175.29.21.7:84/static/media/Logo%20File.78893cdbe11c7dfa5f45.png"
+                alt="Astra Logo"
+                className="footer-logo"
+              />
+              <p className="mt-3">Premium commercial real estate investments for discerning investors. Discover exceptional opportunities in prime locations nationwide.</p>
+              <div className="social-links mt-3">
+                <a href="#"><i className="fab fa-facebook-f"></i></a>
+                <a href="#"><i className="fab fa-twitter"></i></a>
+                <a href="#"><i className="fab fa-linkedin-in"></i></a>
+                <a href="#"><i className="fab fa-instagram"></i></a>
+              </div>
+            </Col>
+            <Col md={2} className="mb-4 mb-md-0">
+              <div className="footer-links">
+                <h5>Quick Links</h5>
+                <ul>
+                  <li><a href="#">Home</a></li>
+                  <li><a href="#">Properties</a></li>
+                  <li><a href="#">Why Astra</a></li>
+                  <li><a href="#">About Us</a></li>
+                  <li><a href="#">Contact</a></li>
+                </ul>
+              </div>
+            </Col>
+            <Col md={2} className="mb-4 mb-md-0">
+              <div className="footer-links">
+                <h5>Properties</h5>
+                <ul>
+                  <li><a href="#">Warehouses</a></li>
+                  <li><a href="#">Office Spaces</a></li>
+                  <li><a href="#">Retail</a></li>
+                  <li><a href="#">Industrial</a></li>
+                  <li><a href="#">Mixed Use</a></li>
+                </ul>
+              </div>
+            </Col>
+            <Col md={4}>
+              <div className="footer-links">
+                <h5>Newsletter</h5>
+                <p>Subscribe to our newsletter for the latest property listings and market insights.</p>
+                <Form className="mt-3">
+                  <table style={{ width: '100%', borderCollapse: 'collapse' }}>
+                    <tbody>
+                      <tr>
+                        <td style={{ padding: 0 }}>
+                          <Form.Control
+                            type="email"
+                            placeholder="Your Email"
+                            style={{
+                              borderRadius: '4px 0 0 4px',
+                              borderRight: 'none',
+                              width: '100%'
+                            }}
+                          />
+                        </td>
+                        <td style={{ width: '1%', padding: 0 }}>
+                          <Button
+                            variant="light"
+                            type="submit"
+                            style={{
+                              borderRadius: '0 4px 4px 0',
+                              whiteSpace: 'nowrap',
+                              marginTop: '-20px',
+                              border: '1px solid #21a0ea'
+                            }}
+                            className="newsletter-btn"
+                          >
+                            Subscribe
+                          </Button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </Form>
+              </div>
+            </Col>
+          </Row>
+          <hr className="mt-4 mb-4 footer-divider" />
+          <Row>
+            <Col md={6} className="text-center text-md-start">
+              <p className="mb-0">&copy; 2025 Astra Commercial Real Estate. All rights reserved.</p>
+            </Col>
+            <Col md={6} className="text-center text-md-end">
+              <p className="mb-0">
+                <a href="#" className="text-white me-3">Privacy Policy</a>
+                <a href="#" className="text-white me-3">Terms of Service</a>
+                <a href="#" className="text-white">Sitemap</a>
+              </p>
+            </Col>
+          </Row>
         </Container>
-      </Box>
+      </footer> */}
+
     </>
   );
 };
 
-export default Home;
+export default AstraLandingPage;

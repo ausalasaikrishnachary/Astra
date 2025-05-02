@@ -299,7 +299,7 @@ const Tmanagement = () => {
             </Table>
           )}
 
-<Dialog open={openModal} onClose={handleCloseModal} fullWidth maxWidth="sm">
+<Dialog open={openModal} onClose={handleCloseModal} fullWidth maxWidth="md">
   <DialogTitle>User Details</DialogTitle>
   <DialogContent dividers>
     {selectedUser && (

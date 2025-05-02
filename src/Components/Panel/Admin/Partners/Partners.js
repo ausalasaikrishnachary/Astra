@@ -272,7 +272,7 @@ const Tmanagement = () => {
 
 
 {/* Modal for User Details */}
-<Dialog open={openModal} onClose={handleCloseModal} fullWidth maxWidth="sm">
+<Dialog open={openModal} onClose={handleCloseModal} fullWidth maxWidth="md">
   <DialogTitle>User Details</DialogTitle>
   <DialogContent dividers>
     {selectedUser && (
@@ -304,8 +304,8 @@ const Tmanagement = () => {
             ['Created At', selectedUser.created_at],
           ].map(([label, value], index) => (
             <Grid item xs={6} key={index}>
-              <Typography variant="body2" fontWeight="bold">{label}:</Typography>
-              <Typography variant="body2">{value || 'N/A'}</Typography>
+              <Typography ><strong>{label}:</strong>{value || 'N/A'}</Typography>
+              {/* <Typography variant="body2"></Typography> */}
             </Grid>
           ))}
         </Grid>
