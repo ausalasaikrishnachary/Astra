@@ -15,6 +15,14 @@
     align-items: center;
 }
 
+.newsletter-btn:hover {
+    background-color: inherit !important;
+    color: inherit !important;
+    border-color: #21a0ea !important;
+    box-shadow: none !important;
+    text-decoration: none !important;
+    transition: none !important;
+  }
 
 /* Left section: Logo + Address */
 .footer-left {
@@ -28,7 +36,7 @@
 /* Logo */
 .footer-left img {
     max-width: 100px;
-    height: auto;
+    height: 100px;
 }
 
 /* Address */

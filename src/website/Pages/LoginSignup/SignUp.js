@@ -210,14 +210,14 @@ const SignUp = () => {
         pt: 3
       }}
     >
-      <Typography variant="h3" sx={{ pb: 5, textAlign: "center" }}>
+      <Typography variant="h4" sx={{ pb: 5, textAlign: "center" }}>
         SignUp as Investor
       </Typography>
       <Grid container spacing={2}>
         {!otpSent && (
           <>
             <Grid item xs={12} sm={6}>
-              <TextField label="First Name" name="firstName" fullWidth value={formData.firstName} onChange={handleChange} />
+              <TextField InputLabelProps={{ shrink: true }} variant="outlined" label="First Name" name="firstName" fullWidth value={formData.firstName} onChange={handleChange} />
             </Grid>
             <Grid item xs={12} sm={6}>
               <TextField label="Last Name" name="lastName" fullWidth value={formData.lastName} onChange={handleChange} />

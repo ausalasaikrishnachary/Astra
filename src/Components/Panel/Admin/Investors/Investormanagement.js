@@ -384,7 +384,7 @@ const Tmanagement = () => {
         {/* Images Section */}
         <Box mt={4}>
           <Typography variant="h6" gutterBottom><strong>Documents</strong></Typography>
-          <Stack direction="row" spacing={4} flexWrap="wrap">
+        
             <Box>
               <Typography><strong>Profile Image:</strong></Typography>
               <img
@@ -433,7 +433,7 @@ const Tmanagement = () => {
                 </a>
               )}
             </Box>
-          </Stack>
+       
         </Box>
       </Box>
     )}

@@ -158,7 +158,8 @@ const Login = () => {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        backgroundImage: `url(${login_bg})`,
+        // backgroundImage: `url(${login_bg})`,
+        backgroundColor:"white",
         backgroundSize: "cover",
         backgroundPosition: "center",
         marginTop: "-85px",
@@ -166,7 +167,7 @@ const Login = () => {
     >
       <Paper elevation={4} sx={{
         display: "flex", width: "90%", maxWidth: 900, borderRadius: 2, overflow: "hidden", backdropFilter: "blur(40px)",
-        background: "transparent", boxShadow: "0px 10px 30px rgba(59, 135, 225, 0.9)",
+        background: "#2a5f9e",
       }}>
         <Grid container>
           <Grid

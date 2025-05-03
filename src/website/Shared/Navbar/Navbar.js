@@ -202,7 +202,7 @@ function Header() {
         sx={{
           backgroundColor: '#ffffff',
           color: '#333333',
-          boxShadow: 'none',
+          boxShadow: "-moz-initial",
           borderBottom: '1px solid #e0e0e0',
         }}
       >
@@ -263,11 +263,6 @@ function Header() {
               >
                 Login
               </Button>
-
-              {/* Uncomment if you want to use the Search icon */}
-              {/* <IconButton>
-                <SearchIcon sx={{ color: '#333333' }} />
-              </IconButton> */}
             </>
           ) : (
             // Desktop view
@@ -289,7 +284,7 @@ function Header() {
                   display: 'flex',
                   alignItems: 'center',
                   flexGrow: 1,
-                  marginLeft: '300px',
+                  marginLeft: '400px',
                   fontSize: '16px',
                   fontFamily: 'Calibre, sans-serif',
                   color: '#333333',
@@ -327,44 +322,6 @@ function Header() {
                           {item.label}
                         </Button>
                         {/*
-                        <Menu
-                          anchorEl={isInvest ? anchorInvest : anchorAbout}
-                          open={Boolean(isInvest ? anchorInvest : anchorAbout)}
-                          onClose={
-                            isInvest
-                              ? () => setAnchorInvest(null)
-                              : () => setAnchorAbout(null)
-                          }
-                          MenuListProps={{
-                            onMouseEnter: isInvest
-                              ? handleInvestMenuMouseEnter
-                              : handleAboutMenuMouseEnter,
-                            onMouseLeave: isInvest
-                              ? handleInvestMenuMouseLeave
-                              : handleAboutMenuMouseLeave,
-                          }}
-                          anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
-                          transformOrigin={{ vertical: 'top', horizontal: 'left' }}
-                        >
-                          {item.submenu.map((subItem) => (
-                            <MenuItem
-                              key={subItem}
-                              onClick={
-                                isInvest
-                                  ? () => setAnchorInvest(null)
-                                  : () => setAnchorAbout(null)
-                              }
-                              sx={{
-                                color: '#333333',
-                                fontSize: '16px',
-                                fontFamily: 'Calibre, sans-serif',
-                                fontWeight: 'bold',
-                              }}
-                            >
-                              {subItem}
-                            </MenuItem>
-                          ))}
-                        </Menu>
                         */}
                       </Box>
                     );
@@ -376,60 +333,23 @@ function Header() {
                       to={item.path}
                       sx={{
                         ml: 2,
-                        fontSize: '16px',
                         fontFamily: 'Calibre, sans-serif',
                         fontWeight: 'bold',
+                        color: '#333333',
+                        textTransform: 'none', // 👈 Fix: remove uppercase
                         textDecoration: 'none',
-                        color: '#333333', // Inactive color
                         '&.active': {
-                          color: '#2E166D', // Active color
-                          textDecoration: 'underline',
+                          color: '#0000FF',
                         },
+                        fontSize: '16px',
                       }}
                     >
                       {item.label}
                     </Button>
+
                   );
                 })}
               </Box>
-
-              {/* Uncomment if you want to use the Search Field */}
-              {/*
-              <Box
-                sx={{
-                  position: 'relative',
-                  borderRadius: 1,
-                  backgroundColor: 'rgba(0,0,0,0.05)',
-                  '&:hover': { backgroundColor: 'rgba(0,0,0,0.1)' },
-                  mr: 2,
-                }}
-              >
-                <Box
-                  sx={{
-                    padding: theme.spacing(0, 2),
-                    height: '100%',
-                    position: 'absolute',
-                    pointerEvents: 'none',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <SearchIcon sx={{ color: '#333333' }} />
-                </Box>
-                <InputBase
-                  placeholder="Search…"
-                  sx={{
-                    color: '#333333',
-                    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-                    width: '20ch',
-                    fontSize: '16px',
-                    fontFamily: 'Calibre, sans-serif',
-                    fontWeight: 'bold',
-                  }}
-                />
-              </Box>
-              */}
 
               {/* Signup & Signin Buttons */}
               <Button

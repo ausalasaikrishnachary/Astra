@@ -48,8 +48,6 @@ import Dashboard from "./Components/Panel/SuperAdmin/Dashboard/Dashboard";
 import AddAdmin from "./Components/Panel/SuperAdmin/AddAdmin/AddAdmin";
 import ViewAdmin from "./Components/Panel/SuperAdmin/ViewAdmin/ViewAdmin";
 
-import Everstrat from "./Everstrat/Everstrat";
-
 import TransactionDetails from "./Components/Panel/Investor/Transactions/TransactionDetails";
 import EditAdmin from "./Components/Panel/SuperAdmin/ViewAdmin/EditAdmin";
 import TransactionMoniterDetails from "./Components/Panel/Admin/Transactions/TransactionMoniterDetails";
@@ -129,7 +127,7 @@ function Layout() {
           <Route path="/s-editadmins" element={<EditAdmin />} />
 
           <Route path="/login" element={<Login />} />
-          <Route path="/Everstrat" element={<Everstrat/>} />
+
         </Routes>
       </div>
       {footerPaths.includes(location.pathname) && <Footer />}

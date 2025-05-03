@@ -33,32 +33,36 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     setError("");
-
+  
     try {
       const response = await fetch("http://175.29.21.7:83/login/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
       });
-
+  
       const data = await response.json();
-
+  
       if (response.ok) {
-        localStorage.setItem("user_id", data.user_id);
-        localStorage.setItem("user_name", data.first_name + " " + data.last_name);
         const userRoles = data.roles || [];
-        await Swal.fire({
-          icon: 'success',
-          title: 'success',
-          text: 'Login Successfull.',
-        });
-
-        if (userRoles.length > 1) {
-          selectUserRole(userRoles);
-        } else if (userRoles.length === 1) {
-          navigateToDashboard(userRoles[0]);
+  
+        if (userRoles.includes("Investor")) {
+          localStorage.setItem("user_id", data.user_id);
+          localStorage.setItem("user_name", data.first_name + " " + data.last_name);
+  
+          await Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: 'Login Successful.',
+          });
+  
+          navigate("/i-dashboard");
         } else {
-          setError("No roles assigned. Please contact support.");
+          await Swal.fire({
+            icon: 'error',
+            title: 'Access Denied',
+            text: 'Only Investor role is allowed.',
+          });
         }
       } else {
         setError(data.error || "Login failed.");
@@ -67,6 +71,7 @@ const Login = () => {
       setError("Something went wrong. Please try again.");
     }
   };
+  
 
 
   const selectUserRole = async (roles) => {
@@ -107,9 +112,9 @@ const Login = () => {
   return (
     <div className="login-container">
       <div className="login-card">
-        <h3 className="login-title">Log in</h3>
+        <h4 className="login-title">Log in</h4>
         <form onSubmit={handleLogin}>
-          <div className="input-group">
+          <div className="input-groups">
             <label>Email</label>
             <input
               type="email"
@@ -119,7 +124,7 @@ const Login = () => {
             />
             {emailError && <small className="error-text">{emailError}</small>}
           </div>
-          <div className="input-group">
+          <div className="input-groups">
             <label>Password</label>
             <div className="password-wrapper">
               <input
@@ -141,13 +146,13 @@ const Login = () => {
             <a href="#" className="forgot-password">Forgot password?</a>
           </div>
 
-          {error && <p className="error-text">{error}</p>}
+          {error && <p  style={{color:"red"}}>{error}</p>}
 
           <button type="submit" className="login-btn">Log in</button>
         </form>
 
         <div className="text-links">
-          <p>Not on Astra?</p>
+          <p style={{marginTop:"0px", marginBottom:"0px"}}>Not on Astra?</p>
           <a href="/signup" className="create-profile">Create a profile</a>
         </div>
       </div>

@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart } from '@fortawesome/free-solid-svg-icons';
 import { Box, Typography, TextField, Button, Card, Grid, IconButton } from "@mui/material";
 import { Facebook, Instagram, LinkedIn, YouTube, Twitter } from "@mui/icons-material";
-import "./Footer.css";
+// import "./Footer.css";
 import Logo from '../../Images/Logo File.png';
 import Divider from '@mui/material/Divider';
 import { Container, Navbar, Nav, Row, Col, Form, } from 'react-bootstrap';
@@ -21,6 +21,12 @@ function Footer() {
               src="http://175.29.21.7:84/static/media/Logo%20File.78893cdbe11c7dfa5f45.png"
               alt="Astra Logo"
               className="footer-logo"
+              style={{
+                height: '75px',
+                width: 'auto',
+                maxWidth: '150px',
+                transform: 'scale(2.0)',
+              }}
             />
             <p className="mt-3">Premium commercial real estate investments for discerning investors. Discover exceptional opportunities in prime locations nationwide.</p>
             <div className="social-links mt-3">
@@ -34,11 +40,11 @@ function Footer() {
             <div className="footer-links">
               <h5>Quick Links</h5>
               <ul>
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Properties</a></li>
-                <li><a href="#">Why Astra</a></li>
-                <li><a href="#">About Us</a></li>
-                <li><a href="#">Contact</a></li>
+                <li><a href="/">Home</a></li>
+                <li><a href="/properties">Properties</a></li>
+                <li><a href="/">Why Astra</a></li>
+                <li><a href="/aboutus">About Us</a></li>
+                <li><a href="/contactus">Contact</a></li>
               </ul>
             </div>
           </Col>
@@ -80,8 +86,10 @@ function Footer() {
                           style={{
                             borderRadius: '0 4px 4px 0',
                             whiteSpace: 'nowrap',
-                            marginTop: '-20px',
-                            border: '1px solid #21a0ea'
+                            marginTop: '0px',
+                            border: '1px solid #21a0ea',
+                            height: "38px",
+                            transition: 'none', // Disable all transitions
                           }}
                           className="newsletter-btn"
                         >

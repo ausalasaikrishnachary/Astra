@@ -272,8 +272,8 @@ const AstraLandingPage = () => {
                   <img
                     src={member.imgSrc}
                     alt={member.name}
-                    className="img-fluid rounded-circle mb-3 mt-3"
-                    style={{ width: '180px', height: '180px', objectFit: 'cover',marginLeft:"50px" }}
+                    className="img-fluid rounded-circle mb-3 mt-3 mx-auto"
+                    style={{ width: '180px', height: '180px', objectFit: 'cover' }}
                   />
                   <div className="p-3">
                     <h5>{member.name}</h5>
