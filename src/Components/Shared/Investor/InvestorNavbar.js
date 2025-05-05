@@ -34,10 +34,10 @@ export default function InvestorHeader() {
   // For the "Transactions" item, we add a submenu.
   const navItems = [
     { label: 'Dashboard', path: '/i-dashboard' },
-    { label: 'Buy Property', path: '/i-asset' },
+    { label: 'Buy Assets', path: '/i-asset' },
     { label: 'Transactions', path: '/i-buyunits' },
     { label: 'Purchased Assets', path: '/i-purchasedasset' },
-    // { label: 'KYC', path: '/i-profiledetails' },
+    { label: 'Reports', path: '/i-report' },
   ];
 
   // Responsive helper.
@@ -295,7 +295,7 @@ export default function InvestorHeader() {
               </Typography>
 
               {/* Center: Nav Items */}
-              <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center', gap: 3 }}>
+              <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center', gap: 3, }}>
                 {navItems.map((item) =>
                   item.submenu ? (
                     // Nav Item with submenu (Transactions)

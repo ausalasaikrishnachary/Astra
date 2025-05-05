@@ -288,6 +288,7 @@ function Header() {
                   fontSize: '16px',
                   fontFamily: 'Calibre, sans-serif',
                   color: '#333333',
+                  // marginLeft:"9%"
                 }}
               >
                 {navItems.map((item) => {

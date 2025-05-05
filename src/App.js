@@ -58,6 +58,7 @@ import EditInvestor from "./Components/Panel/Admin/Investors/EditInvestor";
 import EditAsset from "./Components/Panel/Admin/Asset/EditAsset";
 import ScheduleCall from "./Components/Panel/Admin/Asset/SheduleMeeting";
 import PropertyDetails from "./website/Pages/Properties/PropertyDetails";
+import InvestorReport from "./Components/Panel/Investor/Report/InvestorReport";
 
 
 function Layout() {
@@ -109,7 +110,7 @@ function Layout() {
           <Route path="/i-payment-form" element={<PaymentForm />} />
           <Route path="/i-purchasedasset" element={<PurchasedAssets />} />
           <Route path="/i-transaction-details" element={<TransactionDetails />} />
-
+          <Route path="/i-report" element={<InvestorReport />} />
 
           <Route path="/p-dashboard" element={<PartnerDashboard />} />
           <Route path="/p-report" element={<Report />} />

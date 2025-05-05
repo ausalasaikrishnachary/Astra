@@ -145,7 +145,7 @@ export default function Header() {
                 </Link>
               </Typography>
 
-              <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center', gap: 3 }}>
+              <Box sx={{ flexGrow: 1, display: 'flex', justifyContent: 'center', gap: 3,  }}>
                 {navItems.map((item) => (
                   <Button
                     key={item.label}

@@ -34,7 +34,7 @@ export default function PartnerHeader() {
   // For the "Transactions" item, we add a submenu.
   const navItems = [
     { label: 'Dashboard', path: '/p-dashboard' },
-    { label: 'Properties', path: '/p-myassets' },
+    { label: 'Assets', path: '/p-myassets' },
     { label: 'My Investors', path: '/p-myinvestors' },
     // {
     //   label: 'Transactions', path: "/p-transactions",
@@ -243,10 +243,9 @@ export default function PartnerHeader() {
               </Box>
             </Box>
           ) : (
-            // Desktop Layout.
             <>
               {/* Left: Logo */}
-              <Typography variant="h6" sx={{ display: 'flex', alignItems: 'center' }}>
+              <Typography variant="h6" sx={{ display: 'flex', alignItems: 'center', }}>
                 <Link to="/" style={{ textDecoration: 'none', color: '#333333' }}>
                   <img
                     src={Logo}
