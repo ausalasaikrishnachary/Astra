@@ -355,8 +355,6 @@ const Login = () => {
                     },
                   }}
                 />
-
-
                 <Box textAlign="right">
                   <Link
                     href="#"
@@ -373,7 +371,6 @@ const Login = () => {
                   >
                     Forgot Password?
                   </Link>
-
                 </Box>
                 <Button
                   fullWidth
@@ -393,8 +390,6 @@ const Login = () => {
                 >
                   {loading ? "Logging in..." : "Login"}
                 </Button>
-
-
               </>
             )}
           </Grid>
