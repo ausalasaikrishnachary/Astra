@@ -18,6 +18,7 @@ const Login = () => {
   const [showForgotPassword, setShowForgotPassword] = useState(false);
   const [showResetPassword, setShowResetPassword] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
 
 
   const handleEmailChange = (e) => {
@@ -37,21 +38,22 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     setError("");
-
+    setLoading(true); // Start loading
+  
     try {
       const response = await fetch("http://175.29.21.7:83/login/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
       });
-
+  
       const data = await response.json();
-
+  
       if (response.ok) {
         localStorage.setItem("user_id", data.user_id);
         localStorage.setItem("user_name", data.first_name + data.last_name);
         const userRoles = data.roles || [];
-
+  
         if (userRoles.length > 1) {
           selectUserRole(userRoles);
         } else if (userRoles.length === 1) {
@@ -64,8 +66,11 @@ const Login = () => {
       }
     } catch (err) {
       setError("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false); // Stop loading
     }
   };
+  
 
   const selectUserRole = async (roles) => {
     const { value: selectedRole } = await Swal.fire({
@@ -159,7 +164,7 @@ const Login = () => {
         alignItems: "center",
         justifyContent: "center",
         // backgroundImage: `url(${login_bg})`,
-        backgroundColor:"white",
+        backgroundColor: "white",
         backgroundSize: "cover",
         backgroundPosition: "center",
         marginTop: "-85px",
@@ -314,7 +319,7 @@ const Login = () => {
                           aria-label="toggle password visibility"
                           onClick={() => setShowPassword((prev) => !prev)}
                           edge="end"
-                          sx={{color: 'white',}}
+                          sx={{ color: 'white', }}
                         >
                           {showPassword ? <VisibilityOff /> : <Visibility />}
                         </IconButton>
@@ -373,20 +378,22 @@ const Login = () => {
                 <Button
                   fullWidth
                   variant="contained"
+                  disabled={loading}
                   sx={{
                     mt: 2,
                     bgcolor: "#2c3e50",
                     color: "#ffffff",
                     border: "2px solid #2a5f9e",
                     "&:hover": {
-                      bgcolor: "#2a5f9e", // new background color on hover
-                      color: "#ffffff",    // new font color on hover
+                      bgcolor: "#2a5f9e",
+                      color: "#ffffff",
                     },
                   }}
                   onClick={handleLogin}
                 >
-                  Login
+                  {loading ? "Logging in..." : "Login"}
                 </Button>
+
 
               </>
             )}

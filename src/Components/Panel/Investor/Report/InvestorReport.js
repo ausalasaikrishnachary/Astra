@@ -52,7 +52,7 @@ const InvestorReport = () => {
           <Grid container spacing={3}>
             {/* Financial Returns Chart */}
             <Grid item xs={12} md={6} mt={4}>
-              <Card  >
+              <Card elevation={0} >
                 <CardContent>
                   <Typography variant="h6" align="center" gutterBottom>
                     Financial Returns
@@ -64,7 +64,7 @@ const InvestorReport = () => {
 
             {/* Trend Analysis Chart */}
             <Grid item xs={12} md={6} mt={4}>
-              <Card  >
+              <Card elevation={0} >
                 <CardContent>
                   <Typography variant="h6" align="center" gutterBottom>
                     Trend Analysis & Predictions
@@ -93,7 +93,7 @@ const InvestorReport = () => {
           <Grid container spacing={3} mt={4}>
             {/* Performance Summary */}
             <Grid item xs={12} md={6}>
-              <Card  >
+              <Card  elevation={0} >
                 <CardContent>
                   <Typography variant="h6" align="center" gutterBottom>
                     Performance Summary
@@ -119,7 +119,7 @@ const InvestorReport = () => {
 
             {/* Key Insights */}
             <Grid item xs={12} md={6}>
-              <Card  >
+              <Card elevation={0} >
                 <CardContent>
                   <Typography variant="h6" align="center" gutterBottom>
                     Key Insights

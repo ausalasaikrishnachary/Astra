@@ -133,7 +133,7 @@ const Tmanagement = () => {
       <PartnerHeader />
       <Container sx={{ maxWidth: "900px", pt: 3 }}>
         <Typography variant="h4" component="h2" gutterBottom style={{ textAlign: "center" }}>
-          Leads Management
+          Investor Management
         </Typography>
 
         {/* Summary Cards */}

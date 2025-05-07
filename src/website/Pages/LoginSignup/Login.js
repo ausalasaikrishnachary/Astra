@@ -9,6 +9,8 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [passwordVisible, setPasswordVisible] = useState(false);
+  const [loading, setLoading] = useState(false);
+
 
   const navigate = useNavigate();
 
@@ -33,29 +35,30 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     setError("");
-  
+    setLoading(true); // Start loading
+
     try {
       const response = await fetch("http://175.29.21.7:83/login/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
       });
-  
+
       const data = await response.json();
-  
+
       if (response.ok) {
         const userRoles = data.roles || [];
-  
+
         if (userRoles.includes("Investor")) {
           localStorage.setItem("user_id", data.user_id);
           localStorage.setItem("user_name", data.first_name + " " + data.last_name);
-  
+
           await Swal.fire({
             icon: 'success',
             title: 'Success',
             text: 'Login Successful.',
           });
-  
+
           navigate("/i-dashboard");
         } else {
           await Swal.fire({
@@ -69,9 +72,11 @@ const Login = () => {
       }
     } catch (err) {
       setError("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false); // Stop loading
     }
   };
-  
+
 
 
   const selectUserRole = async (roles) => {
@@ -146,13 +151,16 @@ const Login = () => {
             <a href="#" className="forgot-password">Forgot password?</a>
           </div>
 
-          {error && <p  style={{color:"red"}}>{error}</p>}
+          {error && <p style={{ color: "red" }}>{error}</p>}
 
-          <button type="submit" className="login-btn">Log in</button>
+          <button type="submit" className="login-btn" disabled={loading}>
+            {loading ? "Logging in..." : "Log in"}
+          </button>
+
         </form>
 
         <div className="text-links">
-          <p style={{marginTop:"0px", marginBottom:"0px"}}>Not on Astra?</p>
+          <p style={{ marginTop: "0px", marginBottom: "0px" }}>Not on Astra?</p>
           <a href="/signup" className="create-profile">Create a profile</a>
         </div>
       </div>
